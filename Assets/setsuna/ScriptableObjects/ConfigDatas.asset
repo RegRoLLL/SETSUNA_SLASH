@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ff00bcb584e874682602ae36b427de, type: 3}
+  m_Name: ConfigDatas
+  m_EditorClassIdentifier: 
+  masterVolume: 0.45
+  bgmVolume: 0.28
+  seVolume: 0.354
+  controllMode_: 0
+  easyMode: 0
+  demoMode: 0
+  debugMode: 1
+  loadedSaveData:
+    pass: "\u3042\u3042\u3042"
+    hp: 100
+    mp: 100
+    pos: {x: 211.9776, y: 85.752}
+    area: 2
+    easyMode: 0
+  isContinueStart: 0
+  saveDataFilePath: C:/Users/licky/AppData/LocalLow/EutoCreate/SETSUNA_SLASH/savedata.csv
+  saveDataCSV_name: savedata
+  outPutSaveDataLog: 0

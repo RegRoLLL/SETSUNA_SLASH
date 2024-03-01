@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963af9806be1baf479675f0fcb592cf2, type: 3}
+  m_Name: AudioBinds
+  m_EditorClassIdentifier: 
+  player:
+    jump: {fileID: 0}
+    walk: {fileID: 0}
+    dash: {fileID: 0}
+    chargeSlash: {fileID: 8300000, guid: 5324cbef8af02014cb24155b88f3798e, type: 3}
+    notSlashAbleHit: {fileID: 8300000, guid: e35037258a1618942b160c641e329b43, type: 3}
+    attack_normal: {fileID: 8300000, guid: 74a872b31c85df140bea1d52d121757c, type: 3}
+  enemy:
+    golem:
+      golem_punch: {fileID: 8300000, guid: 3a990ec51a212584780a0f2d03dba420, type: 3}
+      golem_throw: {fileID: 8300000, guid: 941574ff31dadb94e8c16abc438d65be, type: 3}
+      golem_throwGenerate: {fileID: 8300000, guid: bd79ca6634ebdd44ebd9aa9c31b71b9c, type: 3}
+      golem_stingerAttack: {fileID: 8300000, guid: 400d7647e40468344a6cf77cc5e02c38, type: 3}
+      golem_stinger: {fileID: 8300000, guid: 122afb2f782ad9c40b6ee1f6159d93c1, type: 3}
+      golem_death: {fileID: 8300000, guid: 7a2a78e0794c9ed42a19111465571166, type: 3}
+  gimmick:
+    gayser: {fileID: 8300000, guid: a8cba308979ac6048975d273939b13d1, type: 3}
+    savePoint: {fileID: 8300000, guid: de3c4d3f4a6bffe45b94de9dd34f204e, type: 3}
+    levitationStoneAwake: {fileID: 8300000, guid: 23ade7fd977677649b95540fe92fe84d, type: 3}
