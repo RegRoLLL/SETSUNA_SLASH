@@ -16,7 +16,7 @@ public class ConfigDatas : ScriptableObject
 
     public SaveData loadedSaveData = new();
     public bool isContinueStart;
-    [HideInInspector] public string saveDataFilePath;
+    public string saveDataFilePath;
     public string saveDataCSV_name;
     public List<string[]> saveDatas = new();
 

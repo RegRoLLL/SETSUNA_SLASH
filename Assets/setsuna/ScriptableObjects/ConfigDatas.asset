@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masterVolume: 0.45
   bgmVolume: 0.28
-  seVolume: 0.354
+  seVolume: 0.35
   controllMode_: 0
   easyMode: 0
   demoMode: 0
@@ -27,6 +27,6 @@ MonoBehaviour:
     area: 2
     easyMode: 0
   isContinueStart: 0
-  saveDataFilePath: C:/Users/licky/AppData/LocalLow/EutoCreate/SETSUNA_SLASH/savedata.csv
+  saveDataFilePath: C:/Users/yttak/AppData/LocalLow/EutoCreate/SETSUNA_SLASH/savedata.csv
   saveDataCSV_name: savedata
   outPutSaveDataLog: 0
