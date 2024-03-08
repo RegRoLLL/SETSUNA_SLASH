@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SetsunaPlayerCamera : SetsunaSlashScript
 {
-    public Game_HubScript hub;
+    Game_HubScript hub;
 
     public Transform player;
     public PlayerController_main plctrl;
@@ -22,6 +23,8 @@ public class SetsunaPlayerCamera : SetsunaSlashScript
 
     void Start()
     {
+        hub = EventSystem.current.GetComponent<Game_HubScript>();
+
         camera_ = this.GetComponent<Camera>();
         transform.position = player.position + (Vector3.up * yFixValue);
         dTime = -1;
