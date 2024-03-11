@@ -178,13 +178,13 @@ public class PlayerController_main : SetsunaSlashScript
                 }
                 else if(!wallKicked.r && wallR && (inputVecX == 1))
                 {
-                    Debug.Log("kosuri_R");
+                    //Debug.Log("kosuri_R");
                     wallKicked.l = false;
                     kosuri = true;
                 }
                 else if (!wallKicked.l && wallL && (inputVecX == -1))
                 {
-                    Debug.Log("kosuri_L");
+                    //Debug.Log("kosuri_L");
                     wallKicked.r = false;
                     kosuri = true;
                 }
