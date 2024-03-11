@@ -358,7 +358,7 @@ namespace RegUtil
             /// <param name="b"></param>
             /// <param name="c"></param>
             /// <returns></returns>
-            static float CrossFrom3Point(Vector2 a, Vector2 b, Vector2 c)
+            static public float CrossFrom3Point(Vector2 a, Vector2 b, Vector2 c)
             {
                 var A = b - a;
                 var B = c - b;
@@ -446,69 +446,71 @@ namespace RegUtil
                     var (a, b, c) = (Vector2.zero, Vector2.zero, Vector2.zero);
                     Action SetTriangle = () =>
                     {
-                        //Debug.Log("far.index=" + far.index + "  list.count=" + list.Count);
+                        //Debug.Log($"far.index= {far.index}  list.count= {list.Count}");
+                        var count = list.Count;
+                        var _index = far.index + count;
 
-                        if (far.index >= list.Count)
-                        {
-                            far.index = 0;
-                            (a, b, c) = (list[list.Count - 1], list[far.index], list[far.index + 1]);
-                        }
-                        else if (far.index == list.Count - 1)
-                        {
-                            (a, b, c) = (list[far.index - 1], list[far.index], list[0]);
-                        }
-                        else if (far.index <= 0)
-                        {
-                            (a, b, c) = (list[list.Count - 1], list[far.index], list[far.index + 1]);
-                        }
-                        else (a, b, c) = (list[far.index - 1], list[far.index], list[far.index + 1]);
+                        var (last, center, next) = (((_index - 1) % count), (_index % count), ((_index + 1) % count));
+                        (a, b, c) = (list[last], list[center], list[next]);
+                        //Debug.Log($"a:{last}  b:{center}  c:{next}");
                     };
                     SetTriangle();
-                    var lastTriangleDirection = MeshCut.CrossFrom2Vec2(a - b, c - b) > 0;
+
+                    Func<bool> GetTriangleDirection = () => MeshCut.CrossFrom2Vec2(c - b, a - b) > 0;
+                    //Func<bool> GetTriangleDirection = () => MeshCut.CrossFrom3Point(a, b, c) > 0;
+                    bool lastTriangleDirection;
 
                     int loopCount = 0;
                     while (true)
                     {
                         bool noPointsInTriangle = true;
+                        lastTriangleDirection = GetTriangleDirection();
 
-                        foreach (var point in list)
+                        foreach (var point in list.Where((n)=> ( n != a && n != b && n != c )))
                         {
                             if (IsinTriangle(a, b, c, point))
                             {
+                                //Debug.Log("inTriangle");
                                 noPointsInTriangle = false;
 
-                                lastTriangleDirection = MeshCut.CrossFrom2Vec2(a - b, c - b) > 0;
+                                int loopCount2 = 0;
+                                while (true)
+                                {
+                                    far.index++;
+                                    SetTriangle();
 
-                                far.index++;
-                                SetTriangle();
+                                    if (lastTriangleDirection == GetTriangleDirection()) break;
+
+                                    if (loopCount2++ >= list.Count + 5)
+                                    {
+                                        Debug.LogError("採用点ずらしで無限ループに陥ったため強制的に処理を中断しました");
+                                        break;
+                                    }//無限ループ対策
+                                }
 
                                 break;
                             }//三角形に内包点がある場合、採用点を1つずらす
+
                         }//三角形の中に内包点がない場合、そのまま続行
 
                         //採用点をずらした場合その採用点のまま次のループに入る(noPointsInTriangleはfalseになっているため)
 
                         if (noPointsInTriangle)
                         {
-                            if (lastTriangleDirection == MeshCut.CrossFrom2Vec2(a - b, c - b) > 0)
-                            {
-                                //Debug.Log("三角形確定(loop:"+loopCount+")");
-                                break;
-                            }
-
-                            //Debug.Log("no points in triangle(loop:"+loopCount+")");
+                            //Debug.Log($"三角形確定(loop:{loopCount})");
+                            break;
                         }
 
                         if (loopCount++ >= polygon.Length + 5)
                         {
-                            //Debug.LogError("無限ループに陥ったため強制的に処理を中断しました");
+                            Debug.LogError("無限ループに陥ったため強制的に処理を中断しました");
                             break;
-                        }
+                        }//無限ループ対策
 
                     }//内包点チェック→三角形確定
 
                     meshdata.AddTriangle(a, b, c);
-                    list.RemoveAt(far.index);
+                    list.RemoveAt(far.index % list.Count);
                 }
 
                 return meshdata.toMesh();

@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PL_Dead : MonoBehaviour
 {
-    [SerializeField] Game_HubScript hub;
     [SerializeField] float fadeTime;
     [SerializeField] Image deathBlackOut;
 
+    Game_HubScript hub;
     PlayerController_main player;
     PL_Status stat;
     PlayerAnimationCaller plAnim;
 
     void Start()
     {
+        hub = EventSystem.current.GetComponent<Game_HubScript>();
+
         player = GetComponent<PlayerController_main>();
         stat = GetComponent<PL_Status>();
         plAnim = GetComponent<PlayerAnimationCaller>();

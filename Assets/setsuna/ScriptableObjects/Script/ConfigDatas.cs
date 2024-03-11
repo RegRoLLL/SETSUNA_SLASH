@@ -16,7 +16,7 @@ public class ConfigDatas : ScriptableObject
 
     public SaveData loadedSaveData = new();
     public bool isContinueStart;
-    public string saveDataFilePath;
+    public string saveDataFilePath { get { return Application.persistentDataPath + $"/{saveDataCSV_name}.csv"; } }
     public string saveDataCSV_name;
     public List<string[]> saveDatas = new();
 
@@ -38,8 +38,6 @@ public class ConfigDatas : ScriptableObject
 
     void OnEnable()
     {
-        saveDataFilePath = Application.persistentDataPath + $"/{saveDataCSV_name}.csv";
-
         if (!File.Exists(saveDataFilePath))
         {
             var f = File.CreateText(saveDataFilePath);

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 
 public class PL_Attack : SetsunaSlashScript
 {
-    public Game_HubScript hub;
+    Game_HubScript hub;
     [SerializeField] SetsunaPlayerCamera camera_;
 
     public float slashMP;
@@ -43,10 +44,12 @@ public class PL_Attack : SetsunaSlashScript
 
     void Start()
     {
+        hub = EventSystem.current.GetComponent<Game_HubScript>();
+
+        plCtrler = GetComponent<PlayerController_main>();
         charge_dTime = 0;
         input = GetComponent<PlayerInput>();
         chargeCancel = input.actions[hub.action.chargeCancel];
-        plCtrler = GetComponent<PlayerController_main>();
         animCaller = GetComponent<PlayerAnimationCaller>();
         stat = GetComponent<PL_Status>();
     }

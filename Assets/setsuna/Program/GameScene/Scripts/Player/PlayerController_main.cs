@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PlayerController_main : SetsunaSlashScript
 {
-    public Game_HubScript hub;
+    Game_HubScript hub;
     public AudioSource seAS;
     public PL_Status stat;
 
@@ -43,6 +44,8 @@ public class PlayerController_main : SetsunaSlashScript
 
     void Start()
     {
+        hub = EventSystem.current.GetComponent<Game_HubScript>();
+
         input = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody2D>();
         jumped = false;
@@ -175,13 +178,13 @@ public class PlayerController_main : SetsunaSlashScript
                 }
                 else if(!wallKicked.r && wallR && (inputVecX == 1))
                 {
-                    Debug.Log("kosuri_R");
+                    //Debug.Log("kosuri_R");
                     wallKicked.l = false;
                     kosuri = true;
                 }
                 else if (!wallKicked.l && wallL && (inputVecX == -1))
                 {
-                    Debug.Log("kosuri_L");
+                    //Debug.Log("kosuri_L");
                     wallKicked.r = false;
                     kosuri = true;
                 }
