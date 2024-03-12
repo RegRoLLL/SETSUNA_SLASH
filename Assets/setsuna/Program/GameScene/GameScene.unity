@@ -11591,7 +11591,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 11400000, guid: 968dacedbc7e006449c2566a8c30f24c, type: 2}
-  hub: {fileID: 1277392422}
   seAS: {fileID: 1123612381}
   stat: {fileID: 510882856}
   playerCC: {fileID: 31974531}
@@ -11748,7 +11747,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 11400000, guid: 968dacedbc7e006449c2566a8c30f24c, type: 2}
-  hub: {fileID: 1277392422}
   camera_: {fileID: 519420036}
   slashMP: 3
   interval: 0.3
@@ -11830,7 +11828,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f3f8fccc681fa4fbd8293ddd2ae3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hub: {fileID: 1277392422}
   fadeTime: 2
   deathBlackOut: {fileID: 423237440}
 --- !u!1 &519420028
@@ -11977,7 +11974,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 0}
   audioBind: {fileID: 0}
-  hub: {fileID: 1277392422}
   player: {fileID: 510882850}
   plctrl: {fileID: 510882851}
   yFixValue: 2.5
@@ -44167,7 +44163,6 @@ GameObject:
   - component: {fileID: 1277392427}
   - component: {fileID: 1277392422}
   - component: {fileID: 1277392426}
-  - component: {fileID: 1277392428}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -44330,20 +44325,6 @@ MonoBehaviour:
   titleCloseTime: 0.8
   titlePanel: {fileID: 1636144778}
   titleTMP: {fileID: 860874379}
---- !u!114 &1277392428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1277392421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e6ba2fc4f976a640bf1cda278f7a46a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NotSelectables: []
-  PreviousSelection: {fileID: 0}
 --- !u!1 &1288884358
 GameObject:
   m_ObjectHideFlags: 0
