@@ -16,7 +16,7 @@ public class Title_menu3 : SetsunaSlashScript
     [SerializeField] AudioSource seAS;
     [SerializeField] AudioClip openSE;
     [SerializeField] TextMeshProUGUI text;
-    [SerializeField] GameObject primeSelect, menu2Prime;
+    public GameObject primeSelect, menu2Prime;
     public float fadeStartTime, fadeTime, whiteBackAlpha;
     public string temp, easy, normal;
 
@@ -92,16 +92,6 @@ public class Title_menu3 : SetsunaSlashScript
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(menu2Prime);
             //Debug.Log("setSelection: " + EventSystem.current.currentSelectedGameObject.name);
-
-            foreach (var button in Object.FindObjectsOfType<Button>())
-            {
-                var colors = button.colors;
-                colors.normalColor = button.colors.selectedColor;
-                colors.selectedColor = button.colors.normalColor;
-                colors.pressedColor = button.colors.normalColor;
-
-                button.colors = colors;
-            }
         }
 
         gameObject.SetActive(false);
