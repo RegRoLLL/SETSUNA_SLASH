@@ -21,7 +21,7 @@ public class TitleManager : SetsunaSlashScript
 
     [SerializeField] GameObject continueCheckWindow;
     [SerializeField] TextMeshProUGUI saveDataText;
-    [SerializeField] Button continueCheckCancel;
+    [SerializeField] Button continueCheckPrimeSelect;
 
     [SerializeField] string[] selectedSaveData;
 
@@ -57,7 +57,7 @@ public class TitleManager : SetsunaSlashScript
         string easy = (data[6] == "0") ? "ノーマル" : "イージー";
         saveDataText.text = $"パスワード：{data[0]}\r\nHP：{data[1]}　　 MP：{data[2]}\r\nセーブポイント：({data[3]}, {data[4]})\r\nエリア：{Convert.ToInt32(data[5])+1}　　{easy}";
 
-        continueCheckCancel.Select();
+        continueCheckPrimeSelect.Select();
     }
 
     public void ContinueDecide()

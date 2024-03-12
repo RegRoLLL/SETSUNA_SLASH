@@ -91,7 +91,7 @@ public class Title_menu3 : SetsunaSlashScript
         {
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(menu2Prime);
-            Debug.Log("setSelection: " + EventSystem.current.currentSelectedGameObject.name);
+            //Debug.Log("setSelection: " + EventSystem.current.currentSelectedGameObject.name);
 
             foreach (var button in Object.FindObjectsOfType<Button>())
             {
