@@ -13,6 +13,7 @@ public class Game_menuUI : SetsunaSlashScript
     [SerializeField] Game_HubScript hub;
 
     [SerializeField] Transform cursor;
+    [SerializeField] Selectable onDeSelectPointer;
     [SerializeField] List<GameObject> cursorSetable = new();
 
     [SerializeField] GameObject settingsPanel;
@@ -50,13 +51,18 @@ public class Game_menuUI : SetsunaSlashScript
     {
         var obj = EventSystem.current.currentSelectedGameObject;
 
-        if (obj == null) return;
+        if (obj == null) EventSystem.current.SetSelectedGameObject(onDeSelectPointer.gameObject);
 
         if (!cursorSetable.Contains(obj)) return;
 
         var pos = cursor.position;
         pos.y = obj.transform.position.y;
         cursor.position = pos;
+    }
+
+    public void SetDeselectPointer(Selectable target)
+    {
+        onDeSelectPointer = target;
     }
 
 
