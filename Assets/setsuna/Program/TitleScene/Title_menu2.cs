@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class Title_menu2 : SetsunaSlashScript
 {
     [SerializeField] List<Image> masks = new List<Image>();
-    [SerializeField] GameObject primeSelect;
+    public GameObject primeSelect;
     public float openCloseTime;
     public Title_menu1 menu1;
     public Title_menu3 menu3;
