@@ -7,7 +7,6 @@ using System;
 public class Game_HubScript : SetsunaSlashScript
 {
     public GameManager gm;
-    public InputActionName action = new InputActionName();
     public int pl_layer;
     public PlayerController_main player;
     public SetsunaPlayerCamera camera_;
@@ -47,16 +46,5 @@ public class Game_HubScript : SetsunaSlashScript
         pos.y = Mathf.Clamp(pos.y, currentPart.rect.down + yHalf, currentPart.rect.up - yHalf);
 
         return pos;
-    }
-
-
-    [Serializable]
-    public class InputActionName
-    {
-        public string 
-            move, crouch, sprint, jump, attack, 
-            charge_mouse, charge_pad, chargeAdjust_pad, chargeSlash_pad, chargeCancel,
-            charge_touch,
-            reset, pose;
     }
 }
