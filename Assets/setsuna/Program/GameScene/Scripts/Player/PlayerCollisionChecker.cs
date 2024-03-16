@@ -87,7 +87,6 @@ public class PlayerCollisionChecker : SetsunaSlashScript
             if (hit.collider == null) continue;
 
             var angle = Vector2.SignedAngle(Vector2.up, hit.normal);
-            if (MathF.Abs(angle) < groundAngle) continue;
             if (MathF.Abs(angle) < wallAngle) continue;
 
             var hitXdistance = Math.Abs(hit.point.x - xPos);
@@ -136,7 +135,7 @@ public class PlayerCollisionChecker : SetsunaSlashScript
             if (hit.collider == null) continue;
 
             var angle = Vector2.SignedAngle(Vector2.up, hit.normal);
-           // Debug.Log($"angle = {angle}");
+            //Debug.Log($"angle = {angle}");
             if (MathF.Abs(angle) <= groundAngle)
             {
                 isGrounded = true;

@@ -632,7 +632,7 @@ MonoBehaviour:
   defaultExistents: {x: 0, y: 0}
   checkRays:
     ground:
-      offsetLocal: {x: 0, y: 0.1}
+      offsetLocal: {x: 0, y: 0.2}
       rayCount: 5
       range: 0.3
       col: {fileID: 0}
@@ -646,7 +646,7 @@ MonoBehaviour:
       m_Bits: 1217
     col: {fileID: 0}
   groundAngle: 56
-  wallAngle: 75
+  wallAngle: 60
   col: {fileID: 0}
 --- !u!70 &31974532
 CapsuleCollider2D:

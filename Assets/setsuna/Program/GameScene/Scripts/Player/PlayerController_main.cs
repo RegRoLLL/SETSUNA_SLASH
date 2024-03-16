@@ -117,6 +117,8 @@ public class PlayerController_main : SetsunaSlashScript
              wallR = playerCC.IsWall(true),
              wallL = playerCC.IsWall(false);
 
+        //Debug.Log($"ground:{ground}  wall(R:{wallR}_{playerCC.GetWallNormal(true)} L:{wallL}_{playerCC.GetWallNormal(false)})");
+
         Vector2 angleVec = playerCC.GetGroundNormal(true);
         Vector2 kickVec;
 
