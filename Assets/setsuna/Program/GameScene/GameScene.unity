@@ -646,7 +646,7 @@ MonoBehaviour:
       m_Bits: 1217
     col: {fileID: 0}
   groundAngle: 56
-  wallAngle: 60
+  wallAngle: 75
   col: {fileID: 0}
 --- !u!70 &31974532
 CapsuleCollider2D:

@@ -115,20 +115,23 @@ public class PlayerController_main : SetsunaSlashScript
 
         bool ground = playerCC.IsGrounded(),
              wallR = playerCC.IsWall(true),
-             wallL = playerCC.IsWall(false);
+             wallL = playerCC.IsWall(false),
+             highSlope = playerCC.IsHighSlope();
 
-        //Debug.Log($"ground:{ground}  wall(R:{wallR}_{playerCC.GetWallNormal(true)} L:{wallL}_{playerCC.GetWallNormal(false)})");
+        //  Debug.Log($"ground:{ground}  wall(R:{wallR} L:{wallL})  highSlope:{highSlope}");
 
         Vector2 angleVec = playerCC.GetGroundNormal(true);
+        Vector2 wallNormal = playerCC.GetWallNormal(inputVecX > 0);
+        Vector2 slopeNormal = playerCC.GetHighSlopeNormal();
         Vector2 kickVec;
 
         if(wallR || wallL)
         {
-            kickVec = Quaternion.Euler(0, 0, wallKickAngle * (wallL ? 1f : -1f)) * playerCC.GetWallNormal(inputVecX > 0);
+            kickVec = Quaternion.Euler(0, 0, wallKickAngle * (wallL ? 1f : -1f)) * wallNormal;
         }
         else
         {
-            kickVec = Quaternion.Euler(0, 0, (90 - (wallKickAngle/3)) * (wallL ? 1f : -1f)) * playerCC.GetWallNormal(inputVecX > 0);
+            kickVec = Quaternion.Euler(0, 0, (90 - (wallKickAngle / 4)) * ((inputVecX < 0) ? 1f : -1f)) * slopeNormal;
         }
 
 
@@ -167,17 +170,20 @@ public class PlayerController_main : SetsunaSlashScript
             if ((inputVecX > 0) && !wallR && (vec.x < spd + delta)) vec.x += delta;
             if ((inputVecX < 0) && !wallL && (vec.x > -spd - delta)) vec.x -= delta;
 
-            if ((wallR || wallL) && rb.velocity.y < 0)
+            if ((wallR || wallL || highSlope) && rb.velocity.y < 0)
             {
                 //Debug.Log($"wallSide{(wallR ? "_R" : "")}{(wallL ? "_L" : "")}");
 
                 if (inputJump)
                 {
-                    vec = kickVec * wallKickPow;
-                    (wallR ? ref wallKicked.r : ref wallKicked.l) = true;
+                    if ( !highSlope || ((Vector2.SignedAngle(Vector2.up, slopeNormal) > 0) == (inputVecX > 0)))
+                    {
+                        vec = kickVec * wallKickPow;
+                        ((inputVecX > 0) ? ref wallKicked.r : ref wallKicked.l) = true;
 
-                    //Debug.Log($"wallKick!: {kickVec}");
-                    Debug.DrawRay(transform.position, kickVec, Color.white, 1);
+                        //Debug.Log($"wallKick!: {kickVec}");
+                        Debug.DrawRay(transform.position, kickVec, Color.white, 1);
+                    }
                 }
                 else if(!wallKicked.r && wallR && (inputVecX == 1))
                 {
