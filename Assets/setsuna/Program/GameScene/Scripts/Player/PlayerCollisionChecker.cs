@@ -15,6 +15,8 @@ public class PlayerCollisionChecker : SetsunaSlashScript
     Rigidbody2D rb;
     [HideInInspector]public Collider2D col;
 
+    private List<RaycastHit2D> groundresults, wallresults_R, wallresults_L;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -26,14 +28,24 @@ public class PlayerCollisionChecker : SetsunaSlashScript
     // Update is called once per frame
     void Update()
     {
-        
+        GetResults();
     }
 
     public void Initialize()
     {
         defaultSize = col.transform.localScale;
         defaultExistents = col.bounds.extents;
+
+        GetResults();
     }
+
+    private void GetResults()
+    {
+        groundresults = checkRays.ground.GetRayResults();
+        wallresults_R = checkRays.wall.GetRayResults(right: true);
+        wallresults_L = checkRays.wall.GetRayResults(right: false);
+    }
+
 
     public void SizeChange(float ratio_x, float ratio_y)
     {
@@ -49,7 +61,7 @@ public class PlayerCollisionChecker : SetsunaSlashScript
 
     public Vector2 GetGroundNormal(bool addAngle90)
     {
-        var rayResults = checkRays.ground.GetRayResults();
+        var rayResults = groundresults;
         Vector2 normals = Vector2.zero;
 
         foreach(var hit in rayResults)
@@ -79,7 +91,7 @@ public class PlayerCollisionChecker : SetsunaSlashScript
     {
         var xPos = col.bounds.center.x;
         var closeHitXdistance = float.MaxValue;
-        var results = checkRays.wall.GetRayResults(right);
+        var results = right ? wallresults_R : wallresults_L;
         Vector2 normal = Vector2.zero;
 
         foreach (var hit in results)
@@ -87,8 +99,8 @@ public class PlayerCollisionChecker : SetsunaSlashScript
             if (hit.collider == null) continue;
 
             var angle = Vector2.SignedAngle(Vector2.up, hit.normal);
-            if (MathF.Abs(angle) < groundAngle) continue;
             if (MathF.Abs(angle) < wallAngle) continue;
+            if (MathF.Abs(angle) > 90) continue;
 
             var hitXdistance = Math.Abs(hit.point.x - xPos);
             if (hitXdistance >= closeHitXdistance) continue;
@@ -100,18 +112,85 @@ public class PlayerCollisionChecker : SetsunaSlashScript
         return normal.normalized;
     }
 
+    public Vector2 GetHighSlopeNormal()
+    {
+        bool groundhit, wallhitR, wallhitL;
+        Vector2 result = Vector2.zero;
+
+        //ground‚Ìray‚ªhit‚µ‚Ä‚¢‚é‚©
+        groundhit = (groundresults.Where((h) => (h.collider == null)).ToList().Count != 0);
+
+        //wall‚Ìray‚ªhit‚µ‚Ä‚¢‚é‚©
+        wallhitR = (wallresults_R.Where((h) => (h.collider == null)).ToList().Count == 0);
+        wallhitL = (wallresults_L.Where((h) => (h.collider == null)).ToList().Count == 0);
+
+
+        List<RaycastHit2D> rayresults;
+
+        if (groundhit){
+            rayresults = groundresults;
+        }
+        else if (wallhitR){
+            rayresults = wallresults_R;
+        }
+        else if (wallhitL){
+            rayresults = wallresults_L;
+        }
+        else return result;
+
+
+        foreach (var hit in rayresults)
+        {
+            if (hit.collider == null) continue;
+
+            var angle = Vector2.SignedAngle(Vector2.up, hit.normal);
+
+            if (Mathf.Abs(angle) <= groundAngle) continue;
+            if (MathF.Abs(angle) >= wallAngle) continue;
+
+            result += hit.normal;
+        }
+
+        return result.normalized;
+    }
+
+
+    public bool IsGrounded()
+    {
+        bool isGrounded = false;
+
+        var rayResults = groundresults;
+
+        foreach (var hit in rayResults)
+        {
+            if (hit.collider == null) continue;
+
+            var angle = Vector2.SignedAngle(Vector2.up, hit.normal);
+            //Debug.Log($"angle = {angle}");
+            if (MathF.Abs(angle) <= groundAngle)
+            {
+                isGrounded = true;
+                break;
+            }
+        }
+
+        //Debug.Log($"isGrounded = {isGrounded}");
+
+        return isGrounded;
+    }
+
     public bool IsWall(bool right)
     {
         bool isWall = false;
 
-        var results = checkRays.wall.GetRayResults(right);
+        var results = right ? wallresults_R : wallresults_L;
 
         foreach (var hit in results)
         {
             if (hit.collider != null)
             {
                 var angle = MathF.Abs(Vector2.SignedAngle(Vector2.up, hit.normal));
-                if (angle >= wallAngle)
+                if ((angle >= wallAngle) && angle <= 90)
                 {
                     isWall = true;
                 }
@@ -125,28 +204,19 @@ public class PlayerCollisionChecker : SetsunaSlashScript
         return isWall;
     }
 
-    public bool IsGrounded()
+    public bool IsHighSlope()
     {
-        bool isGrounded = false;
+        bool groundhit, wallhitR, wallhitL;
 
-        var rayResults = checkRays.ground.GetRayResults();
+        //ground‚Ìray‚ªhit‚µ‚Ä‚¢‚é‚©
+        groundhit = (groundresults.Where((h) => (h.collider == null)).ToList().Count != 0);
 
-        foreach (var hit in rayResults)
-        {
-            if (hit.collider == null) continue;
+        //wall‚Ìray‚ªhit‚µ‚Ä‚¢‚é‚©
+         wallhitR = (wallresults_R.Where((h) => (h.collider == null)).ToList().Count == 0);
+         wallhitL = (wallresults_L.Where((h) => (h.collider == null)).ToList().Count == 0);
 
-            var angle = Vector2.SignedAngle(Vector2.up, hit.normal);
-           // Debug.Log($"angle = {angle}");
-            if (MathF.Abs(angle) <= groundAngle)
-            {
-                isGrounded = true;
-                break;
-            }
-        }
-
-        //Debug.Log($"isGrounded = {isGrounded}");
-
-        return isGrounded;
+        //hit‚µ‚Ä‚¢‚é‚Ì‚Éground‚àwall‚àtrue”»’è‚Å‚È‚¢ê‡‚Étrue‚ð•Ô‚·
+        return ((groundhit || wallhitR || wallhitL) && !(IsGrounded() || IsWall(true) || IsWall(false)));
     }
 
 
