@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class PlayerController_main : SetsunaSlashScript
 {
     Game_HubScript hub;
+    [SerializeField] PlayerInputActionName plAction;
     public AudioSource seAS;
     public PL_Status stat;
 
@@ -59,7 +60,7 @@ public class PlayerController_main : SetsunaSlashScript
 
     void Update()
     {
-        if (input.actions[hub.action.pose].WasPressedThisFrame()) hub.gm.PoseMenu();
+        if (input.actions[plAction.pose].WasPressedThisFrame()) hub.gm.PoseMenu();
 
         if (Time.timeScale == 0) return;
 
@@ -84,12 +85,12 @@ public class PlayerController_main : SetsunaSlashScript
 
     void Move()
     {
-        inputVecX = input.currentActionMap[hub.action.move].ReadValue<float>();
+        inputVecX = input.currentActionMap[plAction.move].ReadValue<float>();
 
         //Debug.Log(inputVecX);
 
-        var inputJump = input.actions[hub.action.jump].WasPressedThisFrame();
-        var inputSprint = input.actions[hub.action.sprint];
+        var inputJump = input.actions[plAction.jump].WasPressedThisFrame();
+        var inputSprint = input.actions[plAction.sprint];
 
         if (inputSprint.WasPressedThisFrame())
         {
@@ -104,7 +105,7 @@ public class PlayerController_main : SetsunaSlashScript
             isSprint = false;
         }
 
-        isCrouch = isSprint ? false : input.actions[hub.action.crouch].IsPressed();
+        isCrouch = isSprint ? false : input.actions[plAction.crouch].IsPressed();
 
         float spd = moveSpd;
         if (isSprint) spd = sprintMoveSpd;
@@ -222,11 +223,11 @@ public class PlayerController_main : SetsunaSlashScript
 
     void ColliderSet()
     {
-        if (input.actions[hub.action.crouch].WasPressedThisFrame())
+        if (input.actions[plAction.crouch].WasPressedThisFrame())
         {
             playerCC.SizeChange(crouchColSize.x, crouchColSize.y);
         }
-        else if (input.actions[hub.action.crouch].WasReleasedThisFrame())
+        else if (input.actions[plAction.crouch].WasReleasedThisFrame())
         {
             playerCC.SizeChange(standColSize.x, standColSize.y);
         }

@@ -15,6 +15,24 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "crouch",
+                    "type": "Button",
+                    "id": "a9037ae2-f278-4dfc-81c1-33129f3a2d11",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "sprint",
+                    "type": "Button",
+                    "id": "5e8ddd50-8f5b-49ab-80ce-551ded393671",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "jump",
                     "type": "Button",
                     "id": "f3ff87b7-0583-4b05-b7f9-2a189bd829d7",
@@ -78,22 +96,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "crouch",
-                    "type": "Button",
-                    "id": "a9037ae2-f278-4dfc-81c1-33129f3a2d11",
-                    "expectedControlType": "Button",
+                    "name": "charge_touch",
+                    "type": "Value",
+                    "id": "fc982b92-ba0a-45f8-9d91-786a7333786c",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "sprint",
-                    "type": "Button",
-                    "id": "5e8ddd50-8f5b-49ab-80ce-551ded393671",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "reset",
@@ -114,13 +123,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "charge_touch",
-                    "type": "Value",
-                    "id": "fc982b92-ba0a-45f8-9d91-786a7333786c",
-                    "expectedControlType": "Vector2",
+                    "name": "interact",
+                    "type": "Button",
+                    "id": "679c4bbf-b38a-4a08-a054-aa4ff5251b27",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -247,72 +256,6 @@
                 },
                 {
                     "name": "",
-                    "id": "a8b7f217-2bc7-430b-a914-37998a161a23",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyBoard & Mouse",
-                    "action": "crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fcf9b43f-336c-4a32-b1b7-c29015a460b7",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamePad;TouchPanel",
-                    "action": "crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5d361b14-b79f-457a-9c49-061dda2ac06d",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyBoard & Mouse",
-                    "action": "sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "edbf2213-62dc-4434-a73e-a688bd47b13d",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamePad",
-                    "action": "sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e71b256a-74b5-4e40-9b69-0d5e81161626",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "AxisDeadzone(min=0.6)",
-                    "groups": "TouchPanel",
-                    "action": "sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1766076b-a4c6-4891-8912-d864b680b8f1",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "AxisDeadzone(min=0.6)",
-                    "groups": "TouchPanel",
-                    "action": "sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "6d864f7c-70a4-4f5e-ba0d-c7756c90d6ff",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -418,6 +361,94 @@
                     "processors": "",
                     "groups": "GamePad;TouchPanel",
                     "action": "menuOpen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "467f5281-7fd7-4164-9084-55980067c9b6",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyBoard & Mouse",
+                    "action": "interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aae00b7c-000c-4d04-935d-fe033ae4eed5",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad;TouchPanel",
+                    "action": "interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a8b7f217-2bc7-430b-a914-37998a161a23",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyBoard & Mouse",
+                    "action": "crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fcf9b43f-336c-4a32-b1b7-c29015a460b7",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad;TouchPanel",
+                    "action": "crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d361b14-b79f-457a-9c49-061dda2ac06d",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyBoard & Mouse",
+                    "action": "sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "edbf2213-62dc-4434-a73e-a688bd47b13d",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e71b256a-74b5-4e40-9b69-0d5e81161626",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "AxisDeadzone(min=0.6)",
+                    "groups": "TouchPanel",
+                    "action": "sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1766076b-a4c6-4891-8912-d864b680b8f1",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "AxisDeadzone(min=0.6)",
+                    "groups": "TouchPanel",
+                    "action": "sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

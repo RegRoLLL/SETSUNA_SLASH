@@ -9,6 +9,8 @@ using System;
 public class PL_Attack : SetsunaSlashScript
 {
     Game_HubScript hub;
+    [SerializeField] PlayerInputActionName plAction;
+
     [SerializeField] SetsunaPlayerCamera camera_;
 
     public float slashMP;
@@ -49,7 +51,7 @@ public class PL_Attack : SetsunaSlashScript
         plCtrler = GetComponent<PlayerController_main>();
         charge_dTime = 0;
         input = GetComponent<PlayerInput>();
-        chargeCancel = input.actions[hub.action.chargeCancel];
+        chargeCancel = input.actions[plAction.chargeCancel];
         animCaller = GetComponent<PlayerAnimationCaller>();
         stat = GetComponent<PL_Status>();
     }
@@ -117,7 +119,7 @@ public class PL_Attack : SetsunaSlashScript
 
     void GamePadMethod()
     {
-        padAttackAction = input.actions[hub.action.attack];
+        padAttackAction = input.actions[plAction.attack];
 
         if (padAttackAction.WasPressedThisFrame())
         {
@@ -127,8 +129,8 @@ public class PL_Attack : SetsunaSlashScript
 
 
 
-        padChargeAction = input.actions[hub.action.charge_pad];
-        padChargeSlash = input.actions[hub.action.chargeSlash_pad];
+        padChargeAction = input.actions[plAction.charge_pad];
+        padChargeSlash = input.actions[plAction.chargeSlash_pad];
         Vector2 padInput = padChargeAction.ReadValue<Vector2>();
 
         if (Mathf.Approximately(1, padInput.magnitude))//“ü—Í‚ª‚ ‚éŽž
@@ -152,7 +154,7 @@ public class PL_Attack : SetsunaSlashScript
 
 
 
-            var adjustInput = input.actions[hub.action.chargeAdjust_pad].ReadValue<float>();
+            var adjustInput = input.actions[plAction.chargeAdjust_pad].ReadValue<float>();
             var isRight = (padInput.x >= 0);
 
             chargePower_pad += chargeAdjustRate_pad * adjustInput * (isRight ? 1 : -1) * Time.deltaTime;
@@ -173,7 +175,7 @@ public class PL_Attack : SetsunaSlashScript
 
     void MouseMethod()
     {
-        mouseChargeAction = input.actions[hub.action.charge_mouse];
+        mouseChargeAction = input.actions[plAction.charge_mouse];
 
         Func<Vector2> GetCurSorPos = () => Input.mousePosition;
 
@@ -210,8 +212,8 @@ public class PL_Attack : SetsunaSlashScript
 
     void TouchMethod()
     {
-        touchChargeAction = input.actions[hub.action.attack];
-        touchChargeDir = input.actions[hub.action.charge_touch];
+        touchChargeAction = input.actions[plAction.attack];
+        touchChargeDir = input.actions[plAction.charge_touch];
         var dir = touchChargeDir.ReadValue<Vector2>();
 
         if (touchChargeAction.WasPressedThisFrame())

@@ -9,7 +9,7 @@ public class Title_menu1 : SetsunaSlashScript
 {
     [SerializeField] Image mask;
     [SerializeField] Title_menu2 menu2;
-    [SerializeField] GameObject primeSelect;
+    public GameObject primeSelect;
     public float openCloseTime;
 
     void Start()

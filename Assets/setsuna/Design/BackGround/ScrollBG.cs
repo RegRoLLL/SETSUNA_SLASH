@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System;
 
 [RequireComponent(typeof(Image))]
-public class ScrollBG : MonoBehaviour
+public class ScrollBG : MonoBehaviour,IDisposable
 {
     /*
      * アタッチするImageのシェーダーはUnlit/Transparentにすること。
@@ -183,6 +183,11 @@ public class ScrollBG : MonoBehaviour
 
 
     private void OnDestroy()
+    {
+        ResetMat();
+    }
+
+    void IDisposable.Dispose()
     {
         ResetMat();
     }
