@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
+using RegUtil;
 
 public class GameManager : SetsunaSlashScript
 {
@@ -36,6 +37,9 @@ public class GameManager : SetsunaSlashScript
 
     void Update()
     {
+        if (poseMenu.activeInHierarchy) RegTimeKeeper.Pause();
+
+
         switch (config.controllMode)
         {
             case ConfigDatas.ControllMode.keyboard_mouse:
@@ -206,7 +210,6 @@ public class GameManager : SetsunaSlashScript
     public void PoseMenu()
     {
         poseMenu.SetActive(!poseMenu.activeInHierarchy);
-        Time.timeScale = poseMenu.activeInHierarchy ? 0 : 1;
     }
 
     public void Back2Title()
