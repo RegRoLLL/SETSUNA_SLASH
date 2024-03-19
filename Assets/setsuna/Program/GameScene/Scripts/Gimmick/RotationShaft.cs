@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(HingeJoint2D))]
 public class RotationShaft : MonoBehaviour
 {
+    [SerializeField] bool unLimitRotation;
+
     HingeJoint2D joint;
     float primeLimit;
 
@@ -12,6 +14,8 @@ public class RotationShaft : MonoBehaviour
     {
         joint = GetComponent<HingeJoint2D>();
         primeLimit = joint.limits.max;
+
+        joint.useLimits = !unLimitRotation;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -19,6 +23,10 @@ public class RotationShaft : MonoBehaviour
         if (joint.connectedBody != null) return;
 
         joint.connectedBody = other.GetComponent<Rigidbody2D>();
+
+
+        if (unLimitRotation) return;
+
 
         var angle = other.transform.eulerAngles.z;
 
