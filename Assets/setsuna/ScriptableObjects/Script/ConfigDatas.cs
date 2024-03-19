@@ -12,6 +12,7 @@ public class ConfigDatas : ScriptableObject
 {
     [Range(0f,1f)]public float masterVolume, bgmVolume, seVolume;
     [SerializeField] ControllMode controllMode_;
+    public bool slowWhenSlashCharge;
     public bool easyMode, demoMode, debugMode;
 
     public SaveData loadedSaveData = new();
