@@ -11779,6 +11779,7 @@ MonoBehaviour:
   chargeMax_pad: 20
   chargeMin_pad: 1
   chargeRatio_touch: 20
+  chargeSlowTimeRatio: 0.3
   chargeStartTime: 0.2
   charge_dTime: 0
   normalAttackCol: {fileID: 171037680}
@@ -19141,7 +19142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4041465610839504732, guid: dff7b41953618b94aa399b67244ee48d, type: 3}
       propertyPath: m_Mass
-      value: 1.4203036
+      value: 1.4203033
       objectReference: {fileID: 0}
     - target: {fileID: 6311798614615477067, guid: dff7b41953618b94aa399b67244ee48d, type: 3}
       propertyPath: m_Name
@@ -44336,6 +44337,7 @@ GameObject:
   - component: {fileID: 1277392427}
   - component: {fileID: 1277392422}
   - component: {fileID: 1277392426}
+  - component: {fileID: 1277392428}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -44484,6 +44486,18 @@ MonoBehaviour:
   titleCloseTime: 0.8
   titlePanel: {fileID: 1636144778}
   titleTMP: {fileID: 860874379}
+--- !u!114 &1277392428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277392421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d8b5f4e2d8742d48b96b18962a6d9f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1288884358
 GameObject:
   m_ObjectHideFlags: 0
@@ -57644,7 +57658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4041465610839504732, guid: dff7b41953618b94aa399b67244ee48d, type: 3}
       propertyPath: m_Mass
-      value: 1.4203033
+      value: 1.4203036
       objectReference: {fileID: 0}
     - target: {fileID: 6311798614615477067, guid: dff7b41953618b94aa399b67244ee48d, type: 3}
       propertyPath: m_Name

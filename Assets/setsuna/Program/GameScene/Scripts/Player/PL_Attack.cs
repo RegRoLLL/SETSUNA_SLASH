@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using RegUtil;
 
 public class PL_Attack : SetsunaSlashScript
 {
@@ -16,12 +17,15 @@ public class PL_Attack : SetsunaSlashScript
     public float slashMP;
     public float interval, interval_dt;
 
-    public float 
-        chargeRatio_mouse, 
+    public float
+        chargeRatio_mouse,
         chargePower_pad, chargeAdjustRate_pad, chargeMax_pad, chargeMin_pad,
         chargeRatio_touch;
-    public float chargeStartTime, charge_dTime;
 
+    [Space(10)]
+    public float chargeSlowTimeRatio;
+
+    public float chargeStartTime, charge_dTime;
     public GameObject normalAttackCol;
 
     [SerializeField] Image stickR, backR;
@@ -66,7 +70,7 @@ public class PL_Attack : SetsunaSlashScript
             return;
         }
 
-
+        if (isDragging && config.slowWhenSlashCharge) RegTimeKeeper.MultipleTimeScale(ratio: chargeSlowTimeRatio);
 
         if (CancelMethod()) return;
 
@@ -163,7 +167,7 @@ public class PL_Attack : SetsunaSlashScript
             endPos = padInput;
             direction = padInput * chargePower_pad;
 
-            charge_dTime += Time.deltaTime;
+            charge_dTime += Time.unscaledDeltaTime;
         }
         else if(Mathf.Approximately(1, lastFrameStickInput.magnitude))//スティックが戻った時
         {
@@ -187,7 +191,7 @@ public class PL_Attack : SetsunaSlashScript
 
         if (isDragging)
         {
-            charge_dTime += Time.deltaTime;
+            charge_dTime += Time.unscaledDeltaTime;
             endPos = GetCurSorPos();
             direction = (startPos - endPos) * chargeRatio_mouse;
         }
@@ -274,8 +278,6 @@ public class PL_Attack : SetsunaSlashScript
             line.SetPosition(1, (Vector2)transform.position + direction);
         }
     }
-
-
 
 
     void Attack()
