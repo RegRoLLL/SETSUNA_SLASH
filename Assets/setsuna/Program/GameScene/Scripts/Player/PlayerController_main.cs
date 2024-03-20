@@ -19,7 +19,7 @@ public class PlayerController_main : SetsunaSlashScript
     public float moveSpd, crouchMoveSpd, sprintMoveSpd, jumpPow, wallKickPow, airResistance;
     public float wallKickAngle;
     public float defaultGravityScale, fallGravityScale, kosuriGravityScale;
-    public bool jumped, isWallKosuri, isCrouch, isSprint, isDead;
+    public bool jumped, jumpedIntoAir, isWallKosuri, isCrouch, isSprint, isDead;
     public (bool r, bool l) wallKicked;
 
     public state_pose stateP;
@@ -50,6 +50,7 @@ public class PlayerController_main : SetsunaSlashScript
         input = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody2D>();
         jumped = false;
+        jumpedIntoAir = false;
         isDead = false;
 
         stateP = state_pose.stand;
@@ -75,7 +76,9 @@ public class PlayerController_main : SetsunaSlashScript
             Move();
         }
 
-        if ((jumped || wallKicked.r || wallKicked.l) && rb.velocity.y <= 0 && playerCC.IsGrounded()) Chakuchi();
+        if (jumped && !playerCC.IsGrounded()) jumpedIntoAir = true;
+
+        if ((jumped || wallKicked.r || wallKicked.l) && ((rb.velocity.y <= 0) || jumpedIntoAir) && playerCC.IsGrounded()) Chakuchi();
 
         spritePivot.SetActive(stateP != state_pose.teleport);
         soul.SetActive(stateP == state_pose.teleport);
@@ -246,6 +249,7 @@ public class PlayerController_main : SetsunaSlashScript
     public void Chakuchi()
     {
         jumped = false;
+        jumpedIntoAir = false;
         wallKicked.r = false;
         wallKicked.l = false;
     }
