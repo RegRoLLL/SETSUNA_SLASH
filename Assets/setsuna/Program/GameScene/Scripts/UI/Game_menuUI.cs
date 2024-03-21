@@ -77,7 +77,7 @@ public class Game_menuUI : SetsunaSlashScript
         config.masterVolume = GetSliderValue01(sliders[0].slider);
         config.bgmVolume = GetSliderValue01(sliders[1].slider);
         config.seVolume = GetSliderValue01(sliders[2].slider);
-        config.SetVolumes();
+        //config.SetVolumes();
     }
 
     float GetSliderValue01(Slider slider)

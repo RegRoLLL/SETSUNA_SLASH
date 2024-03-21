@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace RegUtil
 {
@@ -12,18 +13,21 @@ namespace RegUtil
     [DefaultExecutionOrder(100)]
     public class RegTimeKeeper:MonoBehaviour
     {
-        private static float timeScale;
+        private static float timeScale, lastFrameScale;
         private static bool forceSetMode;
-
         void Update()
         {
             UpdateTimeScale();
+
+            lastFrameScale = timeScale;
 
             Initialize();
         }
 
         static void UpdateTimeScale()
         {
+            if (lastFrameScale == timeScale) return;
+
             Time.timeScale = timeScale;
         }
 

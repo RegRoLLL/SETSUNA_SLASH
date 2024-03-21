@@ -17,7 +17,7 @@ public class LevitationStone : SetsunaSlashScript
     FixedJoint2D joint;
     Rigidbody2D rb;
     Vector2 activatedPoint;
-    float targetPrimeGravityScale;
+    public float targetPrimeGravityScale;
     SpriteRenderer sr;
 
     void Start()
@@ -61,10 +61,7 @@ public class LevitationStone : SetsunaSlashScript
     {
         if (col.gameObject.layer == bladeLayer)
         {
-            vanishParticle.transform.parent = null;
-            vanishParticle.Play();
-            joint.attachedRigidbody.gravityScale = targetPrimeGravityScale;
-            Destroy(gameObject);
+            BreakWithSlash();
             return;
         }
 
@@ -86,5 +83,18 @@ public class LevitationStone : SetsunaSlashScript
             rb.constraints = (RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation);
             dTime = 0;
         }
+    }
+
+
+    void BreakWithSlash()
+    {
+        vanishParticle.transform.parent = null;
+        vanishParticle.Play();
+
+        var rb_target = joint.connectedBody;
+        rb_target.gravityScale = targetPrimeGravityScale;
+        rb_target.constraints = RigidbodyConstraints2D.None;
+
+        Destroy(gameObject);
     }
 }

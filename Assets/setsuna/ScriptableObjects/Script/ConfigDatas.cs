@@ -53,7 +53,7 @@ public class ConfigDatas : ScriptableObject
     void OnValidate()
     {
         SetDevice();
-        SetVolumes();
+        //SetVolumes();
     }
 
 
@@ -87,6 +87,7 @@ public class ConfigDatas : ScriptableObject
         easyMode = easy;
     }
 
+    /*
     [ContextMenu("setVolumes")]
     public void SetVolumes()
     {
@@ -114,7 +115,7 @@ public class ConfigDatas : ScriptableObject
             }
         }
     }
-
+    */
 
 
     [Serializable]
