@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AudioVolumeManager : MonoBehaviour
 {
+    public float volumeScale;
+
     [SerializeField] ConfigDatas config;
     [SerializeField] AudioSourceType type;
 
@@ -36,7 +38,7 @@ public class AudioVolumeManager : MonoBehaviour
 
         var AS = this.GetComponent<AudioSource>();
 
-        AS.volume = master * volume;
+        AS.volume = master * volume * volumeScale;
     }
 
     enum AudioSourceType { bgm, soundEffect }

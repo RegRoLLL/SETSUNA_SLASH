@@ -24,6 +24,7 @@ public class PL_Attack : SetsunaSlashScript
 
     [Space(10)]
     public float chargeSlowTimeRatio;
+    public float chargeAudioSmallRatio;
 
     public float chargeStartTime, charge_dTime;
     public GameObject normalAttackCol;
@@ -70,7 +71,11 @@ public class PL_Attack : SetsunaSlashScript
             return;
         }
 
-        if (isDragging && config.slowWhenSlashCharge) RegTimeKeeper.MultipleTimeScale(ratio: chargeSlowTimeRatio);
+        if (isDragging && config.slowWhenSlashCharge)
+        {
+            RegTimeKeeper.MultipleTimeScale(ratio: chargeSlowTimeRatio);
+            SetsunaAudioKeeper.MultipleAudioScale(ratio: chargeAudioSmallRatio);
+        }
 
         if (CancelMethod()) return;
 
