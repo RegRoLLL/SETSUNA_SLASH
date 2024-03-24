@@ -13,6 +13,7 @@ public class SetsunaAudioKeeper : MonoBehaviour
 {
     private static float audioScale, lastFrameScale;
     private static bool forceSetMode;
+    private static SetsunaAudioKeeper SAK;
 
     [SerializeField] List<AudioVolumeManager> speakers = new();
     static List<AudioVolumeManager> speakers_static = new();
@@ -21,6 +22,8 @@ public class SetsunaAudioKeeper : MonoBehaviour
 
     private void Awake()
     {
+        SAK = this;
+
         speakers.Clear();
         foreach (var root in this.gameObject.scene.GetRootGameObjects())
         {
@@ -45,11 +48,28 @@ public class SetsunaAudioKeeper : MonoBehaviour
     {
         if (lastFrameScale == audioScale) return;
 
+        if (speakers_static.Where((s) => (s == null)).ToList().Count > 0)
+        {
+            SAK.GetAVMs();
+        }
+
         foreach (var AVM in speakers_static)
         {
             AVM.volumeScale = audioScale;
             AVM.SetVolume();
         }
+    }
+
+    public void GetAVMs()
+    {
+        speakers.Clear();
+
+        foreach (var root in this.gameObject.scene.GetRootGameObjects())
+        {
+            speakers.AddRange(root.GetComponentsInChildren<AudioVolumeManager>(true));
+        }
+
+        speakers_static = speakers;
     }
 
     void Initialize()
