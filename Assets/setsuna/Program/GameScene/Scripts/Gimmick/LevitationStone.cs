@@ -91,9 +91,12 @@ public class LevitationStone : SetsunaSlashScript
         vanishParticle.transform.parent = null;
         vanishParticle.Play();
 
-        var rb_target = joint.connectedBody;
-        rb_target.gravityScale = targetPrimeGravityScale;
-        rb_target.constraints = RigidbodyConstraints2D.None;
+        if (activated)
+        {
+            var rb_target = joint.connectedBody;
+            rb_target.gravityScale = targetPrimeGravityScale;
+            rb_target.constraints = RigidbodyConstraints2D.None;
+        }
 
         Destroy(gameObject);
     }
