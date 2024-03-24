@@ -16,7 +16,7 @@ MonoBehaviour:
   bgmVolume: 0.28
   seVolume: 0.35
   controllMode_: 0
-  slowWhenSlashCharge: 0
+  slowWhenSlashCharge: 1
   easyMode: 0
   demoMode: 0
   debugMode: 1
