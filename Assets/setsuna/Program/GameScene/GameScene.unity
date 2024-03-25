@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826c7b7afd9944296204f42a2851ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundColor: {r: 0.3372549, g: 0.3372549, b: 0.3372549, a: 1}
+  backGroundColor: {r: 1, g: 0, b: 1, a: 1}
   bgm: {fileID: 0}
   bgm_playOnEnter: 0
   rect:
@@ -2705,7 +2705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826c7b7afd9944296204f42a2851ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundColor: {r: 0.3372549, g: 0.3372549, b: 0.3372549, a: 1}
+  backGroundColor: {r: 1, g: 0, b: 1, a: 1}
   bgm: {fileID: 8300000, guid: 95b43c40d0308ef4088232af60ad87ad, type: 3}
   bgm_playOnEnter: 1
   rect:
@@ -11890,9 +11890,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angle: 120
   readyToSetTarget: 0
-  myRB: {fileID: 0}
-  targetRB: {fileID: 0}
-  target: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -12612,7 +12609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826c7b7afd9944296204f42a2851ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundColor: {r: 0.3372549, g: 0.3372549, b: 0.3372549, a: 1}
+  backGroundColor: {r: 1, g: 0, b: 1, a: 1}
   bgm: {fileID: 8300000, guid: d1ac71b43a52c7c49abaa16ba48cf070, type: 3}
   bgm_playOnEnter: 0
   rect:
@@ -23227,7 +23224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826c7b7afd9944296204f42a2851ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundColor: {r: 0.3372549, g: 0.3372549, b: 0.3372549, a: 1}
+  backGroundColor: {r: 1, g: 0, b: 1, a: 1}
   bgm: {fileID: 0}
   bgm_playOnEnter: 1
   rect:
@@ -31105,7 +31102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826c7b7afd9944296204f42a2851ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundColor: {r: 0.3372549, g: 0.3372549, b: 0.3372549, a: 1}
+  backGroundColor: {r: 1, g: 0, b: 1, a: 1}
   bgm: {fileID: 8300000, guid: 95b43c40d0308ef4088232af60ad87ad, type: 3}
   bgm_playOnEnter: 1
   rect:
@@ -36907,7 +36904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826c7b7afd9944296204f42a2851ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundColor: {r: 1, g: 0.7028302, b: 0.7028302, a: 1}
+  backGroundColor: {r: 1, g: 0, b: 1, a: 1}
   bgm: {fileID: 8300000, guid: e898f8c58a558b448bb9949060f61e5e, type: 3}
   bgm_playOnEnter: 1
   rect:
@@ -37093,7 +37090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826c7b7afd9944296204f42a2851ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundColor: {r: 1, g: 1, b: 1, a: 1}
+  backGroundColor: {r: 1, g: 0, b: 1, a: 1}
   bgm: {fileID: 8300000, guid: e898f8c58a558b448bb9949060f61e5e, type: 3}
   bgm_playOnEnter: 1
   rect:
