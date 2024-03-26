@@ -5,7 +5,7 @@ using System;
 
 public class GayserJet : SetsunaSlashScript
 {
-    [SerializeField] ParticleSystem vape, jet, jet_front;
+    [SerializeField] List<ParticleSystem> blowParticles = new();
     [SerializeField] AudioSource seAS;
 
     public float interval, jetTime, seFadeTime, power_player, power_object, powerCurve;
@@ -23,10 +23,11 @@ public class GayserJet : SetsunaSlashScript
 
         if (interval <= 0)
         {
-            var main = jet.main;
-            main.loop = true;
-            main = jet_front.main;
-            main.loop = true;
+            foreach (var p in blowParticles)
+            {
+                var main = p.main;
+                main.loop = true;
+            }
         }
     }
 
@@ -38,47 +39,54 @@ public class GayserJet : SetsunaSlashScript
 
         SetValue();
 
-        if (dTime < interval) return;
+        if (dTime < interval) return;//休止中
 
-        float maxTime = (interval + jetTime + jet.main.startLifetimeMultiplier / 2);
+        float maxTime = (interval + (jetTime));
 
 
-        if (dTime >= maxTime)
+        if (dTime >= maxTime)//停止
         {
             dTime = 0;
             isEnable = false;
             seAS.Stop();
             return;
         }
-        else if(!isEnable)
+        else if(!isEnable)//起動
         {
             isEnable = true;
-            jet.time = jetTime;
-            jet_front.time = jetTime;
-            jet.Play();
-            jet_front.Play();
+
+            foreach (var p in blowParticles)
+            {
+                var main = p.main;
+                main.duration = jetTime * main.simulationSpeed;
+                p.Play();
+            }
 
             seAS.volume = config.seVolume;
             seAS.PlayOneShot(audioBind.gimmick.gayser);
         }
-        else
+        else//作動中
         {
-            if (dTime >= (maxTime - seFadeTime))
+            if (dTime >= (maxTime - seFadeTime))//音量フェードアウト
             {
                 seAS.volume = (float)(config.seVolume * (maxTime - dTime) / seFadeTime);
             }
 
-            foreach (var col in colliders)
+            foreach (var col in colliders)//範囲内のコライダーすべてに対してそれぞれ
             {
-                var direction = (col.ClosestPoint(transform.position) - (Vector2)transform.position);
-                var ratio = -Mathf.Pow((length - direction.magnitude ) * powerCurve, 2) + powerCurve;
+                var colPos = col.ClosestPoint(transform.position);
+                var underColPos = new Vector2(colPos.x, transform.position.y);
+                var direction = (colPos.y - transform.position.y);
+                var ratio = -Mathf.Pow((length - direction) * powerCurve, 2) + powerCurve;
                 if (ratio < 0) ratio = 0.1f;
 
-                if(direction.magnitude < length - powerCurve)ratio = 1;
+                if(direction < length - powerCurve)ratio = 1;
 
                 //Debug.Log(col.gameObject.name +" | " + direction.magnitude + " | " + (power_player * ratio));
 
-                RaycastHit2D result = Physics2D.Raycast(transform.position, direction);
+
+                //重なっている場合は一番下の対象のみに影響を与える
+                RaycastHit2D result = Physics2D.Raycast(underColPos, Vector2.up * direction);
                 if ((result.collider == null) || ((result.collider != col) && (result.collider.gameObject.layer == slashableLayer)))
                 {
                     //Debug.Log("blocked by " + result.collider.gameObject.name) ;
@@ -86,7 +94,7 @@ public class GayserJet : SetsunaSlashScript
                 }
 
 
-                if ((col.gameObject.layer == playerLayer) || true)
+                if ((col.gameObject.layer == playerLayer) || true)//プレイヤーに対して
                 {
                     var rb = col.GetComponentInParent<Rigidbody2D>();
                     var vel = rb.velocity;
@@ -94,7 +102,7 @@ public class GayserJet : SetsunaSlashScript
                     rb.velocity = vel;
                     rb.angularVelocity /= 2;
                 }
-                else
+                else//非プレイヤーオブジェクトに対して
                 {
                     var force = transform.rotation * Vector2.up * power_object * ratio;
                     var rb = col.GetComponent<Rigidbody2D>();
@@ -113,18 +121,11 @@ public class GayserJet : SetsunaSlashScript
 
         //Debug.Log($"length: {length}");
 
-        Action<ParticleSystem> SetJet = (j) => {
-            var main = j.main;
-            main.startLifetimeMultiplier = length * 0.3f;
-            main.startSpeedMultiplier = length * 2.1f;
-            main.gravityModifierMultiplier = length / 5f;
-
-            var emission = j.emission;
-            emission.rateOverTimeMultiplier = length * 200f;
-        };
-
-        SetJet(jet);
-        SetJet(jet_front);
+        foreach (var p in blowParticles)
+        {
+            var main = p.main;
+            main.startLifetimeMultiplier = (length / 5);
+        }
     }
 
 
