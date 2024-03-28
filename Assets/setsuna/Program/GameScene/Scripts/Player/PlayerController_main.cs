@@ -144,18 +144,29 @@ public class PlayerController_main : SetsunaSlashScript
         if (ground && !jumped && !wallKicked.r && !wallKicked.l)
         {
             vec = rb.velocity;
-            vec.x = 0;
-            if (!(rb.velocity.x == 0 && rb.velocity.y != 0))
+
+            if (inputVecX != 0)
             {
-                if (ground)
+                var vel = angleVec * spd * ((inputVecX > 0) ? 1 : -1);
+                var result = vec + vel;
+
+                if ((vel.x > 0) ? !wallR : !wallL)
                 {
-                    vec.y = 0;
-                    //Debug.Log("yVelocity reset");
+                    if ((vel.x > 0) ? (result.x <= vel.x) : (result.x >= vel.x))
+                    {
+                        vec.x = result.x;
+                    }
+                    else if ((vel.x > 0) ? (vec.x <= vel.x) : (vec.x >= vel.x))
+                    {
+                        vec.x = vel.x;
+                    }
+                }
+
+                if ((vel.y > 0) ? (result.y <= vel.y) : (result.y >= vel.y))
+                {
+                    vec.y = result.y;
                 }
             }
-
-            if ((inputVecX > 0) && !wallR) vec += angleVec * spd;
-            if ((inputVecX < 0) && !wallL) vec -= angleVec * spd;
 
             if (inputJump)
             {
@@ -215,7 +226,7 @@ public class PlayerController_main : SetsunaSlashScript
 
     void StateSet(Vector2 inputVec)
     {
-        if (inputVec.x == 0)
+        if (inputVecX == 0)
         {
             stateM = state_move.idle;
         }
