@@ -9,6 +9,7 @@ public class GayserJet : SetsunaSlashScript
     [SerializeField] AudioSource seAS;
 
     public float interval, jetTime, seFadeTime, power_player, power_object, powerCurve;
+    public LayerMask rayMask;
     public bool isEnable;
     [SerializeField] float dTime;
     HashSet<Collider2D> colliders = new HashSet<Collider2D>();
@@ -21,13 +22,10 @@ public class GayserJet : SetsunaSlashScript
         dTime = interval;
         colbox = GetComponent<BoxCollider2D>();
 
-        if (interval <= 0)
+        foreach (var p in blowParticles)
         {
-            foreach (var p in blowParticles)
-            {
-                var main = p.main;
-                main.loop = true;
-            }
+            var main = p.main;
+            main.loop = true;
         }
     }
 
@@ -46,67 +44,83 @@ public class GayserJet : SetsunaSlashScript
 
         if (dTime >= maxTime)//停止
         {
-            dTime = 0;
-            isEnable = false;
-            seAS.Stop();
+            DeActivate();
             return;
         }
         else if(!isEnable)//起動
         {
-            isEnable = true;
-
-            foreach (var p in blowParticles)
-            {
-                var main = p.main;
-                main.duration = jetTime * main.simulationSpeed;
-                p.Play();
-            }
-
-            seAS.volume = config.seVolume;
-            seAS.PlayOneShot(audioBind.gimmick.gayser);
+            Activate();
         }
         else//作動中
         {
             if (dTime >= (maxTime - seFadeTime))//音量フェードアウト
             {
-                seAS.volume = (float)(config.seVolume * (maxTime - dTime) / seFadeTime);
+                seAS.volume = (float)(config.seVolume * seAS.GetComponent<AudioVolumeManager>().volumeScale * (maxTime - dTime) / seFadeTime);
             }
+
+
+            //力を加える方向の単位ベクトル
+            Vector2 forceDir = transform.up;
+
 
             foreach (var col in colliders)//範囲内のコライダーすべてに対してそれぞれ
             {
-                var colPos = col.ClosestPoint(transform.position);
-                var underColPos = new Vector2(colPos.x, transform.position.y);
-                var direction = (colPos.y - transform.position.y);
-                var ratio = -Mathf.Pow((length - direction) * powerCurve, 2) + powerCurve;
-                if (ratio < 0) ratio = 0.1f;
+                var right = (Vector2)transform.right;
+                var pos = (Vector2)transform.position;
+                var colPos = col.ClosestPoint(pos);
+                var posUnderCol = pos + Vector2.Dot(colPos - pos, right) * right;
+                var direction = (colPos - posUnderCol);
 
-                if(direction < length - powerCurve)ratio = 1;
+                var ratio = -Mathf.Pow(((length - powerCurve) - direction.magnitude), 2) / Mathf.Pow(powerCurve, 2) + 1;
+                if (ratio <= 0) ratio = 0.1f;
+                if (direction.magnitude < length - powerCurve) ratio = 1;
 
-                //Debug.Log(col.gameObject.name +" | " + direction.magnitude + " | " + (power_player * ratio));
+                //Debug.Log(col.gameObject.name +" | " + direction.magnitude + " | " + (ratio), col.gameObject);
 
 
                 //重なっている場合は一番下の対象のみに影響を与える
-                RaycastHit2D result = Physics2D.Raycast(underColPos, Vector2.up * direction);
-                if ((result.collider == null) || ((result.collider != col) && (result.collider.gameObject.layer == slashableLayer)))
+                RaycastHit2D result = Physics2D.Raycast(posUnderCol, direction.normalized, length,rayMask);
+                //Debug.DrawRay(posUnderCol, direction.normalized * length, Color.red);
+                //Debug.Log($"{result.collider.gameObject} | {col.gameObject}");
+                if ((result.collider == null) || (result.collider.gameObject != col.gameObject))
                 {
-                    //Debug.Log("blocked by " + result.collider.gameObject.name) ;
+                    //Debug.Log("blocked by " + result.collider.gameObject.name, result.collider.gameObject);
                     continue;
                 }
 
 
-                if ((col.gameObject.layer == playerLayer) || true)//プレイヤーに対して
+                if (col.gameObject.layer == playerLayer)//プレイヤーに対して
                 {
                     var rb = col.GetComponentInParent<Rigidbody2D>();
                     var vel = rb.velocity;
-                    vel.y = (power_player * ratio);
+                    var force = power_player * forceDir * ratio * Time.deltaTime;
+
+                    //力と反対方向の速度がある場合、打ち消す
+                    if (Vector2.Dot(vel, -forceDir) is float dot and > 0)
+                    {
+                        vel += forceDir * dot + force;
+                    }
+
+                    vel += force;
                     rb.velocity = vel;
-                    rb.angularVelocity /= 2;
+
+                    //Debug.Log($"{col.name} | vel:{rb.velocity} | ratio:{ratio} | deltaTime:{Time.deltaTime}");
                 }
                 else//非プレイヤーオブジェクトに対して
                 {
-                    var force = transform.rotation * Vector2.up * power_object * ratio;
                     var rb = col.GetComponent<Rigidbody2D>();
-                    rb.AddForceAtPosition(force, col.ClosestPoint(transform.position));
+                    var vel = rb.velocity;
+                    var force = power_object * ratio * forceDir * Time.deltaTime;
+
+                    //力と反対方向の速度がある場合、打ち消す
+                    if (Vector2.Dot(vel, -forceDir) is float dot and > 0)
+                    {
+                        rb.velocity += forceDir * dot;
+                    }
+
+                    rb.AddForceAtPosition(force*100, colPos);
+
+                    //Debug.Log($"{col.name} | dir:{direction} | ratio:{ratio} | deltaTime:{Time.deltaTime}");
                 }
             }
         }
@@ -125,6 +139,31 @@ public class GayserJet : SetsunaSlashScript
         {
             var main = p.main;
             main.startLifetimeMultiplier = (length / 5);
+        }
+    }
+
+    public void Activate()
+    {
+        isEnable = true;
+
+        foreach (var p in blowParticles)
+        {
+            p.Play();
+        }
+
+        seAS.volume = config.seVolume;
+        seAS.PlayOneShot(audioBind.gimmick.gayser);
+    }
+
+    public void DeActivate()
+    {
+        dTime = 0;
+        isEnable = false;
+        seAS.Stop();
+
+        foreach (var p in blowParticles)
+        {
+            p.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 
