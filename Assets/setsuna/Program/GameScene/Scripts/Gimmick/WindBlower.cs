@@ -69,9 +69,11 @@ public class WindBlower : SetsunaSlashScript
         }
         else//作動中
         {
+            seAS.GetComponent<AudioVolumeManager>().SetVolume();
+
             if (dTime >= (maxTime - seFadeTime))//音量フェードアウト
             {
-                seAS.volume = (float)(config.seVolume * seAS.GetComponent<AudioVolumeManager>().volumeScale * (maxTime - dTime) / seFadeTime);
+                seAS.volume *= ((maxTime - dTime) / seFadeTime);
             }
 
             var rayResult = RayCastMethod();
