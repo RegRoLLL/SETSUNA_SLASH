@@ -279,7 +279,7 @@ public class WindBlower : SetsunaSlashScript
         //‘¬“x‚Ì—Í‚Æ”½‘Î•ûŒü‚Ì¬•ª
         float dot = Vector2.Dot(vel, -forceDir);
 
-        Debug.Log($"dot_obj: {dot}");
+        //Debug.Log($"dot_obj: {dot}");
 
         //—Í‚Æ”½‘Î•ûŒü‚Ì‘¬“x‚ª‚ ‚éê‡A‘Å‚¿Á‚·
         if (dot > 0)
@@ -289,7 +289,7 @@ public class WindBlower : SetsunaSlashScript
         //‰Á‘¬‚µ‚·‚¬‚Ä‚¢‚éê‡‚Ì‘Å‚¿Á‚µ
         else if(-dot > force.magnitude)
         {
-            Debug.Log("clamp_obj");
+            //Debug.Log("clamp_obj");
             force *= 0;
             force = -forceDir * (MathF.Abs(dot) - force.magnitude) * Time.deltaTime;
         }
