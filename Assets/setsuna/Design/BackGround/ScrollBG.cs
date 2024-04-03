@@ -108,11 +108,14 @@ public class ScrollBG : MonoBehaviour,IDisposable
             outer.canvas.worldCamera = Camera.main;
             outer.canvas.renderMode = RenderMode.WorldSpace;
 
+            startPos = outer.transform.position;
+            rect = outer.transform.TransformVector(outer.image.rectTransform.sizeDelta);
+
+            rect.x /= outer.mat.mainTextureScale.x;
+            rect.y /= outer.mat.mainTextureScale.y;
+
             outer.mat.SetTextureScale(outer.texPropName, outer.defaultTextureScale * 3);
             outer.transform.localScale = outer.defaultObjScale * 3;
-
-            startPos = outer.transform.position;
-            rect = outer.transform.TransformVector(outer.image.rectTransform.sizeDelta / 2) / 3f;
         }
 
 
