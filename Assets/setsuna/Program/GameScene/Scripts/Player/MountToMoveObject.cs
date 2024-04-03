@@ -7,6 +7,9 @@ public class MountToMoveObject : MonoBehaviour
 {
     [SerializeField] float angle;
 
+    [SerializeField, Tooltip("x,y‚»‚ê‚¼‚ê‚Éˆ—‚ð“K—p‚·‚é‚©‚ÌÝ’èB\r\ndefault: x = true, y = false")] 
+    bool x = true, y = false;
+
     [Header("Internal property")]
     [SerializeField] bool readyToSetTarget;
 
@@ -56,6 +59,9 @@ public class MountToMoveObject : MonoBehaviour
 
         if(Mathf.Abs(vel.x) > Mathf.Abs(diff.x)) vel.x = diff.x;
         if(Mathf.Abs(vel.y) > Mathf.Abs(diff.y)) vel.y = diff.y;
+
+        if (!x) vel.x = 0;
+        if (!y) vel.y = 0;
 
         //Debug.Log($"vel:{vel}");
 
