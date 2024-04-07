@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-[RequireComponent(typeof(Image))]
+[RequireComponent(typeof(Image)), DefaultExecutionOrder(-1)]
 public class ScrollBG : MonoBehaviour,IDisposable
 {
     /*
      * アタッチするImageのシェーダーはUnlit/Transparentにすること。
      */
-    
+
     [SerializeField] BG_type bg_type;
     BG_type lastFrameBG_Type;
 
@@ -37,7 +37,8 @@ public class ScrollBG : MonoBehaviour,IDisposable
         canvas = image.canvas;
 
         texturePos = Vector2.zero;
-        mat = image.material;
+        mat = new Material(image.material);
+        image.material = mat;
         mat.SetTextureOffset(texPropName, texturePos);
         defaultTextureScale = mat.GetTextureScale(texPropName);
         defaultObjScale = transform.localScale;
@@ -48,8 +49,15 @@ public class ScrollBG : MonoBehaviour,IDisposable
         lastFramePosition = traceTarget.position;
     }
 
-    void Initialize()
+    void OnEnable()
     {
+        if(Time.frameCount != 0)Initialize();
+    }
+
+    public void Initialize()
+    {
+        //Debug.Log($"{gameObject.name}.Initialize()");
+
         if (bg_type == BG_type.far) far.Initialize(this);
         else if (bg_type == BG_type.near) near.Initialize(this);
     }
@@ -105,7 +113,10 @@ public class ScrollBG : MonoBehaviour,IDisposable
         {
             this.outer = outer;
 
-            outer.canvas.worldCamera = Camera.main;
+            if (outer.canvas.worldCamera == null)
+            {
+                outer.canvas.worldCamera = Camera.main;
+            }
             outer.canvas.renderMode = RenderMode.WorldSpace;
 
             startPos = outer.transform.position;
