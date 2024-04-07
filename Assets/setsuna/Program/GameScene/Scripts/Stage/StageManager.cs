@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class StageManager : SetsunaSlashScript
 {
@@ -8,9 +9,15 @@ public class StageManager : SetsunaSlashScript
 
     public string stageName;
 
+    [Space()]
+    [SerializeField] Transform backGroundsContainer;
+    [SerializeField] CanvasGroup showGroup, fadeGroup, invisibleGroup;
+
+    [Header("Internal Data")]
     public List<GameObject> stageParts = new List<GameObject>();
     public List<GameObject> stageClones = new List<GameObject>();
     public int currentIndex, saveIndex;
+    public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
     public float savedPlayerHP, savedPlayerMP;
 
@@ -32,6 +39,16 @@ public class StageManager : SetsunaSlashScript
             if (tra.GetComponent<StageStat>())
                 stageParts.Add(tra.gameObject);
         }
+
+        var bgList = backGroundsContainer.GetComponentsInChildren<BackGroundGroup>().ToList();
+        foreach (var bgg in bgList)
+        {
+            bgg.SetParent(invisibleGroup.transform);
+            bgg.SetEnable(false);
+        }
+        Destroy(backGroundsContainer.gameObject);
+
+        currentBG = null;
 
         SaveAll();
 
@@ -104,5 +121,25 @@ public class StageManager : SetsunaSlashScript
         part.transform.parent = stageParts[index].transform.parent;
         Destroy(stageParts[index]);
         stageParts[index] = part;
+    }
+
+
+    public void SetBackGround(StageStat next)
+    {
+        if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
+
+        Camera.main.GetComponent<Camera>().backgroundColor = next.backGroundColor;
+
+        if (currentBG != null) { 
+            //Debug.Log($"disable:{currentBG}");
+            currentBG.SetParent(invisibleGroup.transform);
+            currentBG.SetEnable(false);
+        }
+
+        //Debug.Log($"enable:{next.backGroundGroup}");
+        next.backGroundGroup.SetParent(showGroup.transform);
+        next.backGroundGroup.SetEnable(true);
+
+        currentBG = next.backGroundGroup;
     }
 }
