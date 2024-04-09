@@ -167,6 +167,10 @@ public class PlayerController_main : SetsunaSlashScript
                     vec.y = result.y;
                 }
             }
+            else if(input.currentActionMap[plAction.move].WasReleasedThisFrame())
+            {
+                vec *= 0;
+            }
 
             if (inputJump)
             {
@@ -263,6 +267,8 @@ public class PlayerController_main : SetsunaSlashScript
         jumpedIntoAir = false;
         wallKicked.r = false;
         wallKicked.l = false;
+
+        if (playerCC.IsGrounded()) rb.velocity *= 0;
     }
 
     void GravitySet()
