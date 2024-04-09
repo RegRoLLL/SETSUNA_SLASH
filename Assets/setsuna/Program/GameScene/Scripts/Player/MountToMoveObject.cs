@@ -5,7 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class MountToMoveObject : MonoBehaviour
 {
-    [SerializeField] float angle;
+    [SerializeField, Tooltip("足で触れていると判定する範囲角度。")]
+    float angle;
+
+    [SerializeField, Tooltip("アタッチされているRigidBody2Dの重量の何倍より大きいオブジェクトに対して作動するか。\r\ndefault: 2")]
+    float massRatio = 2;
 
     [SerializeField, Tooltip("x,yそれぞれに処理を適用するかの設定。\r\ndefault: x = true, y = false")] 
     bool x = true, y = false;
@@ -82,6 +86,7 @@ public class MountToMoveObject : MonoBehaviour
             collisionAngle = Vector2.Angle(Vector2.up, contact.normal);
 
             if (collisionAngle > angle / 2) continue;
+            else if (contact.collider.attachedRigidbody.mass <= myRB.mass * massRatio) continue;
 
             target = col.transform;
             targetLastFramePos = target.position;
