@@ -107,6 +107,8 @@ public class SetsunaPlayerCamera : SetsunaSlashScript
 
     void SetPos()
     {
+        if (hub.currentPart == null) return;
+
         directionToPL.x = Mathf.Clamp(directionToPL.x, -directionMaxAbsolute.x, directionMaxAbsolute.x);
         directionToPL.y = Mathf.Clamp(directionToPL.y, -directionMaxAbsolute.y - yFixValue, directionMaxAbsolute.y - yFixValue);
 
