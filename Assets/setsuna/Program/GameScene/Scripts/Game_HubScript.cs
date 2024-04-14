@@ -18,7 +18,17 @@ public class Game_HubScript : SetsunaSlashScript
 
     void Start()
     {
-        SetPart(playingStage.stageParts[0].GetComponent<StageStat>());
+        StartCoroutine(DelayOneFrame(() =>
+        {
+            //Debug.Log($"partsCount:{playingStage.stageParts.Count}", playingStage);
+            SetPart(playingStage.stageParts[0].GetComponent<StageStat>());
+        }));
+    }
+
+    IEnumerator DelayOneFrame(Action action)
+    {
+        yield return null;
+        action?.Invoke();
     }
 
     public void SetPart(StageStat stage)
