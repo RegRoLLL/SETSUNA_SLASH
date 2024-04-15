@@ -25,6 +25,11 @@ public class WindBlower : SetsunaSlashScript
     public LayerMask blockMask;
     public int rayDensity;
 
+    [Header("Appearance")]
+    public SpriteRenderer line;
+    public SpriteRenderer sign;
+    public float dark_line, dark_sign, bright_line, bright_sign;
+
     [Header("INTERNAL_DATA")]
     public bool isEnable;
     [SerializeField] float dTime;
@@ -43,6 +48,17 @@ public class WindBlower : SetsunaSlashScript
             var main = p.main;
             main.loop = true;
         }
+
+
+        Color color;
+
+        color = line.color;
+        color.a = dark_line;
+        line.color = color;
+
+        color = sign.color;
+        color.a = dark_sign;
+        sign.color = color;
     }
 
     void LateUpdate()
@@ -112,6 +128,16 @@ public class WindBlower : SetsunaSlashScript
             p.Play();
         }
 
+        Color color;
+
+        color = line.color;
+        color.a = bright_line;
+        line.color = color;
+
+        color = sign.color;
+        color.a = bright_sign;
+        sign.color = color;
+
         seAS.volume = config.seVolume;
         seAS.PlayOneShot(audioBind.gimmick.gayser);
     }
@@ -126,6 +152,16 @@ public class WindBlower : SetsunaSlashScript
         {
             p.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
+
+        Color color;
+
+        color = line.color;
+        color.a = dark_line;
+        line.color = color;
+
+        color = sign.color;
+        color.a = dark_sign;
+        sign.color = color;
     }
 
     /// <summary>
