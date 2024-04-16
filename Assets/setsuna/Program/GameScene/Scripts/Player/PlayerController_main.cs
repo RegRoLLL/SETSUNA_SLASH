@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class PlayerController_main : SetsunaSlashScript
 {
@@ -26,6 +27,8 @@ public class PlayerController_main : SetsunaSlashScript
     public state_move stateM;
 
     public float inputVecX;
+
+    List<Collider2D> contactCols = new();
 
     [SerializeField] Image stickL, backL;
 
@@ -67,6 +70,9 @@ public class PlayerController_main : SetsunaSlashScript
 
         if (isDead) return;
 
+        rb.GetContacts(contactCols);
+        contactCols = contactCols.Where((c) => !c.isTrigger).ToList();
+
         if (stateP == state_pose.teleport)
         {
             ColliderSet();
@@ -78,7 +84,14 @@ public class PlayerController_main : SetsunaSlashScript
 
         if (jumped && !playerCC.IsGrounded()) jumpedIntoAir = true;
 
-        if ((jumped || wallKicked.r || wallKicked.l) && ((rb.velocity.y <= 0) || jumpedIntoAir) && playerCC.IsGrounded()) Chakuchi();
+        if (
+            (jumped || wallKicked.r || wallKicked.l)
+            && ((rb.velocity.y <= 0) || jumpedIntoAir)
+            && (playerCC.IsGrounded() && contactCols.Count > 0)
+            ) 
+        {
+            Chakuchi(); 
+        }
 
         spritePivot.SetActive(stateP != state_pose.teleport);
         soul.SetActive(stateP == state_pose.teleport);
@@ -268,7 +281,7 @@ public class PlayerController_main : SetsunaSlashScript
         wallKicked.r = false;
         wallKicked.l = false;
 
-        if (playerCC.IsGrounded()) rb.velocity *= 0;
+        rb.velocity *= 0;
     }
 
     void GravitySet()
@@ -285,6 +298,15 @@ public class PlayerController_main : SetsunaSlashScript
                 var vec = rb.velocity;
                 vec.y = -kosuriGravityScale;
                 rb.velocity = vec;
+            }
+            else
+            {
+                //contactCols.ForEach((c) => Debug.Log(c.name));
+                //Debug.Log(contactCols.Count);
+                if (playerCC.IsGrounded() && contactCols.Count > 0)
+                {
+                    scale = 0;
+                }
             }
 
             rb.gravityScale = scale;
