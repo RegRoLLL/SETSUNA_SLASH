@@ -2,58 +2,80 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using RC2D = UnityEngine.RigidbodyConstraints2D;
 
 public class LevitationStone : SetsunaSlashScript
 {
+    const float targetDensity = 500;
+
     [SerializeField] AudioSource seAS;
 
     [SerializeField] float floatingLimit, floatSPD, floatableMass;
-    [SerializeField] bool activated;
+    [SerializeField] bool activeOnStart;
     [SerializeField] float activateTime, dTime;
     [SerializeField] Color inactiveColor, activeColor;
     [SerializeField] GameObject activateParticle;
     [SerializeField] ParticleSystem vanishParticle;
 
+    bool activated,floatStarted,limitReached;
+
     FixedJoint2D joint;
-    Rigidbody2D rb;
+    Rigidbody2D targetRB;
+    Collider2D targetCol;
     Vector2 activatedPoint;
-    public float targetPrimeGravityScale;
+    float targetPrimeGravityScale, targetPrimeDensity;
     SpriteRenderer sr;
+
+    readonly RC2D ySlideC = (RC2D.FreezePositionX | RC2D.FreezeRotation);
+    readonly RC2D freezeC = RC2D.FreezeAll;
+    readonly RC2D freeC = RC2D.None;
 
     void Start()
     {
         joint = GetComponent<FixedJoint2D>();
-        rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         sr.color = inactiveColor;
+
+        if(activeOnStart) Activate();
     }
 
     void LateUpdate()
     {
         if (!activated) return;
 
-        if (dTime < activateTime)
+        if(!floatStarted)
         {
-            dTime += Time.deltaTime;
-            sr.color = Color.Lerp(inactiveColor, activeColor, (dTime / activateTime));
-            return;
+            if (dTime < activateTime)
+            {
+                dTime += Time.deltaTime;
+                sr.color = Color.Lerp(inactiveColor, activeColor, (dTime / activateTime));
+                return;
+            }
+            else 
+            {
+                floatStarted = true;
+
+                activateParticle.SetActive(true);
+                seAS.PlayOneShot(audioBind.gimmick.levitationStoneAwake);
+                sr.color = activeColor;
+            }
         }
-        else if (!activateParticle.activeInHierarchy)
-        {
-            activateParticle.SetActive(true);
-            seAS.PlayOneShot(audioBind.gimmick.levitationStoneAwake);
-            sr.color = activeColor;
-        }
+
+        //‚±‚±‚©‚çæ‚Í•‚—VŠJŽnŒã‚Ì‚Ý“®ì
+
+        if (!targetRB) return;
         
-        if (transform.position.y <= activatedPoint.y + floatingLimit)
+        if ( !limitReached)
         {
-            rb.gravityScale = -floatSPD;
+            targetRB.velocity = floatSPD * Vector2.up;
+            targetRB.constraints = ySlideC;
+
+            if(transform.position.y >= activatedPoint.y + floatingLimit) limitReached = true;
         }
         else
         {
-            rb.gravityScale = 0;
-            rb.velocity = Vector2.zero;
-            if(joint.connectedBody)joint.connectedBody.velocity = Vector2.zero;
+            targetRB.velocity = Vector2.zero;
+            targetRB.constraints = freezeC;
         }
     }
 
@@ -65,24 +87,29 @@ public class LevitationStone : SetsunaSlashScript
             return;
         }
 
-        if (!col.GetComponent<Rigidbody2D>()) return;
+        if (!col.TryGetComponent<Rigidbody2D>(out var colRB)) return;
 
-        var colRB = col.GetComponent<Rigidbody2D>();
-        
-        joint.connectedBody = colRB;
+        targetRB = colRB;
+        targetCol = col;
+        joint.connectedBody = targetRB;
 
-        if (activated || colRB.mass <= floatableMass)
+        if (activated || targetRB.mass <= floatableMass)
         {
-            targetPrimeGravityScale = colRB.gravityScale;
-            colRB.gravityScale = 0;
+            if (!activated) Activate();
 
-            if (activated) return;
-
-            activated = true;
-            activatedPoint = transform.position;
-            rb.constraints = (RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation);
-            dTime = 0;
+            targetPrimeGravityScale = targetRB.gravityScale;
+            targetPrimeDensity = targetCol.density;
+            targetCol.density = targetDensity;
+            targetRB.gravityScale = 0;
+            targetRB.constraints = limitReached ? freezeC : ySlideC;
         }
+    }
+
+    void Activate()
+    {
+        activated = true;
+        activatedPoint = transform.position;
+        dTime = 0;
     }
 
 
@@ -91,11 +118,11 @@ public class LevitationStone : SetsunaSlashScript
         vanishParticle.transform.parent = null;
         vanishParticle.Play();
 
-        if (activated)
+        if (targetRB)
         {
-            var rb_target = joint.connectedBody;
-            rb_target.gravityScale = targetPrimeGravityScale;
-            rb_target.constraints = RigidbodyConstraints2D.None;
+            targetRB.gravityScale = targetPrimeGravityScale;
+            targetRB.constraints = freeC;
+            targetCol.density = targetPrimeDensity;
         }
 
         Destroy(gameObject);
