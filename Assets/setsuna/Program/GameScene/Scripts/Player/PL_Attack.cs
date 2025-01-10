@@ -9,10 +9,7 @@ using RegUtil;
 
 public class PL_Attack : SetsunaSlashScript
 {
-    Game_HubScript hub;
     [SerializeField] PlayerInputActionName plAction;
-
-    [SerializeField] SetsunaPlayerCamera camera_;
 
     public float slashMP;
     public float interval, interval_dt;
@@ -36,9 +33,7 @@ public class PL_Attack : SetsunaSlashScript
 
     [SerializeField] List<AudioClip> attackSounds = new();
 
-    PlayerController_main plCtrler;
-    PlayerAnimationCaller animCaller;
-    PL_Status stat;
+    Player pl;
 
     PlayerInput input;
     InputAction 
@@ -51,14 +46,11 @@ public class PL_Attack : SetsunaSlashScript
 
     void Start()
     {
-        hub = EventSystem.current.GetComponent<Game_HubScript>();
+        pl = GetComponent<Player>();
 
-        plCtrler = GetComponent<PlayerController_main>();
         charge_dTime = 0;
         input = GetComponent<PlayerInput>();
         chargeCancel = input.actions[plAction.chargeCancel];
-        animCaller = GetComponent<PlayerAnimationCaller>();
-        stat = GetComponent<PL_Status>();
     }
 
     void Update()
@@ -82,7 +74,6 @@ public class PL_Attack : SetsunaSlashScript
         bool isGamepad = (config.controllMode == ConfigDatas.ControllMode.gamepad);
         bool isKeyMouse = (config.controllMode == ConfigDatas.ControllMode.keyboard_mouse);
 
-
         if (isGamepad)
         {
             GamePadMethod();
@@ -102,26 +93,24 @@ public class PL_Attack : SetsunaSlashScript
 
     bool CancelMethod()
     {
-        if (!isDragging && !plCtrler.isDead) return false;
+        if (!isDragging && !pl.GetIsDead()) return false;
 
         var result = false;
 
-        System.Action cancel = () =>
+        if (pl.GetIsDead()) result = true;
+
+        if (chargeCancel.WasPressedThisFrame()) result = true;
+
+        if (pl.GetStatePose() == PlayerController_main.state_pose.crouch) result = true;
+        if (pl.GetStatePose() == PlayerController_main.state_pose.teleport) result = true;
+
+        if (result)
         {
             isDragging = false;
             charge_dTime = 0;
+        }
 
-            result = true;
-        };
-
-        if (plCtrler.isDead) cancel();
-
-        if (chargeCancel.WasPressedThisFrame()) cancel();
-
-        if (plCtrler.stateP == PlayerController_main.state_pose.crouch) cancel();
-        if (plCtrler.stateP == PlayerController_main.state_pose.teleport) cancel();
-
-        camera_.setDistanceFromAverage = true;
+        pl.SetCameraDistanceSetMode(true);
 
         return result;
     }
@@ -186,18 +175,16 @@ public class PL_Attack : SetsunaSlashScript
     {
         mouseChargeAction = input.actions[plAction.charge_mouse];
 
-        Func<Vector2> GetCurSorPos = () => Input.mousePosition;
-
         if (mouseChargeAction.WasPressedThisFrame())
         {
-            startPos = GetCurSorPos();
+            startPos = Input.mousePosition;
             isDragging = true;
         }
 
         if (isDragging)
         {
             charge_dTime += Time.unscaledDeltaTime;
-            endPos = GetCurSorPos();
+            endPos = Input.mousePosition;
             direction = (startPos - endPos) * chargeRatio_mouse;
         }
 
@@ -260,16 +247,15 @@ public class PL_Attack : SetsunaSlashScript
     {
         if (charge_dTime >= chargeStartTime)
         {
-            camera_.setDistanceFromAverage = false;
-            camera_.directionToPL = direction * 0.3f;
+            pl.SetCameraDistanceSetMode(false);
+            pl.SetCameraDirection(direction * 0.3f);
         }
 
-        if ((plCtrler.inputVecX > 0) && (direction.x < 0)) direction.x = 0;
-        else if((plCtrler.inputVecX < 0) && (direction.x > 0)) direction.x = 0;
-        else if (Mathf.Approximately(plCtrler.inputVecX, 0))
+        if ((pl.GetInputX() > 0) && (direction.x < 0)) direction.x = 0;
+        else if((pl.GetInputX() < 0) && (direction.x > 0)) direction.x = 0;
+        else if (Mathf.Approximately(pl.GetInputX(), 0))
         {
-            if (direction.x > 0) plCtrler.spritePivot.transform.eulerAngles = Vector2.zero;
-            else if (direction.x < 0) plCtrler.spritePivot.transform.eulerAngles = Vector2.up * 180;
+            pl.SetSpriteDirection(direction.x > 0);
         }
     }
 
@@ -287,11 +273,11 @@ public class PL_Attack : SetsunaSlashScript
 
     void Attack()
     {
-        animCaller.Attack();
+        pl.Animator.Attack();
         normalAttackCol.SetActive(true);
 
         AudioClip sound = attackSounds[UnityEngine.Random.Range(0, attackSounds.Count)];
-        plCtrler.seAS.PlayOneShot(sound);
+        pl.PlaySE(sound);
 
         interval_dt = 0;
         charge_dTime = 0;
@@ -303,13 +289,13 @@ public class PL_Attack : SetsunaSlashScript
         //仕様変更によりmp不足の場合にhpで肩代わりすることになった
         //if (!config.easyMode && (stat.mp < slashMP)) return;
 
-        if (!config.easyMode) stat.MP_damage(slashMP);
+        if (!config.easyMode) pl.Status.MP_damage(slashMP);
 
         var effect = Instantiate(slashEffect);
         effect.GetComponent<SlashEffect>().SetData_charge(start, end);
 
-        plCtrler.seAS.PlayOneShot(audioBind.player.chargeSlash);
-        animCaller.Slash();
+        pl.PlaySE(audioBind.player.chargeSlash);
+        pl.Animator.Slash();
 
         interval_dt = 0;
     }
