@@ -101,7 +101,7 @@ public class LevitationStone : SetsunaSlashScript
             targetPrimeDensity = targetCol.density;
             targetCol.density = targetDensity;
             targetRB.gravityScale = 0;
-            targetRB.constraints = limitReached ? freezeC : ySlideC;
+            targetRB.constraints = floatStarted ? ySlideC : freezeC;
         }
     }
 
