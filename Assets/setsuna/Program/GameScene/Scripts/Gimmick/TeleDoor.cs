@@ -5,10 +5,14 @@ using UnityEngine.InputSystem;
 
 public class TeleDoor : TeleportGimmick
 {
+    [SerializeField] TeleDoorToMode teleportTo = TeleDoorToMode.teleDoor;
+    [SerializeField] SavePoint targetSavePoint;
     [SerializeField] GameObject interactIcon;
 
     GameObject player;
     PlayerInput input;
+
+    enum TeleDoorToMode { teleDoor, savePoint }
 
     private void Start()
     {
@@ -22,7 +26,12 @@ public class TeleDoor : TeleportGimmick
 
         if (input.actions[plAction.interact].WasPressedThisFrame() == false) return;
 
-        Teleport(player.transform);
+        if (teleportTo == TeleDoorToMode.teleDoor){ 
+            Teleport(player.transform);
+        }
+        else { 
+            player.transform.position = targetSavePoint.transform.position;
+        }
     }
 
 
