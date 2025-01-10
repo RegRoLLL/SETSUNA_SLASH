@@ -11,7 +11,7 @@ public class LevitationStone : SetsunaSlashScript
     [SerializeField] AudioSource seAS;
 
     [SerializeField] float floatingLimit, floatSPD, floatableMass;
-    [SerializeField] bool activated;
+    [SerializeField] bool activeOnStart;
     [SerializeField] float activateTime, dTime;
     [SerializeField] Color inactiveColor, activeColor;
     [SerializeField] GameObject activateParticle;
@@ -35,6 +35,8 @@ public class LevitationStone : SetsunaSlashScript
         joint = GetComponent<FixedJoint2D>();
         sr = GetComponent<SpriteRenderer>();
         sr.color = inactiveColor;
+
+        if(activeOnStart) Activate();
     }
 
     void LateUpdate()
@@ -59,7 +61,7 @@ public class LevitationStone : SetsunaSlashScript
             }
         }
 
-        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í•ï¿½ï¿½Vï¿½Jï¿½nï¿½ï¿½Ì‚İ“ï¿½ï¿½ï¿½
+        //‚±‚±‚©‚çæ‚Í•‚—VŠJnŒã‚Ì‚İ“®ì
 
         if (!targetRB) return;
         
