@@ -9,18 +9,16 @@ using RegUtil;
 
 public class PL_Attack : SetsunaSlashScript
 {
-    Game_HubScript hub;
     [SerializeField] PlayerInputActionName plAction;
-
-    [SerializeField] SetsunaPlayerCamera camera_;
 
     public float slashMP;
     public float interval, interval_dt;
+    [SerializeField] SlashControllMode controllMode;
+    [SerializeField] float cameraLerpTime;
 
-    public float
-        chargeRatio_mouse,
-        chargePower_pad, chargeAdjustRate_pad, chargeMax_pad, chargeMin_pad,
-        chargeRatio_touch;
+    [Space(10)]
+    public float dragMultiplier;
+    public float pointChargeSPD, pointLengthMax;
 
     [Space(10)]
     public float chargeSlowTimeRatio;
@@ -29,41 +27,37 @@ public class PL_Attack : SetsunaSlashScript
     public float chargeStartTime, charge_dTime;
     public GameObject normalAttackCol;
 
-    [SerializeField] Image stickR, backR;
-
     [SerializeField] LineRenderer line;
-    [SerializeField] GameObject slashEffect;
+    [SerializeField] GameObject slashEffectPrefab;
 
     [SerializeField] List<AudioClip> attackSounds = new();
 
-    PlayerController_main plCtrler;
-    PlayerAnimationCaller animCaller;
-    PL_Status stat;
+    Player pl;
 
     PlayerInput input;
-    InputAction 
-        mouseChargeAction, 
-        padAttackAction, padChargeAction, padChargeSlash, 
-        touchChargeAction, touchChargeDir,
-        chargeCancel;
-    Vector2 startPos, endPos, direction, lastFrameStickInput;
-    bool isDragging;
+    InputAction attackAction, chargeCancel;
+    Vector2 startPos, endPos, direction;
+    bool isCharging;
+
+    Vector2 beforeChargeCameraDirection;
+
+    enum SlashControllMode { drag, pointer }
 
     void Start()
     {
-        hub = EventSystem.current.GetComponent<Game_HubScript>();
+        pl = GetComponent<Player>();
 
-        plCtrler = GetComponent<PlayerController_main>();
         charge_dTime = 0;
         input = GetComponent<PlayerInput>();
+        attackAction = input.actions[plAction.attack];
         chargeCancel = input.actions[plAction.chargeCancel];
-        animCaller = GetComponent<PlayerAnimationCaller>();
-        stat = GetComponent<PL_Status>();
     }
 
     void Update()
     {
         if (Time.timeScale == 0f) return;
+
+        //以下、非ポーズ時のみ実行
 
         if (interval_dt < interval)
         {
@@ -71,140 +65,79 @@ public class PL_Attack : SetsunaSlashScript
             return;
         }
 
-        if (isDragging && config.slowWhenSlashCharge)
+        //以下、攻撃インターバル終了後のみ実行
+
+        if (isCharging && config.slowWhenSlashCharge)
         {
             RegTimeKeeper.MultipleTimeScale(ratio: chargeSlowTimeRatio);
             SetsunaAudioKeeper.MultipleAudioScale(ratio: chargeAudioSmallRatio);
         }
 
-        if (CancelMethod()) return;
+        if (WasCanceledThisFlame()) return;
+
+        //以下、このフレームでキャンセルされていない場合のみ実行
 
         bool isGamepad = (config.controllMode == ConfigDatas.ControllMode.gamepad);
-        bool isKeyMouse = (config.controllMode == ConfigDatas.ControllMode.keyboard_mouse);
 
-
-        if (isGamepad)
+        //新式
+        if (isGamepad || controllMode == SlashControllMode.pointer)
         {
-            GamePadMethod();
-        }
-        else if(isKeyMouse)
-        {
-            MouseMethod();
+            PointerMethod();
         }
         else
         {
-            TouchMethod();
+            DragMethod();
         }
 
-        SetDir();
+        SetSpriteAndCameraDir();
         SetLine();
     }
 
-    bool CancelMethod()
+    bool WasCanceledThisFlame()
     {
-        if (!isDragging && !plCtrler.isDead) return false;
+        if (!isCharging && !pl.GetIsDead()) return false;
 
         var result = false;
 
-        System.Action cancel = () =>
+        if (pl.GetIsDead()) result = true;
+
+        if (chargeCancel.WasPressedThisFrame()) result = true;
+
+        if (pl.GetStatePose() == PlayerController_main.state_pose.crouch) result = true;
+        if (pl.GetStatePose() == PlayerController_main.state_pose.teleport) result = true;
+
+        if (result)
         {
-            isDragging = false;
+            isCharging = false;
             charge_dTime = 0;
+        }
 
-            result = true;
-        };
-
-        if (plCtrler.isDead) cancel();
-
-        if (chargeCancel.WasPressedThisFrame()) cancel();
-
-        if (plCtrler.stateP == PlayerController_main.state_pose.crouch) cancel();
-        if (plCtrler.stateP == PlayerController_main.state_pose.teleport) cancel();
-
-        camera_.setDistanceFromAverage = true;
+        pl.SetCameraDistanceSetMode(true);
 
         return result;
     }
 
-    void GamePadMethod()
+    void DragMethod()
     {
-        padAttackAction = input.actions[plAction.attack];
-
-        if (padAttackAction.WasPressedThisFrame())
+        //開始
+        if (attackAction.WasPressedThisFrame())
         {
-            Attack();
-            return;
+            startPos = pl.GetCursorPos(PlayerCursor.VectorSpace.screen);
+            isCharging = true;
         }
 
-
-
-        padChargeAction = input.actions[plAction.charge_pad];
-        padChargeSlash = input.actions[plAction.chargeSlash_pad];
-        Vector2 padInput = padChargeAction.ReadValue<Vector2>();
-
-        if (Mathf.Approximately(1, padInput.magnitude))//入力がある時
-        {
-            if (lastFrameStickInput.magnitude == 0)//始まった時
-            {
-                startPos = Vector2.zero;
-                isDragging = true;
-            }
-
-            if (padChargeSlash.WasPressedThisFrame())
-            {
-                if (isDragging && (charge_dTime >= chargeStartTime))
-                {
-                    ChargeSlash(transform.position, (Vector2)transform.position + direction);
-                    isDragging = false;
-                }
-            }
-
-            if (!isDragging) return;
-
-
-
-            var adjustInput = input.actions[plAction.chargeAdjust_pad].ReadValue<float>();
-            var isRight = (padInput.x >= 0);
-
-            chargePower_pad += chargeAdjustRate_pad * adjustInput * (isRight ? 1 : -1) * Time.deltaTime;
-            chargePower_pad = Mathf.Clamp(chargePower_pad, chargeMin_pad, chargeMax_pad);
-
-            endPos = padInput;
-            direction = padInput * chargePower_pad;
-
-            charge_dTime += Time.unscaledDeltaTime;
-        }
-        else if(Mathf.Approximately(1, lastFrameStickInput.magnitude))//スティックが戻った時
-        {
-            charge_dTime = 0;
-        }
-
-        lastFrameStickInput = padInput;
-    }
-
-    void MouseMethod()
-    {
-        mouseChargeAction = input.actions[plAction.charge_mouse];
-
-        Func<Vector2> GetCurSorPos = () => Input.mousePosition;
-
-        if (mouseChargeAction.WasPressedThisFrame())
-        {
-            startPos = GetCurSorPos();
-            isDragging = true;
-        }
-
-        if (isDragging)
+        //長押し中
+        if (isCharging)
         {
             charge_dTime += Time.unscaledDeltaTime;
-            endPos = GetCurSorPos();
-            direction = (startPos - endPos) * chargeRatio_mouse;
+            endPos = pl.GetCursorPos(PlayerCursor.VectorSpace.screen);
+            direction = (startPos - endPos) * dragMultiplier;
         }
 
-        if (mouseChargeAction.WasReleasedThisFrame())
+        //終了
+        if (attackAction.WasReleasedThisFrame())
         {
-            isDragging = false;
-
+            isCharging = false;
 
             if (charge_dTime >= chargeStartTime)
             {
@@ -219,29 +152,34 @@ public class PL_Attack : SetsunaSlashScript
         }
     }
 
-    void TouchMethod()
+    void PointerMethod()
     {
-        touchChargeAction = input.actions[plAction.attack];
-        touchChargeDir = input.actions[plAction.charge_touch];
-        var dir = touchChargeDir.ReadValue<Vector2>();
-
-        if (touchChargeAction.WasPressedThisFrame())
+        //開始
+        if (attackAction.WasPressedThisFrame())
         {
-            isDragging = true;
-            backR.transform.position = stickR.transform.position;
+            isCharging = true;
+            pointLengthMax = 0;
         }
 
-        if (isDragging)
+        //長押し中
+        if (isCharging)
         {
-            charge_dTime += Time.deltaTime;
-            if(dir != Vector2.zero) direction = -dir * chargeRatio_touch;
-            Debug.Log(direction);
+            charge_dTime += Time.unscaledDeltaTime;
+            startPos = transform.position;
+            endPos = pl.GetCursorPos(PlayerCursor.VectorSpace.world);
+            pointLengthMax = pointChargeSPD * charge_dTime;
+            direction = (endPos - startPos);
+
+            if (direction.magnitude > pointLengthMax) 
+            {
+                direction = direction.normalized * pointLengthMax;
+            }
         }
 
-        if (touchChargeAction.WasReleasedThisFrame())
+        //終了
+        if (attackAction.WasReleasedThisFrame())
         {
-            isDragging = false;
-
+            isCharging = false;
 
             if (charge_dTime >= chargeStartTime)
             {
@@ -256,20 +194,41 @@ public class PL_Attack : SetsunaSlashScript
         }
     }
 
-    void SetDir()
+    void SetSpriteAndCameraDir()
     {
         if (charge_dTime >= chargeStartTime)
         {
-            camera_.setDistanceFromAverage = false;
-            camera_.directionToPL = direction * 0.3f;
-        }
+            pl.SetCameraDistanceSetMode(fromAverage: false);
 
-        if ((plCtrler.inputVecX > 0) && (direction.x < 0)) direction.x = 0;
-        else if((plCtrler.inputVecX < 0) && (direction.x > 0)) direction.x = 0;
-        else if (Mathf.Approximately(plCtrler.inputVecX, 0))
+            Vector2 cameraDir;
+
+            cameraDir = controllMode switch
+            {
+                SlashControllMode.pointer => (endPos - startPos),
+                SlashControllMode.drag => direction,
+                _ => direction
+            } * 0.3f;
+
+            var lerp = (charge_dTime - chargeStartTime) / cameraLerpTime;
+
+            //カメラがテレポートしないようにする処理
+            if (lerp <= 1f)
+            {
+                cameraDir = Vector2.Lerp(beforeChargeCameraDirection, cameraDir, lerp);
+            }
+
+            pl.SetCameraDirection(cameraDir);
+
+            if ((pl.GetInputX() > 0) && (direction.x < 0)) direction.x = 0;
+            else if((pl.GetInputX() < 0) && (direction.x > 0)) direction.x = 0;
+            else if (Mathf.Approximately(pl.GetInputX(), 0))
+            {
+                pl.SetSpriteDirection(direction.x > 0);
+            }
+        }
+        else
         {
-            if (direction.x > 0) plCtrler.spritePivot.transform.eulerAngles = Vector2.zero;
-            else if (direction.x < 0) plCtrler.spritePivot.transform.eulerAngles = Vector2.up * 180;
+            beforeChargeCameraDirection = pl.GetCameraDirection();
         }
     }
 
@@ -284,14 +243,13 @@ public class PL_Attack : SetsunaSlashScript
         }
     }
 
-
     void Attack()
     {
-        animCaller.Attack();
+        pl.Animator.Attack();
         normalAttackCol.SetActive(true);
 
         AudioClip sound = attackSounds[UnityEngine.Random.Range(0, attackSounds.Count)];
-        plCtrler.seAS.PlayOneShot(sound);
+        pl.PlaySE(sound);
 
         interval_dt = 0;
         charge_dTime = 0;
@@ -303,13 +261,13 @@ public class PL_Attack : SetsunaSlashScript
         //仕様変更によりmp不足の場合にhpで肩代わりすることになった
         //if (!config.easyMode && (stat.mp < slashMP)) return;
 
-        if (!config.easyMode) stat.MP_damage(slashMP);
+        if (!config.easyMode) pl.Status.MP_damage(slashMP);
 
-        var effect = Instantiate(slashEffect);
+        var effect = Instantiate(slashEffectPrefab);
         effect.GetComponent<SlashEffect>().SetData_charge(start, end);
 
-        plCtrler.seAS.PlayOneShot(audioBind.player.chargeSlash);
-        animCaller.Slash();
+        pl.PlaySE(audioBind.player.chargeSlash);
+        pl.Animator.Slash();
 
         interval_dt = 0;
     }

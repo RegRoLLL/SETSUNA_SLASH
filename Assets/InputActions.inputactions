@@ -51,42 +51,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "charge_mouse",
-                    "type": "Button",
-                    "id": "169e67c7-b5e6-4a92-bf73-334ed093d18b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "charge_pad",
-                    "type": "Value",
-                    "id": "90d6533b-0068-40c5-ba6d-6b6f84d98b06",
-                    "expectedControlType": "Vector2",
-                    "processors": "StickDeadzone,NormalizeVector2",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "chargeAdjst_pad",
-                    "type": "Value",
-                    "id": "d84a438f-7521-456a-9370-da0bf29dd98f",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "chargeSlash_pad",
-                    "type": "Button",
-                    "id": "7cbd3292-63ab-4b53-8016-36eb52e84666",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "chargeCancel",
                     "type": "Button",
                     "id": "6e187df2-4953-4cf0-ba5a-1c2fc1708596",
@@ -94,15 +58,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "charge_touch",
-                    "type": "Value",
-                    "id": "fc982b92-ba0a-45f8-9d91-786a7333786c",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 },
                 {
                     "name": "reset",
@@ -245,78 +200,12 @@
                 },
                 {
                     "name": "",
-                    "id": "8cad868b-a571-428e-84bc-dea5b41f6064",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyBoard & Mouse",
-                    "action": "charge_mouse",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6d864f7c-70a4-4f5e-ba0d-c7756c90d6ff",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamePad",
-                    "action": "charge_pad",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "13d0654f-5e32-4b01-b6a7-8876c8713acc",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "chargeAdjst_pad",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "4729021e-846b-4cde-bfdc-6fdd51e0f128",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamePad",
-                    "action": "chargeAdjst_pad",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "a919d475-9689-4257-80cb-bc50a567763c",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamePad",
-                    "action": "chargeAdjst_pad",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
                     "id": "794d2b7b-e427-4bd9-b0ef-86b55d14dfee",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyBoard & Mouse",
                     "action": "chargeCancel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "486dbd84-a8f9-4755-9dd7-cfa29f83cc77",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "GamePad",
-                    "action": "chargeSlash_pad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -449,17 +338,6 @@
                     "processors": "AxisDeadzone(min=0.6)",
                     "groups": "TouchPanel",
                     "action": "sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "46672d39-e080-4489-9bb2-8f706af07346",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "TouchPanel",
-                    "action": "charge_touch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
