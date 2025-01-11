@@ -136,22 +136,21 @@ public class SlashEffect : SetsunaSlashScript
             part.GetComponent<PolygonCollider2D>().sharedMaterial = physicsMaterial;
         }
 
-
+        //元オブジェクトが物理じゃない場合
         if (isStatic) results.Remove(largestPart);
 
         Action<GameObject> addPhysics = (part) =>
         {
             part.AddComponent(typeof(Rigidbody2D));
 
-            var rb = part.GetComponent<Rigidbody2D>();
+            var partRB = part.GetComponent<Rigidbody2D>();
 
-            rb.useAutoMass = true;
-            rb.velocity = velocity;
-            rb.gravityScale = gravityScale;
-
-            if (rb.bodyType == RigidbodyType2D.Dynamic) part.GetComponent<PolygonCollider2D>().density = density;
+            partRB.useAutoMass = true;
+            partRB.bodyType = RigidbodyType2D.Dynamic;
+            partRB.velocity = velocity;
+            partRB.gravityScale = gravityScale;
+            StartCoroutine(SetDensityAfterFrame(part.GetComponent<PolygonCollider2D>()));
         };
-
 
         if (results.Count == 1)
         {
@@ -159,7 +158,8 @@ public class SlashEffect : SetsunaSlashScript
             var area2 = GetAreaOfPolygon(largestPart.GetComponent<PolygonCollider2D>().points);
             float ratio = area1 / area2;
 
-            if (ratio >= (1 - twiceCutErrorRatio) && ratio <= (1 + twiceCutErrorRatio))//2分割のパーツがほぼ同じ大きさの場合
+            //2分割のパーツがほぼ同じ大きさの場合
+            if (ratio >= (1 - twiceCutErrorRatio) && ratio <= (1 + twiceCutErrorRatio))
             {
                 addPhysics(largestPart);
                 addPhysics(results[0]);
@@ -171,7 +171,8 @@ public class SlashEffect : SetsunaSlashScript
         }
         else
         {
-            foreach (var part in results)//最も大きいパーツ以外に物理を適用(元オブジェクトも物理が適用されてたら全部)
+            //最も大きいパーツ以外に物理を適用(元オブジェクトも物理が適用されてたら全部)
+            foreach (var part in results)
             {
                 addPhysics(part);
             }
@@ -190,5 +191,13 @@ public class SlashEffect : SetsunaSlashScript
         sum += CrossFrom2Vec2(polygon[polygon.Length - 1], polygon[0]);
 
         return Math.Abs(sum) / 2;
+    }
+
+
+    IEnumerator SetDensityAfterFrame(PolygonCollider2D col)
+    {
+        yield return null;
+
+        col.density = density;
     }
 }
