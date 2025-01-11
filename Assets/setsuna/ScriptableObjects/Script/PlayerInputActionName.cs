@@ -7,8 +7,6 @@ using System;
 public class PlayerInputActionName : ScriptableObject
 {
     public string
-            move, crouch, sprint, jump, attack,
-            charge_mouse, charge_pad, chargeAdjust_pad, chargeSlash_pad, chargeCancel,
-            charge_touch,
+            move, crouch, sprint, jump, attack, chargeCancel,
             reset, pose, interact;
 }

@@ -51,6 +51,7 @@ public class Player : SetsunaSlashScript
     {
         cam.directionToPL = direction;  
     }
+    public Vector2 GetCameraDirection() => cam.directionToPL;
 
     //anim
     public PlayerAnimationCaller Animator{ get=>anim; }
