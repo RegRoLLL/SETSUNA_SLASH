@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 using RegUtil;
+using Unity.VisualScripting;
+using Cysharp.Threading.Tasks;
 
 public class PL_Attack : SetsunaSlashScript
 {
@@ -19,6 +21,10 @@ public class PL_Attack : SetsunaSlashScript
     [Space(10)]
     public float dragMultiplier;
     public float pointChargeSPD, pointLengthMax;
+
+    [Space(10)]
+    public Vector2 dragCamDirMultiplier;
+    public Vector2 pointerCamDirMultiplier;
 
     [Space(10)]
     public float chargeSlowTimeRatio;
@@ -202,12 +208,14 @@ public class PL_Attack : SetsunaSlashScript
 
             Vector2 cameraDir;
 
+            static Vector2 Multiple(Vector2 vec1, Vector2 vec2) => new(vec1.x * vec2.x, vec1.y * vec2.y);
+
             cameraDir = controllMode switch
             {
-                SlashControllMode.pointer => (endPos - startPos),
-                SlashControllMode.drag => direction,
+                SlashControllMode.pointer => Multiple((endPos - startPos) , pointerCamDirMultiplier),
+                SlashControllMode.drag => Multiple(direction, dragCamDirMultiplier),
                 _ => direction
-            } * 0.3f;
+            };
 
             var lerp = (charge_dTime - chargeStartTime) / cameraLerpTime;
 
@@ -264,7 +272,7 @@ public class PL_Attack : SetsunaSlashScript
         if (!config.easyMode) pl.Status.MP_damage(slashMP);
 
         var effect = Instantiate(slashEffectPrefab);
-        effect.GetComponent<SlashEffect>().SetData_charge(start, end);
+        effect.GetComponent<SlashEffect>().SetData(start, end);
 
         pl.PlaySE(audioBind.player.chargeSlash);
         pl.Animator.Slash();

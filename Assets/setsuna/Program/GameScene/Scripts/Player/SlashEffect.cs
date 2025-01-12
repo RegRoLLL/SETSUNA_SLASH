@@ -31,19 +31,12 @@ public class SlashEffect : SetsunaSlashScript
         vanishFlag = false;
     }
 
-    public void SetData_fast(Vector2 direction)
-    {
-        
-    }
-
-    public void SetData_charge(Vector2 start, Vector2 end)
+    public void SetData(Vector2 start, Vector2 end)
     {
         startPos = start;
         endPos = end;
         direction = (end - start).normalized;
-        transform.position = start;
-        transform.rotation = Quaternion.FromToRotation(Vector3.up, (end - start));
-
+        transform.SetPositionAndRotation(start, Quaternion.FromToRotation(Vector3.up, (end - start)));
         isDataAlreadySet = true;
     }
 
@@ -124,7 +117,7 @@ public class SlashEffect : SetsunaSlashScript
         {
             part.transform.localScale = scale;
             part.transform.parent = container.transform;
-            part.gameObject.layer = slashableLayer;
+            part.layer = slashableLayer;
 
             float area = GetAreaOfPolygon(part.GetComponent<PolygonCollider2D>().points);
             if (area > areaMax)
@@ -139,7 +132,7 @@ public class SlashEffect : SetsunaSlashScript
         //元オブジェクトが物理じゃない場合
         if (isStatic) results.Remove(largestPart);
 
-        Action<GameObject> addPhysics = (part) =>
+        void addPhysics(GameObject part)
         {
             part.AddComponent(typeof(Rigidbody2D));
 
@@ -150,7 +143,7 @@ public class SlashEffect : SetsunaSlashScript
             partRB.velocity = velocity;
             partRB.gravityScale = gravityScale;
             StartCoroutine(SetDensityAfterFrame(part.GetComponent<PolygonCollider2D>()));
-        };
+        }
 
         if (results.Count == 1)
         {
@@ -181,14 +174,14 @@ public class SlashEffect : SetsunaSlashScript
 
     float GetAreaOfPolygon(Vector2[] polygon)
     {
-        Func<Vector2, Vector2, float> CrossFrom2Vec2 = (a, b) => a.x * b.y - a.y * b.x;
+        static float CrossFrom2Vec2(Vector2 a, Vector2 b) => a.x * b.y - a.y * b.x;
 
         float sum = 0;
 
         for (int i = 0; i < polygon.Length - 1; i++)
             sum += CrossFrom2Vec2(polygon[i], polygon[i + 1]);
 
-        sum += CrossFrom2Vec2(polygon[polygon.Length - 1], polygon[0]);
+        sum += CrossFrom2Vec2(polygon[^1], polygon[0]);
 
         return Math.Abs(sum) / 2;
     }
