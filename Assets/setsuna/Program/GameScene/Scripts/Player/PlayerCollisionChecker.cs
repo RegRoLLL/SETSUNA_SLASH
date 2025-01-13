@@ -12,14 +12,15 @@ public class PlayerCollisionChecker : SetsunaSlashScript
     [SerializeField] CheckerRays checkRays;
     public float groundAngle, wallAngle;
 
-    Rigidbody2D rb;
     [HideInInspector]public Collider2D col;
 
     private List<RaycastHit2D> groundresults, wallresults_R, wallresults_L;
 
+    readonly List<Collision2D> collisionings = new();
+    readonly List<Collider2D> triggerings = new();
+
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         checkRays.Initialize(this);
         Initialize();
@@ -56,7 +57,7 @@ public class PlayerCollisionChecker : SetsunaSlashScript
         size.y *= ratio_y;
         col.transform.localScale = size;
 
-        col.transform.position = bottomPos + Vector2.up * defaultExistents.y * ratio_y;
+        col.transform.position = bottomPos + defaultExistents.y * ratio_y * Vector2.up;
     }
 
     public Vector2 GetGroundNormal(bool addAngle90)
@@ -362,5 +363,22 @@ public class PlayerCollisionChecker : SetsunaSlashScript
                 return hit;
             }
         }
+    }
+
+    public List<Collision2D> GetCollisions() => new(collisionings);
+    public List<Collider2D> GetTriggers() => new(triggerings);
+
+    void OnCollisionStay2D(Collision2D col){
+        if(!collisionings.Contains(col))collisionings.Add(col);
+    }
+    void OnCollisionExit2D(Collision2D col){
+        if(collisionings.Contains(col)) collisionings.Remove(col);
+    }
+
+    void OnTriggerStay2D(Collider2D col){
+        if(!triggerings.Contains(col)) triggerings.Add(col);
+    }
+    void OnTriggerExit2D(Collider2D col){
+        if(triggerings.Contains(col)) triggerings.Remove(col);
     }
 }

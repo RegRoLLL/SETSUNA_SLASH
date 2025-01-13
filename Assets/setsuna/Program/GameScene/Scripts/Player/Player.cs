@@ -9,17 +9,24 @@ public class Player : SetsunaSlashScript
 
     PlayerController_main ctrler;
     PL_Attack attack;
+    PlayerCollisionChecker colChecker;
     PL_Status status;
     PlayerAnimationCaller anim;
     PL_Dead dead;
+
+    public Rigidbody2D Rigidbody {  get; private set; }
+    public Collider2D Collider { get => colChecker.col; }
 
     void Start()
     {
         ctrler = GetComponent<PlayerController_main>();
         attack = GetComponent<PL_Attack>();
+        colChecker = GetComponentInChildren<PlayerCollisionChecker>();
         status = GetComponent<PL_Status>();
         anim = GetComponent<PlayerAnimationCaller>();
         dead = GetComponent<PL_Dead>();
+
+        Rigidbody = GetComponent<Rigidbody2D>();
     }
 
     //cursor
@@ -58,4 +65,8 @@ public class Player : SetsunaSlashScript
 
     //status
     public PL_Status Status { get => status; }
+
+    //colChecker
+    public List<Collision2D> GetCollisions() => colChecker.GetCollisions();
+    public List<Collider2D> GetTriggers() => colChecker.GetTriggers();
 }
