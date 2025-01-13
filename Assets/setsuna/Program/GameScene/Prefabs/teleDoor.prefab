@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 8312428525934081673}
   - component: {fileID: 7694849835837805604}
   - component: {fileID: 6200570853026182549}
+  - component: {fileID: 7089370414374135337}
   m_Layer: 2
   m_Name: teleDoor
   m_TagString: Untagged
@@ -233,4 +234,23 @@ MonoBehaviour:
   plAction: {fileID: 11400000, guid: 85d17fa336ca9704789d2c72dac9a913, type: 2}
   target: {fileID: 0}
   teleported: 0
-  interactIcon: {fileID: 2713007287150523894}
+  teleportTo: 0
+  targetSavePoint: {fileID: 0}
+  interactIcon: {fileID: 9155355522278934981}
+--- !u!114 &7089370414374135337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977463602494286210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17abb606897f01647bc62d65bf97d1c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 0}
+  audioBind: {fileID: 0}
+  onInteractEvent:
+    m_PersistentCalls:
+      m_Calls: []
