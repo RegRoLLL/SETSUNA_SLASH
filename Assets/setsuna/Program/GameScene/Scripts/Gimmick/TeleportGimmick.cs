@@ -5,9 +5,8 @@ using UnityEngine;
 [AddComponentMenu("")]
 public class TeleportGimmick : SetsunaSlashScript
 {
-    [SerializeField] protected PlayerInputActionName plAction;
     [SerializeField] TeleportGimmick target;
-    [SerializeField] bool teleported;
+    bool teleported;
 
     void Start()
     {
@@ -22,8 +21,6 @@ public class TeleportGimmick : SetsunaSlashScript
         playerT.position = target.transform.position + distance;
         target.TeleportRecieve();
     }
-
-
 
     public void TeleportRecieve()
     {
