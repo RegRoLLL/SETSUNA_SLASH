@@ -10,20 +10,13 @@ using RegUtil;
 public class GameManager : SetsunaSlashScript
 {
     public Game_HubScript hub;
-    [SerializeField] GameObject poseMenu, touchController;
-    public float loadTeleportTime, flashTime;
-    public Image whiteOut;
-    public bool isSaving;
-
-    public float titleOpenTime, titleStayTime, titleCloseTime;
-    public Image titlePanel;
-    public TextMeshProUGUI titleTMP;
+    [SerializeField] Game_SetsunaUI playerUI;
+    public float loadTeleportTime;
+    public bool isSaving, isPausing;
 
     void Start()
     {
-        whiteOut.gameObject.SetActive(false);
         isSaving = false;
-        poseMenu.SetActive(false);
 
         if (config.isContinueStart)
         {
@@ -37,24 +30,24 @@ public class GameManager : SetsunaSlashScript
 
     void Update()
     {
-        if (poseMenu.activeInHierarchy) RegTimeKeeper.Pause();
+        if (isPausing) RegTimeKeeper.Pause();
 
 
         switch (config.controllMode)
         {
             case ConfigDatas.ControllMode.keyboard_mouse:
-                touchController.SetActive(false);
+                playerUI.ToggleTouchController(false);
                 hub.player.input.SwitchCurrentControlScheme("KeyBoard & Mouse", Keyboard.current, Mouse.current);
                 break;
 
             case ConfigDatas.ControllMode.gamepad:
-                touchController.SetActive(false);
+                playerUI.ToggleTouchController(false);
                 if(Gamepad.current==null) hub.player.input.SwitchCurrentControlScheme("GamePad");
                 else hub.player.input.SwitchCurrentControlScheme("GamePad", Gamepad.current);
                 break;
 
             case ConfigDatas.ControllMode.touch:
-                touchController.SetActive(true);
+                playerUI.ToggleTouchController(true);
                 if(Gamepad.current==null) hub.player.input.SwitchCurrentControlScheme("TouchPanel");
                 else hub.player.input.SwitchCurrentControlScheme("TouchPanel", Gamepad.current);
                 break;
@@ -86,51 +79,10 @@ public class GameManager : SetsunaSlashScript
     {
         hub.player.stateP = PlayerController_main.state_pose.teleport;
 
-        titlePanel.gameObject.SetActive(true);
-
-
-        titleTMP.text = hub.playingStage.stageName;
-
-        float dTime = 0;
-
-        titlePanel.fillOrigin = 0;
-        while (dTime <= titleOpenTime)
-        {
-            float ratio = dTime / titleOpenTime;
-            float value = Mathf.Sin(ratio * 90 * Mathf.Deg2Rad);
-
-            titlePanel.fillAmount = value;
-
-            dTime += Time.unscaledDeltaTime;
-            yield return null;
-        }
-        titlePanel.fillAmount = 1;
-
-
-
-        yield return new WaitForSecondsRealtime(titleStayTime);
-
-
-
-        dTime = 0;
-        titlePanel.fillOrigin = 1;
-        while (dTime <= titleOpenTime)
-        {
-            float ratio = dTime / titleOpenTime;
-            float value = -Mathf.Pow(ratio,4) + 1;
-
-            titlePanel.fillAmount = value;
-
-            dTime += Time.unscaledDeltaTime;
-            yield return null;
-        }
-        titlePanel.fillAmount = 0;
-
-
-        titlePanel.gameObject.SetActive(false);
-
+        yield return StartCoroutine(playerUI.TitleCall(hub.playingStage.stageName));
 
         hub.player.stateP = PlayerController_main.state_pose.stand;
+
         yield return StartCoroutine(Flash());
     }
 
@@ -173,31 +125,14 @@ public class GameManager : SetsunaSlashScript
 
     IEnumerator Flash()
     {
-        whiteOut.gameObject.SetActive(true);
-
-        whiteOut.color = Color.white;
-        Color color = whiteOut.color;
-
-        var stat = hub.player.GetComponent<PL_Status>();
-        stat.HP_heal(stat.hp_max);
-        stat.HP_damage(stat.hp_max - hub.playingStage.savedPlayerHP);
-        stat.MP_heal(stat.mp_max);
-        stat.MP_damage(stat.mp_max - hub.playingStage.savedPlayerMP);
-
-        float dTime = 0;
-        while (dTime <= flashTime)
+        yield return StartCoroutine(playerUI.Flash(() =>
         {
-            color.a = 1 - (dTime / flashTime);
-
-            whiteOut.color = color;
-
-            dTime += Time.unscaledDeltaTime;
-            yield return null;
-        }
-
-        whiteOut.color = Color.clear;
-
-        whiteOut.gameObject.SetActive(false);
+            var stat = hub.player.GetComponent<PL_Status>();
+            stat.HP_heal(stat.hp_max);
+            stat.HP_damage(stat.hp_max - hub.playingStage.savedPlayerHP);
+            stat.MP_heal(stat.mp_max);
+            stat.MP_damage(stat.mp_max - hub.playingStage.savedPlayerMP);
+        }));
     }
 
     [ContextMenu("setVolumes")]
@@ -207,9 +142,9 @@ public class GameManager : SetsunaSlashScript
     }
 
 
-    public void PoseMenu()
+    public void TogglePause()
     {
-        poseMenu.SetActive(!poseMenu.activeInHierarchy);
+        playerUI.TogglePauseMenu(!isPausing);
     }
 
     public void Back2Title()

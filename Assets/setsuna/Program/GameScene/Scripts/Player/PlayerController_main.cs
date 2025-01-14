@@ -64,7 +64,7 @@ public class PlayerController_main : SetsunaSlashScript
 
     void Update()
     {
-        if (input.actions[plAction.pose].WasPressedThisFrame()) hub.gm.PoseMenu();
+        if (input.actions[plAction.pose].WasPressedThisFrame()) hub.gm.TogglePause();
 
         if (Time.timeScale == 0) return;
 
