@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class InteractGimmick : MonoBehaviour
 {
+    public Sprite interactIconSprite;
     [HideInInspector] public UnityEvent<Player> onInteractEvent;
 
     public void Interact(Player player)

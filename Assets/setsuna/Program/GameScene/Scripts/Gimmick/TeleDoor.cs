@@ -21,7 +21,10 @@ public class TeleDoor : TeleportGimmick
     {
         interactIcon.enabled = false;
         touchingToPlayer = false;
-        GetComponent<InteractGimmick>().onInteractEvent.AddListener(InteractDoor);
+
+        var gimmick = GetComponent<InteractGimmick>();
+        gimmick.onInteractEvent.AddListener(InteractDoor);
+        interactIcon.sprite = gimmick.interactIconSprite;
     }
 
     void Update()
