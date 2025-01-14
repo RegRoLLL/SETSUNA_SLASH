@@ -69,4 +69,5 @@ public class Player : SetsunaSlashScript
     //colChecker
     public List<Collision2D> GetCollisions() => colChecker.GetCollisions();
     public List<Collider2D> GetTriggers() => colChecker.GetTriggers();
+    public bool IsGounded() => colChecker.IsGrounded();
 }

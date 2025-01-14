@@ -6,32 +6,42 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(InteractGimmick))]
 public class TeleDoor : TeleportGimmick
 {
+    [Space(10)]
+    [SerializeField] bool onlyGrounded = true;
     [SerializeField] TeleDoorToMode teleportTo = TeleDoorToMode.teleDoor;
     [SerializeField] SavePoint targetSavePoint;
     [SerializeField] SpriteRenderer interactIcon;
 
-    GameObject player;
-    PlayerInput input;
+    Player player;
+    bool touchingToPlayer;
 
     enum TeleDoorToMode { teleDoor, savePoint }
 
     void Start()
     {
         interactIcon.enabled = false;
+        touchingToPlayer = false;
         GetComponent<InteractGimmick>().onInteractEvent.AddListener(InteractDoor);
+    }
+
+    void Update()
+    {
+        interactIcon.enabled = touchingToPlayer && (!onlyGrounded || player.IsGounded());
     }
 
     public void InteractDoor(Player pl)
     {
-        if (interactIcon.enabled == false) return;
+        if (touchingToPlayer == false) return;
+
+        if(onlyGrounded && !pl.IsGounded()) return;
 
         if (teleportTo == TeleDoorToMode.teleDoor)
         {
-            Teleport(player.transform);
+            Teleport(pl.transform);
         }
         else
         {
-            player.transform.position = targetSavePoint.transform.position;
+            pl.transform.position = targetSavePoint.transform.position;
         }
     }
 
@@ -40,19 +50,16 @@ public class TeleDoor : TeleportGimmick
     {
         if (col.gameObject.layer != playerLayer) return;
 
-        interactIcon.enabled = true;
         BecomeTeleportable();
 
-        if (input != null) return;
-
-        input = col.GetComponentInParent<PlayerInput>();
-        player = col.GetComponentInParent<PlayerController_main>().gameObject;
+        player = col.GetComponentInParent<Player>();
+        touchingToPlayer = true;
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
         if (col.gameObject.layer != playerLayer) return;
 
-        interactIcon.enabled = false;
+        touchingToPlayer = false;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class InteractGimmick : SetsunaSlashScript
+public class InteractGimmick : MonoBehaviour
 {
     [HideInInspector] public UnityEvent<Player> onInteractEvent;
 

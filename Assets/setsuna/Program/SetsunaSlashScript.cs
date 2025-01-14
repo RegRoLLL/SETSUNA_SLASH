@@ -13,8 +13,8 @@ public class SetsunaSlashScript : MonoBehaviour
         slashGimmickLayer = 10,
         deathFallAreaLayer = 13;
 
-    public ConfigDatas config;
-    public AudioBinding audioBind;
+    [SerializeField] protected ConfigDatas config;
+    [SerializeField] protected AudioBinding audioBind;
 
     public const string
         titleScene = "TitleScene",
