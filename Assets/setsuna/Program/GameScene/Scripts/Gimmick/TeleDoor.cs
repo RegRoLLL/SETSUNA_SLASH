@@ -23,9 +23,6 @@ public class TeleDoor : TeleportGimmick
 
     public void InteractDoor(Player pl)
     {
-        Debug.Log("door interacted", gameObject);
-        Debug.Log(interactIcon.enabled);
-
         if (interactIcon.enabled == false) return;
 
         if (teleportTo == TeleDoorToMode.teleDoor)

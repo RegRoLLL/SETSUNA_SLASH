@@ -18,12 +18,12 @@ public class PL_Interact : MonoBehaviour
         if (!value.isPressed) return;
 
         var targetTrigger = pl.GetTriggers().Find(
-            (t) => t.GetComponent<Collider2D>() && !t.GetComponent<StageStat>()
+            (t) => !t.GetComponent<StageStat>() && t.GetComponentInChildren<InteractGimmick>()
             );
 
-        var targetGimmick = targetTrigger.GetComponentInChildren<InteractGimmick>();
+        if (targetTrigger == null) return;
 
-        Debug.Log("onInteract", targetGimmick.gameObject);
+        var targetGimmick = targetTrigger.GetComponentInChildren<InteractGimmick>();
 
         targetGimmick.Interact(pl);
     }
