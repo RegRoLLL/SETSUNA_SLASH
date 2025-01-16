@@ -6,11 +6,11 @@ using System;
 
 public class Game_HubScript : SetsunaSlashScript
 {
-    public GameManager gm;
     public int pl_layer;
-    public PlayerController_main player;
-    public SetsunaPlayerCamera camera_;
-    public VideoPlayer moviePlayer;
+    public Player pl;
+    [HideInInspector] public GameManager gm;
+    [HideInInspector] public PlayerController_main player;
+    [HideInInspector] public SetsunaPlayerCamera camera_;
 
     public StageManager playingStage;
     public StageStat currentPart;
@@ -18,6 +18,10 @@ public class Game_HubScript : SetsunaSlashScript
 
     void Start()
     {
+        player = pl.GetComponent<PlayerController_main>();
+        camera_ = pl.cam;
+        gm = gameObject.GetComponent<GameManager>();
+
         StartCoroutine(DelayOneFrame(() =>
         {
             //Debug.Log($"partsCount:{playingStage.stageParts.Count}", playingStage);

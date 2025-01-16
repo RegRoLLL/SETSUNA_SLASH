@@ -9,13 +9,17 @@ using RegUtil;
 
 public class GameManager : SetsunaSlashScript
 {
-    public Game_HubScript hub;
-    [SerializeField] Game_SetsunaUI playerUI;
+    [HideInInspector] public Game_HubScript hub;
     public float loadTeleportTime;
     public bool isSaving, isPausing;
 
+    Game_SetsunaUI playerUI;
+
     void Start()
     {
+        hub = GetComponent<Game_HubScript>();
+        playerUI = hub.pl.ui;
+
         isSaving = false;
 
         if (config.isContinueStart)
@@ -89,39 +93,9 @@ public class GameManager : SetsunaSlashScript
     
     public void LoadSave()
     {
-        StartCoroutine(ReturnPlayerPos());
+        StartCoroutine(hub.pl.ReturnPlayerPos());
     }
 
-    public IEnumerator ReturnPlayerPos()
-    {
-        isSaving = true;
-
-        hub.player.stateP = PlayerController_main.state_pose.teleport;
-
-        float dTime = 0, ratio;
-        Vector3 beforeTeleportPos = hub.player.transform.position;
-        while (dTime <= loadTeleportTime)
-        {
-            ratio = dTime / loadTeleportTime;
-
-            hub.player.transform.position = Vector3.Lerp(beforeTeleportPos, hub.playingStage.savedPlayerPosition, ratio);
-
-            dTime += Time.deltaTime;
-
-            yield return null;
-        }
-        hub.player.transform.position = hub.playingStage.savedPlayerPosition;
-        hub.player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        hub.camera_.ResetList();
-
-        hub.player.stateP = PlayerController_main.state_pose.stand;
-
-        hub.playingStage.Load();
-
-        yield return StartCoroutine(Flash());
-
-        isSaving = false;
-    }
 
     IEnumerator Flash()
     {

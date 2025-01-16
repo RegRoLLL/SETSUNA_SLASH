@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : SetsunaSlashScript
 {
     [SerializeField] PlayerCursor cursor;
-    [SerializeField] SetsunaPlayerCamera cam;
+    public SetsunaPlayerCamera cam;
+    public Game_SetsunaUI ui;
 
     PlayerController_main ctrler;
     PL_Attack attack;
@@ -17,8 +19,12 @@ public class Player : SetsunaSlashScript
     public Rigidbody2D Rigidbody {  get; private set; }
     public Collider2D Collider { get => colChecker.col; }
 
+    GameManager gm;
+
     void Start()
     {
+        gm = EventSystem.current.GetComponent<GameManager>();
+
         ctrler = GetComponent<PlayerController_main>();
         attack = GetComponent<PL_Attack>();
         colChecker = GetComponentInChildren<PlayerCollisionChecker>();
@@ -70,4 +76,36 @@ public class Player : SetsunaSlashScript
     public List<Collision2D> GetCollisions() => colChecker.GetCollisions();
     public List<Collider2D> GetTriggers() => colChecker.GetTriggers();
     public bool IsGounded() => colChecker.IsGrounded();
+
+
+    public IEnumerator ReturnPlayerPos()
+    {
+        gm.isSaving = true;
+
+        ctrler.stateP = PlayerController_main.state_pose.teleport;
+
+        float dTime = 0, ratio;
+        Vector3 beforeTeleportPos = ctrler.transform.position;
+        while (dTime <= gm.loadTeleportTime)
+        {
+            ratio = dTime / gm.loadTeleportTime;
+
+            ctrler.transform.position = Vector3.Lerp(beforeTeleportPos, gm.hub.playingStage.savedPlayerPosition, ratio);
+
+            dTime += Time.deltaTime;
+
+            yield return null;
+        }
+        ctrler.transform.position = gm.hub.playingStage.savedPlayerPosition;
+        ctrler.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        cam.ResetList();
+
+        ctrler.stateP = PlayerController_main.state_pose.stand;
+
+        gm.hub.playingStage.Load();
+
+        yield return StartCoroutine(ui.Flash());
+
+        gm.isSaving = false;
+    }
 }

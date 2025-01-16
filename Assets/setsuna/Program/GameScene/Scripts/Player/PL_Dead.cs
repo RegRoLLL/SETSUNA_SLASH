@@ -10,6 +10,7 @@ public class PL_Dead : MonoBehaviour
     [SerializeField] Image deathBlackOut;
 
     Game_HubScript hub;
+    Player pl;
     PlayerController_main player;
     PL_Status stat;
     PlayerAnimationCaller plAnim;
@@ -18,6 +19,7 @@ public class PL_Dead : MonoBehaviour
     {
         hub = EventSystem.current.GetComponent<Game_HubScript>();
 
+        pl=GetComponent<Player>();
         player = GetComponent<PlayerController_main>();
         stat = GetComponent<PL_Status>();
         plAnim = GetComponent<PlayerAnimationCaller>();
@@ -53,7 +55,7 @@ public class PL_Dead : MonoBehaviour
 
 
 
-        yield return hub.gm.StartCoroutine(hub.gm.ReturnPlayerPos());
+        yield return StartCoroutine(pl.ReturnPlayerPos());
 
         player.isDead = false;
         stat.HP_heal(stat.hp_max);

@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class Game_SetsunaUI : MonoBehaviour
 {
+    [HideInInspector] public GameManager gm;
+
     [SerializeField] Game_menuUI menuUI;
     [SerializeField] GameObject touchController;
     [Space]
@@ -21,6 +24,7 @@ public class Game_SetsunaUI : MonoBehaviour
     {
         menuUI.gameObject.SetActive(false);
         whiteOut.gameObject.SetActive(false);
+        gm = EventSystem.current.gameObject.GetComponent<GameManager>();
     }
 
     public void TogglePauseMenu(bool pause)

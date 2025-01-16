@@ -1142,7 +1142,6 @@ Transform:
   - {fileID: 578116724}
   - {fileID: 629565764}
   - {fileID: 1288884359}
-  - {fileID: 87383225}
   m_Father: {fileID: 974298781}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1217,99 +1216,6 @@ MonoBehaviour:
     down: {fileID: 578116727}
     right: {fileID: 578116726}
     left: {fileID: 578116725}
---- !u!1 &87383224
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 87383225}
-  - component: {fileID: 87383226}
-  - component: {fileID: 87383227}
-  m_Layer: 2
-  m_Name: movieCaller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &87383225
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87383224}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -24.77, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 81995790}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &87383226
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87383224}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 10, y: 50}
-  m_EdgeRadius: 0
---- !u!114 &87383227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87383224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f84435f21e54e34faf3f378868de9a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  config: {fileID: 0}
-  audioBind: {fileID: 0}
-  movie: {fileID: 32900000, guid: b6bb6a70323c369449d9b1dcf0d21b6f, type: 3}
 --- !u!1 &87573276
 GameObject:
   m_ObjectHideFlags: 0
@@ -8170,7 +8076,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 0}
-  hub: {fileID: 1277392422}
   cursor: {fileID: 1444064626}
   onDeSelectPointer: {fileID: 992591150}
   cursorSetable:
@@ -11329,9 +11234,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1277392427}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: Back2Title
+      - m_Target: {fileID: 273870930}
+        m_TargetAssemblyTypeName: Game_menuUI, Assembly-CSharp
+        m_MethodName: BackTitle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11932,6 +11837,7 @@ MonoBehaviour:
   audioBind: {fileID: 0}
   cursor: {fileID: 2142626356}
   cam: {fileID: 519420036}
+  ui: {fileID: 1605855395}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -24385,7 +24291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 11400000, guid: 968dacedbc7e006449c2566a8c30f24c, type: 2}
-  hub: {fileID: 0}
+  hub: {fileID: 1277392422}
   stageName: "\u708E\u306E\u4E3B\u4F4F\u307E\u3046\u57CE"
   backGroundsContainer: {fileID: 450090472}
   showGroup: {fileID: 1793378047}
@@ -24951,7 +24857,7 @@ GameObject:
   - component: {fileID: 992591151}
   - component: {fileID: 992591150}
   m_Layer: 5
-  m_Name: onDeselectPointer
+  m_Name: onDeselectPointer_menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37792,7 +37698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1168215094
 RectTransform:
   m_ObjectHideFlags: 0
@@ -44477,7 +44383,6 @@ GameObject:
   - component: {fileID: 1277392423}
   - component: {fileID: 1277392427}
   - component: {fileID: 1277392422}
-  - component: {fileID: 1277392426}
   - component: {fileID: 1277392428}
   - component: {fileID: 1277392429}
   m_Layer: 0
@@ -44501,11 +44406,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 0}
-  gm: {fileID: 1277392427}
   pl_layer: 3
-  player: {fileID: 510882851}
+  pl: {fileID: 510882860}
+  gm: {fileID: 1277392427}
+  player: {fileID: 0}
   camera_: {fileID: 519420036}
-  moviePlayer: {fileID: 1538517990}
   playingStage: {fileID: 974298782}
   currentPart: {fileID: 0}
   bgmAS: {fileID: 682010235}
@@ -44569,39 +44474,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1277392426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1277392421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 433dcdf18bda7ea469c6d92f73df9286, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
-  audioBind: {fileID: 0}
-  sprites:
-  - {fileID: 21300000, guid: a025cd15336bdeb46931cde1eacf5237, type: 3}
-  material: {fileID: 2100000, guid: 8dbbfaa5f75bb5d4ba22cfc3b5363b68, type: 2}
-  objectname: volcano_5_able
-  SaveFolderPath: Assets/setsuna/Stage/volcano/meshes/5_able/
-  filename: volcano_5_able
-  meshObjects:
-  - {fileID: 99980905}
-  - {fileID: 427081968}
-  - {fileID: 1158304266}
-  - {fileID: 976513605}
-  - {fileID: 564880294}
-  - {fileID: 978970940}
-  - {fileID: 1175344755}
-  - {fileID: 844127412}
-  - {fileID: 1223131603}
-  - {fileID: 793485118}
-  - {fileID: 561206319}
-  - {fileID: 1320248932}
 --- !u!114 &1277392427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44617,7 +44489,6 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 0}
   hub: {fileID: 1277392422}
-  playerUI: {fileID: 1605855395}
   loadTeleportTime: 0.5
   isSaving: 0
   isPausing: 0
@@ -47812,119 +47683,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532734090}
   m_CullTransparentMesh: 1
---- !u!1 &1538517986
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1538517987}
-  - component: {fileID: 1538517989}
-  - component: {fileID: 1538517988}
-  - component: {fileID: 1538517990}
-  m_Layer: 5
-  m_Name: moviePanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1538517987
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538517986}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1605855394}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1538517988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538517986}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1538517989
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538517986}
-  m_CullTransparentMesh: 1
---- !u!328 &1538517990
-VideoPlayer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538517986}
-  m_Enabled: 1
-  m_VideoClip: {fileID: 0}
-  m_TargetCameraAlpha: 1
-  m_TargetCamera3DLayout: 0
-  m_TargetCamera: {fileID: 519420031}
-  m_TargetTexture: {fileID: 0}
-  m_TimeReference: 0
-  m_TargetMaterialRenderer: {fileID: 0}
-  m_TargetMaterialProperty: <noninit>
-  m_RenderMode: 1
-  m_AspectRatio: 5
-  m_DataSource: 0
-  m_TimeUpdateMode: 0
-  m_PlaybackSpeed: 1
-  m_AudioOutputMode: 1
-  m_TargetAudioSources:
-  - {fileID: 682010235}
-  m_DirectAudioVolumes:
-  - 1
-  m_Url: 
-  m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
-  m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 0
-  m_SkipOnDrop: 1
-  m_Looping: 0
-  m_WaitForFirstFrame: 1
-  m_FrameReadyEventEnabled: 0
-  m_VideoShaders: []
 --- !u!1001 &1546783848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48733,7 +48491,6 @@ RectTransform:
   - {fileID: 1636144777}
   - {fileID: 423237439}
   - {fileID: 273870927}
-  - {fileID: 1538517987}
   m_Father: {fileID: 1599778528}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48754,6 +48511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d836906432556d4ea020ba11636332a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gm: {fileID: 0}
   menuUI: {fileID: 273870930}
   touchController: {fileID: 1130208310}
   whiteOut: {fileID: 453297582}
@@ -53544,21 +53302,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1277392427}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: LoadSave
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1277392427}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: PoseMenu
+      - m_Target: {fileID: 273870930}
+        m_TargetAssemblyTypeName: Game_menuUI, Assembly-CSharp
+        m_MethodName: ResetToSavePoint
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -53734,9 +53480,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1277392427}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: PoseMenu
+      - m_Target: {fileID: 273870930}
+        m_TargetAssemblyTypeName: Game_menuUI, Assembly-CSharp
+        m_MethodName: ClosePauseMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -54536,7 +54282,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1654264804}
   m_OnClick:
     m_PersistentCalls:
