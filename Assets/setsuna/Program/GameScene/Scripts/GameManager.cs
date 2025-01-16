@@ -18,7 +18,7 @@ public class GameManager : SetsunaSlashScript
     void Start()
     {
         hub = GetComponent<Game_HubScript>();
-        playerUI = hub.pl.ui;
+        playerUI = hub.player.ui;
 
         isSaving = false;
 
@@ -41,19 +41,19 @@ public class GameManager : SetsunaSlashScript
         {
             case ConfigDatas.ControllMode.keyboard_mouse:
                 playerUI.ToggleTouchController(false);
-                hub.player.input.SwitchCurrentControlScheme("KeyBoard & Mouse", Keyboard.current, Mouse.current);
+                hub.PL_Ctrler.input.SwitchCurrentControlScheme("KeyBoard & Mouse", Keyboard.current, Mouse.current);
                 break;
 
             case ConfigDatas.ControllMode.gamepad:
                 playerUI.ToggleTouchController(false);
-                if(Gamepad.current==null) hub.player.input.SwitchCurrentControlScheme("GamePad");
-                else hub.player.input.SwitchCurrentControlScheme("GamePad", Gamepad.current);
+                if(Gamepad.current==null) hub.PL_Ctrler.input.SwitchCurrentControlScheme("GamePad");
+                else hub.PL_Ctrler.input.SwitchCurrentControlScheme("GamePad", Gamepad.current);
                 break;
 
             case ConfigDatas.ControllMode.touch:
                 playerUI.ToggleTouchController(true);
-                if(Gamepad.current==null) hub.player.input.SwitchCurrentControlScheme("TouchPanel");
-                else hub.player.input.SwitchCurrentControlScheme("TouchPanel", Gamepad.current);
+                if(Gamepad.current==null) hub.PL_Ctrler.input.SwitchCurrentControlScheme("TouchPanel");
+                else hub.PL_Ctrler.input.SwitchCurrentControlScheme("TouchPanel", Gamepad.current);
                 break;
 
             default: break;
@@ -62,13 +62,13 @@ public class GameManager : SetsunaSlashScript
 
     void SetContinueData()
     {
-        hub.player.stat.SetHP(config.loadedSaveData.hp);
+        hub.PL_Ctrler.stat.SetHP(config.loadedSaveData.hp);
         hub.playingStage.savedPlayerHP = config.loadedSaveData.hp;
 
-        hub.player.stat.SetMP(config.loadedSaveData.mp);
+        hub.PL_Ctrler.stat.SetMP(config.loadedSaveData.mp);
         hub.playingStage.savedPlayerMP = config.loadedSaveData.mp;
 
-        hub.player.transform.position = config.loadedSaveData.pos;
+        hub.PL_Ctrler.transform.position = config.loadedSaveData.pos;
         hub.playingStage.savedPlayerPosition = config.loadedSaveData.pos;
 
         hub.playingStage.saveIndex = config.loadedSaveData.area;
@@ -81,11 +81,11 @@ public class GameManager : SetsunaSlashScript
 
     IEnumerator TitleCall()
     {
-        hub.player.stateP = PlayerController_main.state_pose.teleport;
+        hub.PL_Ctrler.stateP = PlayerController_main.state_pose.teleport;
 
         yield return StartCoroutine(playerUI.TitleCall(hub.playingStage.stageName));
 
-        hub.player.stateP = PlayerController_main.state_pose.stand;
+        hub.PL_Ctrler.stateP = PlayerController_main.state_pose.stand;
 
         yield return StartCoroutine(Flash());
     }
@@ -93,7 +93,7 @@ public class GameManager : SetsunaSlashScript
     
     public void LoadSave()
     {
-        StartCoroutine(hub.pl.ReturnPlayerPos());
+        StartCoroutine(hub.player.ReturnPlayerPos());
     }
 
 
@@ -101,7 +101,7 @@ public class GameManager : SetsunaSlashScript
     {
         yield return StartCoroutine(playerUI.Flash(() =>
         {
-            var stat = hub.player.GetComponent<PL_Status>();
+            var stat = hub.PL_Ctrler.GetComponent<PL_Status>();
             stat.HP_heal(stat.hp_max);
             stat.HP_damage(stat.hp_max - hub.playingStage.savedPlayerHP);
             stat.MP_heal(stat.mp_max);

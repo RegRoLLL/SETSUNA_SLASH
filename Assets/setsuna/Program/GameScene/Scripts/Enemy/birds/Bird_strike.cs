@@ -35,7 +35,7 @@ public class Bird_strike : SetsunaSlashScript
         rb.velocity = -transform.up * moveSpeed;
 
         if (wasThroughedPlayer) return;
-        if (hub.player.transform.position.y > transform.position.y) wasThroughedPlayer = true;
+        if (hub.PL_Ctrler.transform.position.y > transform.position.y) wasThroughedPlayer = true;
     }
 
     void OnTriggerStay2D(Collider2D col)
@@ -45,7 +45,7 @@ public class Bird_strike : SetsunaSlashScript
         if (col.gameObject.layer == playerLayer && !hasDamaged)
         {
             hasDamaged = true;
-            hub.player.stat.HP_damage(damage);
+            hub.PL_Ctrler.stat.HP_damage(damage);
         }
         else if(col.gameObject.layer is slashableLayer or not_slashableLayer)
         {

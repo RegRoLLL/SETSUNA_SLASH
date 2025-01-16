@@ -7,9 +7,9 @@ using System;
 public class Game_HubScript : SetsunaSlashScript
 {
     public int pl_layer;
-    public Player pl;
+    public Player player;
     [HideInInspector] public GameManager gm;
-    [HideInInspector] public PlayerController_main player;
+    public PlayerController_main PL_Ctrler { get => player.ctrler; }
     [HideInInspector] public SetsunaPlayerCamera camera_;
 
     public StageManager playingStage;
@@ -18,8 +18,7 @@ public class Game_HubScript : SetsunaSlashScript
 
     void Start()
     {
-        player = pl.GetComponent<PlayerController_main>();
-        camera_ = pl.cam;
+        camera_ = player.cam;
         gm = gameObject.GetComponent<GameManager>();
 
         StartCoroutine(DelayOneFrame(() =>

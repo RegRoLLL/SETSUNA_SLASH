@@ -40,8 +40,8 @@ public class SavePoint : SetsunaSlashScript
 
         if (isArcSavePoint && area.detected)
         {
-            hub.player.stat.HP_heal(healPerSec*Time.deltaTime);
-            hub.player.stat.MP_heal(healPerSec * Time.deltaTime);
+            hub.PL_Ctrler.stat.HP_heal(healPerSec*Time.deltaTime);
+            hub.PL_Ctrler.stat.MP_heal(healPerSec * Time.deltaTime);
         }
     }
 
@@ -57,8 +57,8 @@ public class SavePoint : SetsunaSlashScript
     void SavePointExcute()
     {
         manager.savedPlayerPosition = transform.position;
-        manager.savedPlayerHP = manager.hub.player.GetComponent<PL_Status>().hp;
-        manager.savedPlayerMP = manager.hub.player.GetComponent<PL_Status>().mp;
+        manager.savedPlayerHP = manager.hub.PL_Ctrler.GetComponent<PL_Status>().hp;
+        manager.savedPlayerMP = manager.hub.PL_Ctrler.GetComponent<PL_Status>().mp;
         manager.hub.playingStage.SaveNotOverWrite(part.gameObject);
 
         sprite.sprite = active;

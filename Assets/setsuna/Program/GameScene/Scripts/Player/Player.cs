@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[DefaultExecutionOrder(1)]
 public class Player : SetsunaSlashScript
 {
     [SerializeField] PlayerCursor cursor;
     public SetsunaPlayerCamera cam;
     public Game_SetsunaUI ui;
 
-    PlayerController_main ctrler;
+    [HideInInspector] public PlayerController_main ctrler;
     PL_Attack attack;
     PlayerCollisionChecker colChecker;
     PL_Status status;
@@ -21,7 +22,7 @@ public class Player : SetsunaSlashScript
 
     GameManager gm;
 
-    void Start()
+    void Awake()
     {
         gm = EventSystem.current.GetComponent<GameManager>();
 

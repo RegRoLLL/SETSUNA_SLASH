@@ -33,7 +33,7 @@ public class Bird_normal : MonoBehaviour
         rb.velocity = Vector2.left * moveSpeed;
 
         if (wasThroughedPlayer) return;
-        if (hub.player.transform.position.x > transform.position.x) wasThroughedPlayer = true;
+        if (hub.PL_Ctrler.transform.position.x > transform.position.x) wasThroughedPlayer = true;
     }
 
     private void OnBecameVisible()

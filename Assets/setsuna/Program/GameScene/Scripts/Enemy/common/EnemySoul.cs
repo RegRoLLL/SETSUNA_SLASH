@@ -20,14 +20,14 @@ public class EnemySoul : SetsunaSlashScript
     {
         if(sm == null) sm = GetComponentInParent<StageManager>();
         if (hub == null) hub = sm.hub;
-        rb.velocity = ((Vector2)hub.player.transform.position - (Vector2)transform.position).normalized * speed;
+        rb.velocity = ((Vector2)hub.PL_Ctrler.transform.position - (Vector2)transform.position).normalized * speed;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.layer == playerLayer)
         {
-            hub.player.stat.MP_heal(mpValue);
+            hub.PL_Ctrler.stat.MP_heal(mpValue);
             Destroy(gameObject);
         }
     }
