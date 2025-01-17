@@ -16,6 +16,9 @@ public class LevitationStone : SetsunaSlashScript
     [SerializeField] Color inactiveColor, activeColor;
     [SerializeField] GameObject activateParticle;
     [SerializeField] ParticleSystem vanishParticle;
+    [SerializeField] GameObject slashEffectPrefab;
+
+    SlashEffect slashEffectInstance;
 
     bool activated,floatStarted,limitReached;
 
@@ -35,6 +38,8 @@ public class LevitationStone : SetsunaSlashScript
         joint = GetComponent<FixedJoint2D>();
         sr = GetComponent<SpriteRenderer>();
         sr.color = inactiveColor;
+
+        slashEffectInstance = slashEffectPrefab.GetComponent<SlashEffect>();
 
         if(activeOnStart) Activate();
     }
@@ -93,7 +98,10 @@ public class LevitationStone : SetsunaSlashScript
         targetCol = col;
         joint.connectedBody = targetRB;
 
-        if (activated || targetRB.mass <= floatableMass)
+        var slashedDensity = slashEffectInstance.density;
+        var targetCalcMass = targetRB.mass / targetCol.density * slashedDensity;
+
+        if (activated || targetCalcMass <= floatableMass)
         {
             if (!activated) Activate();
 
