@@ -14707,13 +14707,14 @@ MonoBehaviour:
   floatingLimit: 7
   floatSPD: 20
   floatableMass: 50
-  activated: 0
+  activeOnStart: 0
   activateTime: 2
   dTime: 0
   inactiveColor: {r: 0.050980397, g: 0.43137258, b: 0, a: 1}
   activeColor: {r: 0.061321497, g: 1, b: 0, a: 1}
   activateParticle: {fileID: 2532998672535625265}
   vanishParticle: {fileID: 4470694644891169326}
+  slashEffectPrefab: {fileID: 498141626294015819, guid: b6df03de2ffffe34c91cfff9f43439b1, type: 3}
 --- !u!1 &7102584338976622775
 GameObject:
   m_ObjectHideFlags: 0
@@ -14855,5 +14856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476f24877e48a6446add8e66e4cd3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeScale: 0
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   type: 1

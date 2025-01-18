@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2713007287150523894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalPosition: {x: 0, y: 7, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5664331317835159358}
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: daf2ab606d4db0d4f9ecf4c02137d2a8, type: 3}
-  m_Color: {r: 1, g: 0.8798679, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 2419f456860e07d4f8d57772116a0172, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 8312428525934081673}
   - component: {fileID: 7694849835837805604}
   - component: {fileID: 6200570853026182549}
+  - component: {fileID: 7089370414374135337}
   m_Layer: 2
   m_Name: teleDoor
   m_TagString: Untagged
@@ -230,7 +231,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 0}
   audioBind: {fileID: 0}
-  plAction: {fileID: 11400000, guid: 85d17fa336ca9704789d2c72dac9a913, type: 2}
   target: {fileID: 0}
-  teleported: 0
-  interactIcon: {fileID: 2713007287150523894}
+  onlyGrounded: 1
+  teleportTo: 0
+  targetSavePoint: {fileID: 0}
+  interactIcon: {fileID: 9155355522278934981}
+--- !u!114 &7089370414374135337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977463602494286210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17abb606897f01647bc62d65bf97d1c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactIconSprite: {fileID: 21300000, guid: 2419f456860e07d4f8d57772116a0172, type: 3}
+  onInteractEvent:
+    m_PersistentCalls:
+      m_Calls: []

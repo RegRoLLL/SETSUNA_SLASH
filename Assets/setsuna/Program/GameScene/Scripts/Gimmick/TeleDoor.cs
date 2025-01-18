@@ -3,57 +3,66 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(InteractGimmick))]
 public class TeleDoor : TeleportGimmick
 {
+    [Space(10)]
+    [SerializeField] bool onlyGrounded = true;
     [SerializeField] TeleDoorToMode teleportTo = TeleDoorToMode.teleDoor;
     [SerializeField] SavePoint targetSavePoint;
-    [SerializeField] GameObject interactIcon;
+    [SerializeField] SpriteRenderer interactIcon;
 
-    GameObject player;
-    PlayerInput input;
+    Player player;
+    bool touchingToPlayer;
 
     enum TeleDoorToMode { teleDoor, savePoint }
 
-    private void Start()
+    void Start()
     {
-        interactIcon.SetActive(false);
+        interactIcon.enabled = false;
+        touchingToPlayer = false;
+
+        var gimmick = GetComponent<InteractGimmick>();
+        gimmick.onInteractEvent.AddListener(InteractDoor);
+        interactIcon.sprite = gimmick.interactIconSprite;
     }
 
-
-    private void Update()
+    void Update()
     {
-        if (interactIcon.activeInHierarchy == false) return;
-
-        if (input.actions[plAction.interact].WasPressedThisFrame() == false) return;
-
-        if (teleportTo == TeleDoorToMode.teleDoor){ 
-            Teleport(player.transform);
-        }
-        else { 
-            player.transform.position = targetSavePoint.transform.position;
-        }
+        interactIcon.enabled = touchingToPlayer && (!onlyGrounded || player.IsGounded());
     }
 
+    public void InteractDoor(Player pl)
+    {
+        if (touchingToPlayer == false) return;
+
+        if(onlyGrounded && !pl.IsGounded()) return;
+
+        if (teleportTo == TeleDoorToMode.teleDoor)
+        {
+            Teleport(pl.transform);
+        }
+        else
+        {
+            pl.transform.position = targetSavePoint.transform.position;
+        }
+    }
 
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.layer != playerLayer) return;
 
-        interactIcon.SetActive(true);
         BecomeTeleportable();
 
-        if (input != null) return;
-
-        input = col.GetComponentInParent<PlayerInput>();
-        player = col.GetComponentInParent<PlayerController_main>().gameObject;
+        player = col.GetComponentInParent<Player>();
+        touchingToPlayer = true;
     }
-
 
     private void OnTriggerExit2D(Collider2D col)
     {
         if (col.gameObject.layer != playerLayer) return;
 
-        interactIcon.SetActive(false);
+        touchingToPlayer = false;
     }
 }
