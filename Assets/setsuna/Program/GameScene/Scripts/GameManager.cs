@@ -102,10 +102,10 @@ public class GameManager : SetsunaSlashScript
         yield return StartCoroutine(playerUI.Flash(() =>
         {
             var stat = hub.PL_Ctrler.GetComponent<PL_Status>();
-            stat.HP_heal(stat.hp_max);
-            stat.HP_damage(stat.hp_max - hub.playingStage.savedPlayerHP);
-            stat.MP_heal(stat.mp_max);
-            stat.MP_damage(stat.mp_max - hub.playingStage.savedPlayerMP);
+            stat.HP_heal(stat.HP_max);
+            stat.HP_damage(stat.HP_max - hub.playingStage.savedPlayerHP);
+            stat.MP_heal(stat.MP_max);
+            stat.MP_damage(stat.MP_max - hub.playingStage.savedPlayerMP);
         }));
     }
 

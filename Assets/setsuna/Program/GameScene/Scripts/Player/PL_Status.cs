@@ -6,11 +6,11 @@ public class PL_Status : Status
 {
     public override void MP_damage(float value)
     {
-        var mp_Cache = mp;
+        var mp_Cache = MP;
 
         base.MP_damage(value);
 
-        if (mp > 0) return;
+        if (MP > 0) return;
 
         HP_damage(value - mp_Cache);
     }

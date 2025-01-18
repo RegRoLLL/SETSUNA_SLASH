@@ -59,7 +59,7 @@ public class Golem : SetsunaSlashScript
         stat.invincible = true;
 
         if (config.easyMode) { 
-            stat.hp_max *= 0.5f;
+            stat.HP_max *= 0.5f;
             Debug.Log("golem nerfed.");
         }
 
@@ -121,7 +121,7 @@ public class Golem : SetsunaSlashScript
     void LateUpdate()
     {
         hpBar.SetActive(animator.GetBool(GolemAnim.activated) || isStunning);
-        hpBarFill.fillAmount = stat.hp / stat.hp_max;
+        hpBarFill.fillAmount = stat.HP / stat.HP_max;
     }
 
 

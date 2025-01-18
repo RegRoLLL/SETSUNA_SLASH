@@ -30,7 +30,7 @@ public class PL_Dead : MonoBehaviour
     {
         if (player.isDead) return;
 
-        if(stat.hp <= 0)StartCoroutine(DeathRevive());
+        if(stat.HP <= 0)StartCoroutine(DeathRevive());
     }
 
     IEnumerator DeathRevive()
@@ -58,8 +58,8 @@ public class PL_Dead : MonoBehaviour
         yield return StartCoroutine(pl.ReturnPlayerPos());
 
         player.isDead = false;
-        stat.HP_heal(stat.hp_max);
-        stat.MP_heal(stat.mp_max);
+        stat.HP_heal(stat.HP_max);
+        stat.MP_heal(stat.MP_max);
 
 
 

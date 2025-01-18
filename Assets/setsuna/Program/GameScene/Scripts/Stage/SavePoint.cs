@@ -57,8 +57,8 @@ public class SavePoint : SetsunaSlashScript
     void SavePointExcute()
     {
         manager.savedPlayerPosition = transform.position;
-        manager.savedPlayerHP = manager.hub.PL_Ctrler.GetComponent<PL_Status>().hp;
-        manager.savedPlayerMP = manager.hub.PL_Ctrler.GetComponent<PL_Status>().mp;
+        manager.savedPlayerHP = manager.hub.PL_Ctrler.GetComponent<PL_Status>().HP;
+        manager.savedPlayerMP = manager.hub.PL_Ctrler.GetComponent<PL_Status>().MP;
         manager.hub.playingStage.SaveNotOverWrite(part.gameObject);
 
         sprite.sprite = active;

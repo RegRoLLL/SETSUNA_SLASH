@@ -57,8 +57,8 @@ public class StageManager : SetsunaSlashScript
         if (!config.debugMode) hub.PL_Ctrler.transform.position = primaryPlayerPosition;
 
         savedPlayerPosition = hub.PL_Ctrler.transform.position;
-        savedPlayerHP = hub.PL_Ctrler.GetComponent<PL_Status>().hp;
-        savedPlayerMP = hub.PL_Ctrler.GetComponent<PL_Status>().mp;
+        savedPlayerHP = hub.PL_Ctrler.GetComponent<PL_Status>().HP;
+        savedPlayerMP = hub.PL_Ctrler.GetComponent<PL_Status>().MP;
     }
 
 
