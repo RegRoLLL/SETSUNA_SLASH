@@ -14,11 +14,9 @@ public class SlashCountCell : MonoBehaviour
     public void Initialize()
     {
         backCellImg = GetComponent<Image>();
-        
-        foreCellImg.enabled = false;
-        state.fore = false;
-        backCellImg.enabled = false;
-        state.back = false;
+
+        SetFore(false);
+        SetBack(false);
     }
 
     public void SetCell(bool enable)
@@ -39,12 +37,12 @@ public class SlashCountCell : MonoBehaviour
 
 
 
-    void SetFore(bool enable)
+    public void SetFore(bool enable)
     {
         foreCellImg.enabled = enable;
         state.fore = enable;
     }
-    public void SetBack(bool enable)
+    void SetBack(bool enable)
     {
         backCellImg.enabled = enable;
         state.back = enable;

@@ -19,6 +19,6 @@ public class Golem_Punch : SetsunaSlashScript
 
         var status = col.GetComponentInParent<PL_Status>();
 
-        status.HP_damage(atk);
+        status.ConsumeCount();
     }
 }

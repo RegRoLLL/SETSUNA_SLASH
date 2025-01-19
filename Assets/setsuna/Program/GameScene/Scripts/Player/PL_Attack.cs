@@ -13,7 +13,6 @@ public class PL_Attack : SetsunaSlashScript
 {
     [SerializeField] PlayerInputActionName plAction;
 
-    public float slashMP;
     public float interval, interval_dt;
     [SerializeField] SlashControllMode controllMode;
     [SerializeField] float cameraLerpTime;
@@ -265,11 +264,13 @@ public class PL_Attack : SetsunaSlashScript
 
     void ChargeSlash(Vector2 start, Vector2 end)
     {
-        //以前はmp不足だと斬撃を放てなかったが、
-        //仕様変更によりmp不足の場合にhpで肩代わりすることになった
-        //if (!config.easyMode && (stat.mp < slashMP)) return;
-
-        if (!config.easyMode) pl.Status.MP_damage(slashMP);
+        if (!config.easyMode){
+            var result = pl.Status.ConsumeCount();
+            if (!result){
+                Attack();
+                return;
+            }
+        }
 
         var effect = Instantiate(slashEffectPrefab);
         effect.GetComponent<SlashEffect>().SetData(start, end);

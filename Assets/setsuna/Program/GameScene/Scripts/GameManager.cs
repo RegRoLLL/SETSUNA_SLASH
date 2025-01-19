@@ -62,11 +62,7 @@ public class GameManager : SetsunaSlashScript
 
     void SetContinueData()
     {
-        hub.PL_Ctrler.stat.SetHP(config.loadedSaveData.hp);
-        hub.playingStage.savedPlayerHP = config.loadedSaveData.hp;
-
-        hub.PL_Ctrler.stat.SetMP(config.loadedSaveData.mp);
-        hub.playingStage.savedPlayerMP = config.loadedSaveData.mp;
+        //システム変更に伴いMPとHPのセーブ廃止
 
         hub.PL_Ctrler.transform.position = config.loadedSaveData.pos;
         hub.playingStage.savedPlayerPosition = config.loadedSaveData.pos;
@@ -99,14 +95,7 @@ public class GameManager : SetsunaSlashScript
 
     IEnumerator Flash()
     {
-        yield return StartCoroutine(playerUI.Flash(() =>
-        {
-            var stat = hub.PL_Ctrler.GetComponent<PL_Status>();
-            stat.HP_heal(stat.HP_max);
-            stat.HP_damage(stat.HP_max - hub.playingStage.savedPlayerHP);
-            stat.MP_heal(stat.MP_max);
-            stat.MP_damage(stat.MP_max - hub.playingStage.savedPlayerMP);
-        }));
+        yield return StartCoroutine(playerUI.Flash(() => hub.player.Status.ResetCount()));
     }
 
     [ContextMenu("setVolumes")]

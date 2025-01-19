@@ -44,6 +44,7 @@ public class Player : SetsunaSlashScript
 
     //ctrler
     public bool GetIsDead() => ctrler.isDead;
+    public bool SetIsDead(bool dead) => ctrler.isDead = dead;
     public PlayerController_main.state_move GetStateMove() => ctrler.stateM;
     public PlayerController_main.state_pose GetStatePose() => ctrler.stateP;
     public void SetSpriteDirection(bool right)
@@ -78,6 +79,8 @@ public class Player : SetsunaSlashScript
     public List<Collider2D> GetTriggers() => colChecker.GetTriggers();
     public bool IsGounded() => colChecker.IsGrounded();
 
+    //dead
+    public void Death() => dead.Death();
 
     public IEnumerator ReturnPlayerPos()
     {
@@ -105,7 +108,7 @@ public class Player : SetsunaSlashScript
 
         gm.hub.playingStage.Load();
 
-        yield return StartCoroutine(ui.Flash());
+        yield return StartCoroutine(ui.Flash(status.ResetCount));
 
         gm.isSaving = false;
     }

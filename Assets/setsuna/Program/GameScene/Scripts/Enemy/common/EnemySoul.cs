@@ -25,10 +25,12 @@ public class EnemySoul : SetsunaSlashScript
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.layer == playerLayer)
-        {
-            hub.PL_Ctrler.stat.MP_heal(mpValue);
-            Destroy(gameObject);
-        }
+        Debug.LogWarning("mpシステム変更によりEnemySoulは廃止されました");
+
+        //if (col.gameObject.layer == playerLayer)
+        //{
+        //    hub.PL_Ctrler.stat.MP_heal(mpValue);
+        //    Destroy(gameObject);
+        //}
     }
 }

@@ -9,7 +9,6 @@ public class PL_Dead : MonoBehaviour
     [SerializeField] float fadeTime;
     [SerializeField] Image deathBlackOut;
 
-    Game_HubScript hub;
     Player pl;
     PlayerController_main player;
     PL_Status stat;
@@ -17,8 +16,6 @@ public class PL_Dead : MonoBehaviour
 
     void Start()
     {
-        hub = EventSystem.current.GetComponent<Game_HubScript>();
-
         pl=GetComponent<Player>();
         player = GetComponent<PlayerController_main>();
         stat = GetComponent<PL_Status>();
@@ -26,16 +23,14 @@ public class PL_Dead : MonoBehaviour
         deathBlackOut.gameObject.SetActive(false);
     }
 
-    void Update()
+    public void Death()
     {
-        if (player.isDead) return;
-
-        if(stat.HP <= 0)StartCoroutine(DeathRevive());
+        StartCoroutine(DeathRevive());
     }
 
     IEnumerator DeathRevive()
     {
-        player.isDead = true;
+        pl.SetIsDead(true);
 
         float dt = 0;
         Color color = deathBlackOut.color;
@@ -57,9 +52,8 @@ public class PL_Dead : MonoBehaviour
 
         yield return StartCoroutine(pl.ReturnPlayerPos());
 
-        player.isDead = false;
-        stat.HP_heal(stat.HP_max);
-        stat.MP_heal(stat.MP_max);
+        pl.SetIsDead(false);
+        stat.ResetCount();
 
 
 

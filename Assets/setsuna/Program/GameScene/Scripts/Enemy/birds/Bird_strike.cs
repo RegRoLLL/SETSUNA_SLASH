@@ -45,7 +45,7 @@ public class Bird_strike : SetsunaSlashScript
         if (col.gameObject.layer == playerLayer && !hasDamaged)
         {
             hasDamaged = true;
-            hub.PL_Ctrler.stat.HP_damage(damage);
+            hub.PL_Ctrler.stat.ConsumeCount();
         }
         else if(col.gameObject.layer is slashableLayer or not_slashableLayer)
         {

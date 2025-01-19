@@ -63,7 +63,7 @@ public class Rock : SetsunaSlashScript
         {
             if (rb.velocity.magnitude < damageSpeed) return;
 
-            col.gameObject.GetComponentInParent<PL_Status>().HP_damage(damageValue);
+            col.gameObject.GetComponentInParent<PL_Status>().ConsumeCount();
         }
         else if (col.collider.GetComponent<Rock>())
         {
