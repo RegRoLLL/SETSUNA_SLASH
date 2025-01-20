@@ -6,14 +6,14 @@ using RC2D = UnityEngine.RigidbodyConstraints2D;
 
 public class LevitationStone : SetsunaSlashScript
 {
-    const float targetDensity = 500;
-
-    [SerializeField] AudioSource seAS;
+    [SerializeField] float targetDensityFixValue = 500;
 
     [SerializeField] float floatingLimit, floatSPD, floatableMass;
     [SerializeField] bool activeOnStart;
     [SerializeField] float activateTime, dTime;
     [SerializeField] Color inactiveColor, activeColor;
+
+    [SerializeField] AudioSource seAS;
     [SerializeField] GameObject activateParticle;
     [SerializeField] ParticleSystem vanishParticle;
     [SerializeField] GameObject slashEffectPrefab;
@@ -92,6 +92,8 @@ public class LevitationStone : SetsunaSlashScript
             return;
         }
 
+        if (targetRB != null) return;
+
         if (!col.TryGetComponent<Rigidbody2D>(out var colRB)) return;
 
         targetRB = colRB;
@@ -107,7 +109,7 @@ public class LevitationStone : SetsunaSlashScript
 
             targetPrimeGravityScale = targetRB.gravityScale;
             targetPrimeDensity = targetCol.density;
-            targetCol.density = targetDensity;
+            targetCol.density = targetDensityFixValue;
             targetRB.gravityScale = 0;
             targetRB.constraints = floatStarted ? ySlideC : freezeC;
         }
