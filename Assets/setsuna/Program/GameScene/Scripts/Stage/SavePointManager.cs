@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SavePointManager : MonoBehaviour
 {
+    [SerializeField] bool drawGizmoLine = true;
     [SerializeField] List<SavePoint> savePointList = new();
 
     public void ListSavePoints()
@@ -51,6 +52,28 @@ public class SavePointManager : MonoBehaviour
         while (index < dataList.Count)
         {
             savePointList[index].SetData(dataList[index]);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!drawGizmoLine) return;
+
+        Gizmos.color = Color.cyan;
+
+        foreach (var point in savePointList)
+        {
+            Gizmos.DrawWireSphere(point.transform.position, 1f);
+
+            var data = point.GetData();
+            var recommend = data.recommendSlashCount;
+            Handles.Label(point.transform.position + Vector3.up * 1,
+                          $"„§:{recommend}",
+                          new GUIStyle { fontSize = 20, normal={ textColor=Color.cyan }, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
+
+            var next = data.nextSave;
+            if (next == null) return;
+            Gizmos.DrawLine(point.transform.position, next.transform.position);
         }
     }
 }
