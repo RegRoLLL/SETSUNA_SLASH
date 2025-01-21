@@ -11,7 +11,9 @@ public class StagePart : MonoBehaviour
     public AudioClip bgm;
     public bool bgm_playOnEnter;
 
-    public StageRect rect = new StageRect();
+    public SavePointManager savePoints;
+
+    public StageRect rect = new ();
 
     public StageRectMarkers rectMarkers;
 
