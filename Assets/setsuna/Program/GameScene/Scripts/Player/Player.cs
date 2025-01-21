@@ -94,13 +94,13 @@ public class Player : SetsunaSlashScript
         {
             ratio = dTime / gm.loadTeleportTime;
 
-            ctrler.transform.position = Vector3.Lerp(beforeTeleportPos, gm.hub.playingStage.savedPlayerPosition, ratio);
+            ctrler.transform.position = Vector3.Lerp(beforeTeleportPos, gm.hub.playingStage.latestSavePoint.transform.position, ratio);
 
             dTime += Time.deltaTime;
 
             yield return null;
         }
-        ctrler.transform.position = gm.hub.playingStage.savedPlayerPosition;
+        ctrler.transform.position = gm.hub.playingStage.latestSavePoint.transform.position;
         ctrler.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         cam.ResetList();
 

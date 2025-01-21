@@ -73,7 +73,16 @@ public class SavePoint : SetsunaSlashScript
 
     void SavePointExcute()
     {
+        if (manager.latestSavePoint != null){
+            if (manager.latestSavePoint.status.nextSave == this)
+            {
+                part.AddPoint(player.Status.CalcScore());
+            }
+        }
+        
+
         manager.savedPlayerPosition = transform.position;
+        manager.latestSavePoint = this;
         status.isActivated = true;
         manager.hub.playingStage.SaveNotOverWrite(part.gameObject);
 

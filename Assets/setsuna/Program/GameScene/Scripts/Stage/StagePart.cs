@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using JetBrains.Annotations;
 
 public class StagePart : MonoBehaviour
 {
@@ -12,10 +13,13 @@ public class StagePart : MonoBehaviour
     public bool bgm_playOnEnter;
 
     public SavePointManager savePoints;
+    public PartClearStatus clearStat = new();
 
     [HideInInspector] public StageRect rect = new();
 
     public StageRectMarkers rectMarkers;
+
+    StageManager stageManager;
 
     void OnEnable()
     {
@@ -39,5 +43,21 @@ public class StagePart : MonoBehaviour
     public struct StageRect
     {
         public float up, down, right, left;
+    }
+
+
+    [Serializable]
+    public class PartClearStatus
+    {
+        public int currentPoint, recommendMaxPoint;
+    }
+
+    public void AddPoint(int point)
+    {
+        clearStat.currentPoint += point;
+
+        if(!stageManager) stageManager = GetComponentInParent<StageManager>();
+
+        stageManager.hub.player.ui.SlashCountUI.ShowPointPopup(clearStat, point);
     }
 }

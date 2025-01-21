@@ -19,6 +19,7 @@ public class StageManager : SetsunaSlashScript
     public int currentIndex, saveIndex;
     public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
+    public SavePoint latestSavePoint;
     public float savedPlayerHP, savedPlayerMP;
 
 
@@ -76,6 +77,9 @@ public class StageManager : SetsunaSlashScript
             p.SetActive(false);
             p.transform.parent = part.transform.parent;
             stageClones.Add(p);
+
+            var component = part.GetComponent<StagePart>();
+            component.clearStat.recommendMaxPoint = component.savePoints.GetSavePointsData().Count * 3;
         }
     }
 
@@ -118,9 +122,15 @@ public class StageManager : SetsunaSlashScript
 
         newPart.SetActive(true);
         newPart.transform.parent = oldPart.transform.parent;
+        var newPartComponent = newPart.GetComponent<StagePart>();
+        var oldPartComponent = oldPart.GetComponent<StagePart>();
 
-        var data = oldPart.GetComponent<StagePart>().savePoints.GetSavePointsData();
-        newPart.GetComponent<StagePart>().savePoints.SetSavePointsData(data);
+        var data = oldPartComponent.savePoints.GetSavePointsData();
+        newPartComponent.savePoints.SetSavePointsData(data);
+        newPartComponent.savePoints.ConnectSavePoints_InRuntime();
+
+        var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(latestSavePoint);
+        if(pointIndex != -1) latestSavePoint = newPartComponent.savePoints.GetSavePoints()[pointIndex];
 
         Destroy(oldPart);
         stageParts[index] = newPart;

@@ -26,6 +26,8 @@ public class SavePointManager : MonoBehaviour
         }
     }
 
+    public List<SavePoint> GetSavePoints() => savePointList;
+
     public List<SavePoint.SavePointStatus> GetSavePointsData()
     {
         List<SavePoint.SavePointStatus> result = new();
@@ -79,6 +81,15 @@ public class SavePointManager : MonoBehaviour
         }
     }
 
+    public void ConnectSavePoints_InRuntime()
+    {
+        foreach (var (point, index) in savePointList.Select((point, index) => (point, index)))
+        {
+            if (savePointList.Count <= index + 1) break;
+
+            point.SetNext(savePointList[index + 1]);
+        }
+    }
 
 #if UNITY_EDITOR
     public void ConnectSavePoints_InEditor()

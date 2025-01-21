@@ -136,9 +136,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     cellSetInterval: 0.04
+    pointPopupSlide: 500
+    pointPopupShowT: 0.5
+    pointPopupStayT: 1
+    pointPopupFadeT: 0.5
   score_container: {fileID: 251036449627630311}
   slashL_container: {fileID: 1460390919958282821}
   slashS_container: {fileID: 1813854425458318796}
+  pointPopupGroup: {fileID: 6549156249567536433}
+  pointPopupLabelTMP: {fileID: 1599271015854985046}
+  pointPopupCommentTMP: {fileID: 7045319113627341006}
+  score0: NiceFight!
+  score1: GoodJob!
+  score2: Great!
+  score3: Perfect!!
+  overScore: Excellet!!!
   scoreCells: []
   slashCells: []
 --- !u!114 &11879554392120583
@@ -5825,6 +5837,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 846690765161984353}
+  - component: {fileID: 6549156249567536433}
   - component: {fileID: 103219332733249309}
   - component: {fileID: 2749729575126234023}
   m_Layer: 5
@@ -5856,6 +5869,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
+--- !u!225 &6549156249567536433
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4444226533055405211}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!114 &103219332733249309
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -58,4 +58,9 @@ public class PL_Status:SetsunaSlashScript
         currentScoreAdditional = 3 - hintUsed;
         ui.SetCells(recommendCount, hintUsed, false);
     }
+
+    public int CalcScore()
+    {
+        return currentScoreAdditional + currentCount;
+    }
 }

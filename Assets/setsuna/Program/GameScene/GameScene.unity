@@ -922,7 +922,10 @@ MonoBehaviour:
   backGroundGroup: {fileID: 1067324622}
   bgm: {fileID: 0}
   bgm_playOnEnter: 0
-  savePoints: {fileID: 0}
+  savePoints: {fileID: 629565765}
+  clearStat:
+    currentPoint: 0
+    recommendMaxPoint: 0
   rect:
     up: 0
     down: 0
@@ -1714,6 +1717,9 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: 95b43c40d0308ef4088232af60ad87ad, type: 3}
   bgm_playOnEnter: 1
   savePoints: {fileID: 51340558}
+  clearStat:
+    currentPoint: 0
+    recommendMaxPoint: 0
   rect:
     up: 0
     down: 0
@@ -1735,7 +1741,7 @@ GameObject:
   - component: {fileID: 239902362}
   - component: {fileID: 239902363}
   m_Layer: 6
-  m_Name: savePoints
+  m_Name: savePoints_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3703,7 +3709,7 @@ PrefabInstance:
       objectReference: {fileID: 1179546600}
     - target: {fileID: 8699719152807765347, guid: ec082f5f445c3b7438407f09dcb1a4fe, type: 3}
       propertyPath: status.recommendSlashCount
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3726,7 +3732,7 @@ GameObject:
   - component: {fileID: 378138031}
   - component: {fileID: 378138032}
   m_Layer: 6
-  m_Name: savePoints
+  m_Name: savePoints_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5184,6 +5190,9 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: d1ac71b43a52c7c49abaa16ba48cf070, type: 3}
   bgm_playOnEnter: 0
   savePoints: {fileID: 279267229}
+  clearStat:
+    currentPoint: 0
+    recommendMaxPoint: 0
   rect:
     up: 0
     down: 0
@@ -10823,7 +10832,7 @@ GameObject:
   - component: {fileID: 629565764}
   - component: {fileID: 629565765}
   m_Layer: 0
-  m_Name: savePoints
+  m_Name: savePoints_dragon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12859,7 +12868,7 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 11400000, guid: 968dacedbc7e006449c2566a8c30f24c, type: 2}
   <HP>k__BackingField: 0
-  <HP_max>k__BackingField: 0
+  <HP_max>k__BackingField: 100
   <HP_regene>k__BackingField: 0
   <MP>k__BackingField: 0
   <MP_max>k__BackingField: 0
@@ -14204,7 +14213,10 @@ MonoBehaviour:
   backGroundGroup: {fileID: 1067324622}
   bgm: {fileID: 0}
   bgm_playOnEnter: 1
-  savePoints: {fileID: 0}
+  savePoints: {fileID: 1686820703}
+  clearStat:
+    currentPoint: 0
+    recommendMaxPoint: 0
   rect:
     up: 0
     down: 0
@@ -15060,6 +15072,7 @@ MonoBehaviour:
   currentBG: {fileID: 0}
   primaryPlayerPosition: {x: -95, y: -30, z: -5}
   savedPlayerPosition: {x: 0, y: 0, z: 0}
+  latestSavePoint: {fileID: 0}
   savedPlayerHP: 0
   savedPlayerMP: 0
 --- !u!1 &974308593
@@ -16463,6 +16476,9 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: 95b43c40d0308ef4088232af60ad87ad, type: 3}
   bgm_playOnEnter: 1
   savePoints: {fileID: 1068849417}
+  clearStat:
+    currentPoint: 0
+    recommendMaxPoint: 0
   rect:
     up: 0
     down: 0
@@ -21770,6 +21786,9 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: e898f8c58a558b448bb9949060f61e5e, type: 3}
   bgm_playOnEnter: 1
   savePoints: {fileID: 378138032}
+  clearStat:
+    currentPoint: 0
+    recommendMaxPoint: 0
   rect:
     up: 0
     down: 0
@@ -21958,6 +21977,9 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: e898f8c58a558b448bb9949060f61e5e, type: 3}
   bgm_playOnEnter: 1
   savePoints: {fileID: 239902363}
+  clearStat:
+    currentPoint: 0
+    recommendMaxPoint: 0
   rect:
     up: 0
     down: 0
@@ -32305,7 +32327,7 @@ GameObject:
   - component: {fileID: 1686820702}
   - component: {fileID: 1686820703}
   m_Layer: 0
-  m_Name: savePoints
+  m_Name: savePoints_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32930,31 +32952,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1442989621254743778, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1442989621254743778, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1442989621254743778, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 116.17
       objectReference: {fileID: 0}
     - target: {fileID: 1442989621254743778, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 66.53
       objectReference: {fileID: 0}
     - target: {fileID: 1611807371252133023, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1611807371252133023, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1611807371252133023, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 56.53
       objectReference: {fileID: 0}
     - target: {fileID: 2009577460858976691, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_AnchorMax.y
@@ -33098,11 +33120,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6860256738227369895, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -93.99
+      value: -93.3
       objectReference: {fileID: 0}
     - target: {fileID: 6860256738227369895, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -28.66
+      value: -28.5
       objectReference: {fileID: 0}
     - target: {fileID: 6860256738227369895, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -33134,10 +33156,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6860256738227369895, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7209902373719484363, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
-      propertyPath: recommendCount
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7280677551282029014, guid: 1660b313563c04546accdf1a299f6eb8, type: 3}
@@ -36164,7 +36182,7 @@ PrefabInstance:
       objectReference: {fileID: 1989890923}
     - target: {fileID: 8699719152807765347, guid: ec082f5f445c3b7438407f09dcb1a4fe, type: 3}
       propertyPath: status.recommendSlashCount
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
