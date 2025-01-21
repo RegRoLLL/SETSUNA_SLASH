@@ -14,8 +14,8 @@ public class StageManager : SetsunaSlashScript
     [SerializeField] CanvasGroup showGroup, fadeGroup, invisibleGroup;
 
     [Header("Internal Data")]
-    public List<GameObject> stageParts = new List<GameObject>();
-    public List<GameObject> stageClones = new List<GameObject>();
+    public List<GameObject> stageParts = new();
+    public List<GameObject> stageClones = new();
     public int currentIndex, saveIndex;
     public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
@@ -36,7 +36,7 @@ public class StageManager : SetsunaSlashScript
         stageParts.Clear();
         foreach (Transform tra in transform)
         {
-            if (tra.GetComponent<StageStat>())
+            if (tra.GetComponent<StagePart>())
                 stageParts.Add(tra.gameObject);
         }
 
@@ -57,8 +57,6 @@ public class StageManager : SetsunaSlashScript
         if (!config.debugMode) hub.PL_Ctrler.transform.position = primaryPlayerPosition;
 
         savedPlayerPosition = hub.PL_Ctrler.transform.position;
-        //savedPlayerHP = hub.PL_Ctrler.GetComponent<PL_Status>().HP;
-        //savedPlayerMP = hub.PL_Ctrler.GetComponent<PL_Status>().MP;
     }
 
 
@@ -124,7 +122,7 @@ public class StageManager : SetsunaSlashScript
     }
 
 
-    public void SetBackGround(StageStat next)
+    public void SetBackGround(StagePart next)
     {
         if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
 

@@ -16,7 +16,7 @@ public class SavePoint : SetsunaSlashScript
     float dTime;
 
     StageManager manager;
-    StageStat part;
+    StagePart part;
     PlayerDetectArea area;
     SpriteRenderer sprite;
 
@@ -28,7 +28,7 @@ public class SavePoint : SetsunaSlashScript
 
     void Initialize()
     {
-        part = GetComponentInParent<StageStat>();
+        part = GetComponentInParent<StagePart>();
         manager = GetComponentInParent<StageManager>();
         area = GetComponentInChildren<PlayerDetectArea>();
         sprite = GetComponentInChildren<SpriteRenderer>();

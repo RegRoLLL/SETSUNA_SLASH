@@ -44,14 +44,14 @@ public class Golem : SetsunaSlashScript
     public List<GameObject> onBrokenDestroyObjects = new();
 
     StageManager stage;
-    StageStat stagePart; Vector2 previewLeftMarker;
+    StagePart stagePart; Vector2 previewLeftMarker;
     Game_HubScript hub;
     Rigidbody2D rb;
 
     void Start()
     {
         stage = GetComponentInParent<StageManager>();
-        stagePart = GetComponentInParent<StageStat>();
+        stagePart = GetComponentInParent<StagePart>();
         hub = stage.hub;
         rb = GetComponent<Rigidbody2D>();
         wall.SetActive(false);
@@ -444,7 +444,7 @@ public class Golem : SetsunaSlashScript
     public IEnumerator Death()
     {
         var SRs = this.GetComponentsInChildren<SpriteRenderer>();
-        var stat = GetComponentInParent<StageStat>().transform;
+        var stat = GetComponentInParent<StagePart>().transform;
 
         foreach (var sr in SRs)
         {

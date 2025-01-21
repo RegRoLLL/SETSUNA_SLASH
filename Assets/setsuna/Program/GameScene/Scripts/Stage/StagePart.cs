@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class StageStat : MonoBehaviour
+public class StagePart : MonoBehaviour
 {
     public Color backGroundColor;
     public BackGroundGroup backGroundGroup;
