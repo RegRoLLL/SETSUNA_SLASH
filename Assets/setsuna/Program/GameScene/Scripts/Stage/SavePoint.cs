@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class SavePoint : SetsunaSlashScript
 {
     [SerializeField] SavePointStatus status = new();
@@ -101,16 +102,18 @@ public class SavePoint : SetsunaSlashScript
         public bool isActivated;
         public int recommendSlashCount;
         public bool isAreaCleared;
-        public SavePoint nextSave;
+        [SerializeField] public SavePoint nextSave;
     }
 
     public void SetData(SavePointStatus data)
     {
+        if (!initialized) Initialize();
+
         status = data;
         if(data.isActivated) sprite.sprite = active;
     }
 
-    public SavePointStatus GetData() => new(status);
+    public SavePointStatus GetData() => status;
 
     public void SetNext(SavePoint point) => status.nextSave = point;
 }

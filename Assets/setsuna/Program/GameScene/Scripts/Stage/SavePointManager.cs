@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 #endif
 
 public class SavePointManager : MonoBehaviour
@@ -21,18 +23,6 @@ public class SavePointManager : MonoBehaviour
             {
                 savePointList.Add(point);
             }
-        }
-    }
-
-    public void ConnectSavePoints()
-    {
-        foreach (var (point,index) in savePointList.Select((point,index)=>(point,index)))
-        {
-            if (savePointList.Count <= index + 1) break;
-
-            Debug.Log(point.gameObject.name);
-
-            point.SetNext(savePointList[index + 1]);
         }
     }
 
@@ -55,6 +45,7 @@ public class SavePointManager : MonoBehaviour
         while (index < dataList.Count)
         {
             savePointList[index].SetData(dataList[index]);
+            index++;
         }
     }
 
@@ -87,6 +78,27 @@ public class SavePointManager : MonoBehaviour
             Gizmos.DrawLine(point.transform.position, next.transform.position);
         }
     }
+
+
+#if UNITY_EDITOR
+    public void ConnectSavePoints_InEditor()
+    {
+        foreach (var (point,index) in savePointList.Select((point,index)=>(point,index)))
+        {
+            if (savePointList.Count <= index + 1) break;
+
+            var so = new SerializedObject(point);
+            so.Update();
+
+            var sp = so.FindProperty("status");
+            var spr = sp.FindPropertyRelative("nextSave");
+            spr.objectReferenceValue = savePointList[index + 1];
+
+            so.ApplyModifiedProperties();
+            Undo.RecordObject(point, "SetComponent Reference");
+        }
+    }
+#endif
 }
 
 #if UNITY_EDITOR
@@ -106,7 +118,7 @@ public class SavePointeManagerInspector : Editor
 
         if (GUILayout.Button("ConnectSavePoints"))
         {
-            instance.ConnectSavePoints();
+            instance.ConnectSavePoints_InEditor();
         }
     }
 }
