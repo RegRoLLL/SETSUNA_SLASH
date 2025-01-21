@@ -113,12 +113,17 @@ public class StageManager : SetsunaSlashScript
     }
     void Load(int index)
     {
-        var part = Instantiate(stageClones[index]);
+        var newPart = Instantiate(stageClones[index]);
+        var oldPart = stageParts[index];
 
-        part.SetActive(true);
-        part.transform.parent = stageParts[index].transform.parent;
-        Destroy(stageParts[index]);
-        stageParts[index] = part;
+        newPart.SetActive(true);
+        newPart.transform.parent = oldPart.transform.parent;
+
+        var data = oldPart.GetComponent<StagePart>().savePoints.GetSavePointsData();
+        newPart.GetComponent<StagePart>().savePoints.SetSavePointsData(data);
+
+        Destroy(oldPart);
+        stageParts[index] = newPart;
     }
 
 

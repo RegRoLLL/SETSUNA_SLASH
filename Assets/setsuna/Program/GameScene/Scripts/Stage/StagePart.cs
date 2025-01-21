@@ -13,7 +13,7 @@ public class StagePart : MonoBehaviour
 
     public SavePointManager savePoints;
 
-    public StageRect rect = new ();
+    [HideInInspector] public StageRect rect = new();
 
     public StageRectMarkers rectMarkers;
 
@@ -30,13 +30,11 @@ public class StagePart : MonoBehaviour
         rect.right = rectMarkers.right.position.x;
         rect.left = rectMarkers.left.position.x;
     }
-
     [Serializable]
     public struct StageRectMarkers
     {
         public Transform up, down, right, left;
     }
-
     [Serializable]
     public struct StageRect
     {
