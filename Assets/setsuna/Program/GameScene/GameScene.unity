@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ead7d2cfafce014b984f9bbbf797436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawGizmoLine: 0
+  drawGizmoLine: 1
   savePointList:
   - {fileID: 941529991}
   - {fileID: 868133286}
@@ -1771,7 +1771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ead7d2cfafce014b984f9bbbf797436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawGizmoLine: 0
+  drawGizmoLine: 1
   savePointList:
   - {fileID: 1712358328}
   - {fileID: 900802369}
@@ -2318,7 +2318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ead7d2cfafce014b984f9bbbf797436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawGizmoLine: 0
+  drawGizmoLine: 1
   savePointList:
   - {fileID: 883328284}
 --- !u!1001 &283440764
@@ -10805,6 +10805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 629565764}
+  - component: {fileID: 629565765}
   m_Layer: 0
   m_Name: savePoints
   m_TagString: Untagged
@@ -10828,6 +10829,21 @@ Transform:
   m_Father: {fileID: 81995790}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &629565765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629565763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ead7d2cfafce014b984f9bbbf797436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawGizmoLine: 1
+  savePointList:
+  - {fileID: 1769341226}
 --- !u!1 &634390614
 GameObject:
   m_ObjectHideFlags: 0
@@ -16129,7 +16145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ead7d2cfafce014b984f9bbbf797436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawGizmoLine: 0
+  drawGizmoLine: 1
   savePointList:
   - {fileID: 745411295}
   - {fileID: 2145855541}
@@ -32247,6 +32263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1686820702}
+  - component: {fileID: 1686820703}
   m_Layer: 0
   m_Name: savePoints
   m_TagString: Untagged
@@ -32269,6 +32286,20 @@ Transform:
   m_Father: {fileID: 889312717}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1686820703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686820701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ead7d2cfafce014b984f9bbbf797436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawGizmoLine: 1
+  savePointList: []
 --- !u!1 &1706411908
 GameObject:
   m_ObjectHideFlags: 0
@@ -33280,6 +33311,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2969144402830105365, guid: ec082f5f445c3b7438407f09dcb1a4fe, type: 3}
   m_PrefabInstance: {fileID: 1769341222}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1769341226 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8699719152807765347, guid: ec082f5f445c3b7438407f09dcb1a4fe, type: 3}
+  m_PrefabInstance: {fileID: 1769341222}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce97f5cc62f00c479dc7f68a4f08d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1770285046
 PrefabInstance:
   m_ObjectHideFlags: 0

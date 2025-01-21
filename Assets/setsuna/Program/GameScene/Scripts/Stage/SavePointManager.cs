@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class SavePointManager : MonoBehaviour
 {
@@ -66,10 +69,18 @@ public class SavePointManager : MonoBehaviour
             Gizmos.DrawWireSphere(point.transform.position, 1f);
 
             var data = point.GetData();
+
+#if UNITY_EDITOR
             var recommend = data.recommendSlashCount;
-            Handles.Label(point.transform.position + Vector3.up * 1,
+            Handles.Label(point.transform.position + Vector3.up,
                           $"êÑèß:{recommend}",
-                          new GUIStyle { fontSize = 20, normal={ textColor=Color.cyan }, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter });
+                          new GUIStyle { 
+                              fontSize = 20,
+                              normal={ textColor=Color.green },
+                              fontStyle = FontStyle.Bold,
+                              alignment = TextAnchor.MiddleCenter
+                          });
+#endif
 
             var next = data.nextSave;
             if (next == null) return;
@@ -78,6 +89,7 @@ public class SavePointManager : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(SavePointManager))]
 public class SavePointeManagerInspector : Editor
 {
@@ -98,3 +110,4 @@ public class SavePointeManagerInspector : Editor
         }
     }
 }
+#endif
