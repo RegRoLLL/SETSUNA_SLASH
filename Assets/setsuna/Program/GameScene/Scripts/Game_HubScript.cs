@@ -6,22 +6,25 @@ using System;
 
 public class Game_HubScript : SetsunaSlashScript
 {
-    public GameManager gm;
     public int pl_layer;
-    public PlayerController_main player;
-    public SetsunaPlayerCamera camera_;
-    public VideoPlayer moviePlayer;
+    public Player player;
+    [HideInInspector] public GameManager gm;
+    public PlayerController_main PL_Ctrler { get => player.ctrler; }
+    [HideInInspector] public SetsunaPlayerCamera camera_;
 
     public StageManager playingStage;
-    public StageStat currentPart;
+    public StagePart currentPart;
     public AudioSource bgmAS;
 
     void Start()
     {
+        camera_ = player.cam;
+        gm = gameObject.GetComponent<GameManager>();
+
         StartCoroutine(DelayOneFrame(() =>
         {
             //Debug.Log($"partsCount:{playingStage.stageParts.Count}", playingStage);
-            SetPart(playingStage.stageParts[0].GetComponent<StageStat>());
+            SetPart(playingStage.stageParts[0].GetComponent<StagePart>());
         }));
     }
 
@@ -31,7 +34,7 @@ public class Game_HubScript : SetsunaSlashScript
         action?.Invoke();
     }
 
-    public void SetPart(StageStat stage)
+    public void SetPart(StagePart stage)
     {
         playingStage.currentIndex = playingStage.stageParts.FindIndex((n) => (n == stage.gameObject));
 

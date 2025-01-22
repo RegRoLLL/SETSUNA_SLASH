@@ -23,7 +23,7 @@ public class TikeiKun : SetsunaSlashScript
 
     void Update()
     {
-        target = (area.detected ? stage.hub.player.transform.position : primePos);
+        target = (area.detected ? stage.hub.PL_Ctrler.transform.position : primePos);
 
         var directionX = (target - (Vector2)transform.position).x;
         var direction = (directionX > 0) ? 1 : -1;

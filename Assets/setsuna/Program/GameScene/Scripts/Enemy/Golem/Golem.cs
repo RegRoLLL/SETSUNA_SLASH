@@ -44,14 +44,14 @@ public class Golem : SetsunaSlashScript
     public List<GameObject> onBrokenDestroyObjects = new();
 
     StageManager stage;
-    StageStat stagePart; Vector2 previewLeftMarker;
+    StagePart stagePart; Vector2 previewLeftMarker;
     Game_HubScript hub;
     Rigidbody2D rb;
 
     void Start()
     {
         stage = GetComponentInParent<StageManager>();
-        stagePart = GetComponentInParent<StageStat>();
+        stagePart = GetComponentInParent<StagePart>();
         hub = stage.hub;
         rb = GetComponent<Rigidbody2D>();
         wall.SetActive(false);
@@ -59,7 +59,7 @@ public class Golem : SetsunaSlashScript
         stat.invincible = true;
 
         if (config.easyMode) { 
-            stat.hp_max *= 0.5f;
+            stat.HP_max *= 0.5f;
             Debug.Log("golem nerfed.");
         }
 
@@ -121,7 +121,7 @@ public class Golem : SetsunaSlashScript
     void LateUpdate()
     {
         hpBar.SetActive(animator.GetBool(GolemAnim.activated) || isStunning);
-        hpBarFill.fillAmount = stat.hp / stat.hp_max;
+        hpBarFill.fillAmount = stat.HP / stat.HP_max;
     }
 
 
@@ -163,7 +163,7 @@ public class Golem : SetsunaSlashScript
 
     void Move()
     {
-        float dir = (transform.position.x < hub.player.transform.position.x) ? 1 : -1;
+        float dir = (transform.position.x < hub.PL_Ctrler.transform.position.x) ? 1 : -1;
         transform.rotation = Quaternion.Euler(0, 90 + (90 * dir), 0);
 
         if (closestRange.detected || (attackRange.detected && backStepping))
@@ -228,7 +228,7 @@ public class Golem : SetsunaSlashScript
 
             yield return new WaitForSeconds(throwCT.untilHitTime - throwCT.untilAttackTime);
 
-            r.StartSimulate((hub.player.transform.position - r.transform.position).normalized * throwSpeed, true);
+            r.StartSimulate((hub.PL_Ctrler.transform.position - r.transform.position).normalized * throwSpeed, true);
             seAS.PlayOneShot(audioBind.enemy.golem.golem_throw);
 
             yield return new WaitForSeconds(throwCT.motionTime - throwCT.untilHitTime - throwCT.untilAttackTime);
@@ -336,7 +336,7 @@ public class Golem : SetsunaSlashScript
              return result;
          };
 
-        var plPosWorld = hub.player.transform.position;
+        var plPosWorld = hub.PL_Ctrler.transform.position;
 
         
 
@@ -444,7 +444,7 @@ public class Golem : SetsunaSlashScript
     public IEnumerator Death()
     {
         var SRs = this.GetComponentsInChildren<SpriteRenderer>();
-        var stat = GetComponentInParent<StageStat>().transform;
+        var stat = GetComponentInParent<StagePart>().transform;
 
         foreach (var sr in SRs)
         {

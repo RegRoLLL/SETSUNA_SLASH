@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Status : SetsunaSlashScript
 {
-    [field: SerializeField] public float hp { get; private set; }
-    [field: SerializeField] public float hp_max { get; set; }
-    [field: SerializeField] public float hp_regene { get; private set; }
+    [field:SerializeField] public float HP { get; private set; }
+    [field: SerializeField] public float HP_max { get; set; }
+    [field: SerializeField] public float HP_regene { get; private set; }
 
-    [field: SerializeField] public float mp { get; private set; }
-    [field: SerializeField] public float mp_max { get; set; }
-    [field: SerializeField] public float mp_regene { get; private set; }
+    [field: SerializeField] public float MP { get; private set; }
+    [field: SerializeField] public float MP_max { get; set; }
+    [field: SerializeField] public float MP_regene { get; private set; }
 
     void Update()
     {
@@ -19,46 +19,46 @@ public class Status : SetsunaSlashScript
 
     protected virtual void Regene()
     {
-        if (hp_regene != 0 && hp > 0)
+        if (HP_regene != 0 && HP > 0)
         {
-            HP_heal(hp_regene * Time.deltaTime);
+            HP_heal(HP_regene * Time.deltaTime);
         }
 
-        if (mp_regene != 0)
+        if (MP_regene != 0)
         {
-            MP_heal(mp_regene * Time.deltaTime);
+            MP_heal(MP_regene * Time.deltaTime);
         }
     }
 
     public virtual void HP_damage(float value)
     {
-        hp -= value;
-        hp = Mathf.Clamp(hp, 0, hp_max);
+        HP -= value;
+        HP = Mathf.Clamp(HP, 0, HP_max);
     }
     public virtual void HP_heal(float value)
     {
-        hp += value;
-        hp = Mathf.Clamp(hp, 0, hp_max);
+        HP += value;
+        HP = Mathf.Clamp(HP, 0, HP_max);
     }
     public virtual void SetHP(float value)
     {
-        HP_heal(hp_max);
-        HP_damage(hp_max - value);
+        HP_heal(HP_max);
+        HP_damage(HP_max - value);
     }
 
     public virtual void MP_damage(float value)
     {
-        mp -= value;
-        mp = Mathf.Clamp(mp, 0, mp_max);
+        MP -= value;
+        MP = Mathf.Clamp(MP, 0, MP_max);
     }
     public virtual void MP_heal(float value)
     {
-        mp += value;
-        mp = Mathf.Clamp(mp, 0, mp_max);
+        MP += value;
+        MP = Mathf.Clamp(MP, 0, MP_max);
     }
     public virtual void SetMP(float value)
     {
-        MP_heal(mp_max);
-        MP_damage(mp_max - value);
+        MP_heal(MP_max);
+        MP_damage(MP_max - value);
     }
 }

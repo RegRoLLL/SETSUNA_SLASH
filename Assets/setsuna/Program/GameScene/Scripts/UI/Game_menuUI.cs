@@ -10,7 +10,8 @@ using RegUtility;
 
 public class Game_menuUI : SetsunaSlashScript
 {
-    [SerializeField] Game_HubScript hub;
+    Game_SetsunaUI ssUI;
+    Game_HubScript Hub { get => ssUI.gm.hub; }
 
     [SerializeField] Transform cursor;
     [SerializeField] Selectable onDeSelectPointer;
@@ -35,6 +36,8 @@ public class Game_menuUI : SetsunaSlashScript
 
     void Start()
     {
+        ssUI = GetComponentInParent<Game_SetsunaUI>();
+
         SetContentsOnSettings();
 
         settingsPanel.SetActive(false);
@@ -125,13 +128,13 @@ public class Game_menuUI : SetsunaSlashScript
 
     public void SetCurrentPlayData()
     {
-        currentPlayData.hp = hub.playingStage.savedPlayerHP;
+        currentPlayData.hp = Hub.playingStage.savedPlayerHP;
 
-        currentPlayData.mp = hub.playingStage.savedPlayerMP;
+        currentPlayData.mp = Hub.playingStage.savedPlayerMP;
 
-        currentPlayData.pos = hub.playingStage.savedPlayerPosition;
+        currentPlayData.pos = Hub.playingStage.savedPlayerPosition;
 
-        currentPlayData.area = hub.playingStage.saveIndex;
+        currentPlayData.area = Hub.playingStage.saveIndex;
 
         currentPlayData.easyMode = config.easyMode;
 
@@ -161,5 +164,22 @@ public class Game_menuUI : SetsunaSlashScript
         config.Save(currentPlayData);
 
         saveSucceedPanel.SetActive(true);
+    }
+
+
+    public void ClosePauseMenu()
+    {
+        ssUI.TogglePauseMenu(false);
+    }
+
+    public void ResetToSavePoint()
+    {
+        ssUI.gm.LoadSave();
+        ClosePauseMenu();
+    }
+
+    public void BackTitle()
+    {
+        ssUI.gm.Back2Title();
     }
 }

@@ -13,14 +13,14 @@ public class GolemStatus : Status
 
     void Start()
     {
-        HP_heal(hp_max);
+        HP_heal(HP_max);
     }
 
     void Update()
     {
         base.Regene();
 
-        if (hp > 0) return;
+        if (HP > 0) return;
 
         if (!isdead)
         {

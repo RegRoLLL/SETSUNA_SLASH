@@ -18,7 +18,7 @@ public class PL_Interact : MonoBehaviour
         if (!value.isPressed) return;
 
         var targetTrigger = pl.GetTriggers().Find(
-            (t) => !t.GetComponent<StageStat>() && t.GetComponentInChildren<InteractGimmick>()
+            (t) => !t.GetComponent<StagePart>() && t.GetComponentInChildren<InteractGimmick>()
             );
 
         if (targetTrigger == null) return;
