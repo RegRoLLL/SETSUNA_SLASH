@@ -14,11 +14,12 @@ public class StageManager : SetsunaSlashScript
     [SerializeField] CanvasGroup showGroup, fadeGroup, invisibleGroup;
 
     [Header("Internal Data")]
-    public List<GameObject> stageParts = new List<GameObject>();
-    public List<GameObject> stageClones = new List<GameObject>();
+    public List<GameObject> stageParts = new();
+    public List<GameObject> stageClones = new();
     public int currentIndex, saveIndex;
     public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
+    public SavePoint latestSavePoint;
     public float savedPlayerHP, savedPlayerMP;
 
 
@@ -36,7 +37,7 @@ public class StageManager : SetsunaSlashScript
         stageParts.Clear();
         foreach (Transform tra in transform)
         {
-            if (tra.GetComponent<StageStat>())
+            if (tra.GetComponent<StagePart>())
                 stageParts.Add(tra.gameObject);
         }
 
@@ -54,11 +55,9 @@ public class StageManager : SetsunaSlashScript
 
         if (config.isContinueStart) return;
 
-        if (!config.debugMode) hub.player.transform.position = primaryPlayerPosition;
+        if (!config.debugMode) hub.PL_Ctrler.transform.position = primaryPlayerPosition;
 
-        savedPlayerPosition = hub.player.transform.position;
-        savedPlayerHP = hub.player.GetComponent<PL_Status>().hp;
-        savedPlayerMP = hub.player.GetComponent<PL_Status>().mp;
+        savedPlayerPosition = hub.PL_Ctrler.transform.position;
     }
 
 
@@ -78,6 +77,9 @@ public class StageManager : SetsunaSlashScript
             p.SetActive(false);
             p.transform.parent = part.transform.parent;
             stageClones.Add(p);
+
+            var component = part.GetComponent<StagePart>();
+            component.clearStat.recommendMaxPoint = component.savePoints.GetSavePointsData().Count * 3;
         }
     }
 
@@ -115,16 +117,27 @@ public class StageManager : SetsunaSlashScript
     }
     void Load(int index)
     {
-        var part = Instantiate(stageClones[index]);
+        var newPart = Instantiate(stageClones[index]);
+        var oldPart = stageParts[index];
 
-        part.SetActive(true);
-        part.transform.parent = stageParts[index].transform.parent;
-        Destroy(stageParts[index]);
-        stageParts[index] = part;
+        newPart.SetActive(true);
+        newPart.transform.parent = oldPart.transform.parent;
+        var newPartComponent = newPart.GetComponent<StagePart>();
+        var oldPartComponent = oldPart.GetComponent<StagePart>();
+
+        var data = oldPartComponent.savePoints.GetSavePointsData();
+        newPartComponent.savePoints.SetSavePointsData(data);
+        newPartComponent.savePoints.ConnectSavePoints_InRuntime();
+
+        var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(latestSavePoint);
+        if(pointIndex != -1) latestSavePoint = newPartComponent.savePoints.GetSavePoints()[pointIndex];
+
+        Destroy(oldPart);
+        stageParts[index] = newPart;
     }
 
 
-    public void SetBackGround(StageStat next)
+    public void SetBackGround(StagePart next)
     {
         if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
 

@@ -2,16 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PL_Status : Status
+public class PL_Status:SetsunaSlashScript
 {
-    public override void MP_damage(float value)
+    [SerializeField] int recommendCount, currentCount, currentScoreAdditional;
+    [SerializeField] int hintUsed;
+
+    Player pl;
+    SlashCountUI ui;
+
+    void Start()
     {
-        var mp_Cache = mp;
+        pl = GetComponent<Player>();
+        ui = pl.ui.SlashCountUI;
 
-        base.MP_damage(value);
+        if(!config.debugMode){
+            hintUsed = 0;
+            recommendCount = 0;
+            currentCount = 0;
+            currentScoreAdditional = 0;
+        }
+    }
 
-        if (mp > 0) return;
+    /// <summary>
+    /// éaåÇâÒêîÇè¡îÔÇ∑ÇÈ
+    /// </summary>
+    /// <returns>è¡îÔÇ…ê¨å˜ÇµÇΩÇ©Ç«Ç§Ç©(0Çâ∫âÒÇÍÇ»Ç¢)</returns>
+    public bool ConsumeCount()
+    {
+        if(currentCount + currentScoreAdditional <= 0) return false;
+        else if (currentCount > 0)
+        {
+            currentCount--;
+            ui.ConsumeSlashCell();
+        }
+        else
+        {
+            currentScoreAdditional--;
+            ui.ConsumeScoreCell();
+        }
 
-        HP_damage(value - mp_Cache);
+        return true;
+    }
+
+    public void SetRecomendCount(int max)
+    {
+        this.recommendCount = max;
+        currentCount = max;
+        currentScoreAdditional = 3;
+        hintUsed = 0;
+        ui.SetCells(recommendCount, hintUsed, true);
+    }
+    public void ResetCount()
+    {
+        currentCount = recommendCount;
+        currentScoreAdditional = 3 - hintUsed;
+        ui.SetCells(recommendCount, hintUsed, false);
+    }
+
+    public int CalcScore()
+    {
+        return currentScoreAdditional + currentCount;
     }
 }

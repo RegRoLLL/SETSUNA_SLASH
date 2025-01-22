@@ -151,7 +151,7 @@ public class RockStinger : SetsunaSlashScript
         if (damaged) return;
 
         var state = col.gameObject.GetComponentInParent<PL_Status>();
-        state.HP_damage(damage);
+        state.ConsumeCount();
         damaged = true;
     }
 

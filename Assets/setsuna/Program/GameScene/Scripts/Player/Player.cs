@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
+[DefaultExecutionOrder(1)]
 public class Player : SetsunaSlashScript
 {
     [SerializeField] PlayerCursor cursor;
-    [SerializeField] SetsunaPlayerCamera cam;
+    public SetsunaPlayerCamera cam;
+    public Game_SetsunaUI ui;
 
-    PlayerController_main ctrler;
+    [HideInInspector] public PlayerController_main ctrler;
     PL_Attack attack;
     PlayerCollisionChecker colChecker;
     PL_Status status;
@@ -17,8 +20,12 @@ public class Player : SetsunaSlashScript
     public Rigidbody2D Rigidbody {  get; private set; }
     public Collider2D Collider { get => colChecker.col; }
 
-    void Start()
+    GameManager gm;
+
+    void Awake()
     {
+        gm = EventSystem.current.GetComponent<GameManager>();
+
         ctrler = GetComponent<PlayerController_main>();
         attack = GetComponent<PL_Attack>();
         colChecker = GetComponentInChildren<PlayerCollisionChecker>();
@@ -37,6 +44,7 @@ public class Player : SetsunaSlashScript
 
     //ctrler
     public bool GetIsDead() => ctrler.isDead;
+    public bool SetIsDead(bool dead) => ctrler.isDead = dead;
     public PlayerController_main.state_move GetStateMove() => ctrler.stateM;
     public PlayerController_main.state_pose GetStatePose() => ctrler.stateP;
     public void SetSpriteDirection(bool right)
@@ -70,4 +78,38 @@ public class Player : SetsunaSlashScript
     public List<Collision2D> GetCollisions() => colChecker.GetCollisions();
     public List<Collider2D> GetTriggers() => colChecker.GetTriggers();
     public bool IsGounded() => colChecker.IsGrounded();
+
+    //dead
+    public void Death() => dead.Death();
+
+    public IEnumerator ReturnPlayerPos()
+    {
+        gm.isSaving = true;
+
+        ctrler.stateP = PlayerController_main.state_pose.teleport;
+
+        float dTime = 0, ratio;
+        Vector3 beforeTeleportPos = ctrler.transform.position;
+        while (dTime <= gm.loadTeleportTime)
+        {
+            ratio = dTime / gm.loadTeleportTime;
+
+            ctrler.transform.position = Vector3.Lerp(beforeTeleportPos, gm.hub.playingStage.latestSavePoint.transform.position, ratio);
+
+            dTime += Time.deltaTime;
+
+            yield return null;
+        }
+        ctrler.transform.position = gm.hub.playingStage.latestSavePoint.transform.position;
+        ctrler.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        cam.ResetList();
+
+        ctrler.stateP = PlayerController_main.state_pose.stand;
+
+        gm.hub.playingStage.Load();
+
+        yield return StartCoroutine(ui.Flash(status.ResetCount));
+
+        gm.isSaving = false;
+    }
 }

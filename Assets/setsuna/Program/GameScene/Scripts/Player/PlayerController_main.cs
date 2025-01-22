@@ -64,7 +64,7 @@ public class PlayerController_main : SetsunaSlashScript
 
     void Update()
     {
-        if (input.actions[plAction.pose].WasPressedThisFrame()) hub.gm.PoseMenu();
+        if (input.actions[plAction.pose].WasPressedThisFrame()) hub.gm.TogglePause();
 
         if (Time.timeScale == 0) return;
 
@@ -325,9 +325,9 @@ public class PlayerController_main : SetsunaSlashScript
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<StageStat>())
+        if (other.gameObject.GetComponent<StagePart>())
         {
-            var stage = other.gameObject.GetComponent<StageStat>();
+            var stage = other.gameObject.GetComponent<StagePart>();
 
             if (hub.currentPart != stage) hub.SetPart(stage);
         }
@@ -335,7 +335,7 @@ public class PlayerController_main : SetsunaSlashScript
 
     public void OnReset(InputValue value)
     {
-        Debug.Log("callback called.");
+        //Debug.Log("callback called.");
         hub.gm.LoadSave();
     }
 
