@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 33949319058235519}
   - component: {fileID: 3845284405536593977}
   m_Layer: 9
-  m_Name: arcSavePoint
+  m_Name: goalSavePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
