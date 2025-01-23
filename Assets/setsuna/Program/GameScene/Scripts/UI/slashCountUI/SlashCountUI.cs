@@ -16,6 +16,8 @@ public class SlashCountUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI pointPopupLabelTMP, pointPopupCommentTMP;
     [SerializeField] string score0, score1, score2, score3, overScore;
 
+    [SerializeField] TextMeshProUGUI partTitleTMP, areaNameTMP;
+
     int scoreRemains, slashRemains;
     [SerializeField] List<SlashCountCell> scoreCells = new();
     [SerializeField] List<SlashCountCell> slashCells = new();
@@ -124,6 +126,11 @@ public class SlashCountUI : MonoBehaviour
         pointPopupRectTransform.localPosition = slideStartPos;
     }
 
+    public void SetSubtitleLabel(string partTitle, string areaName)
+    {
+        partTitleTMP.text = partTitle;
+        areaNameTMP.text = areaName;
+    }
 
     public IEnumerator ResetUICoroutine(bool disableAnimation)
     {

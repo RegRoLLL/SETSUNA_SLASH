@@ -83,6 +83,13 @@ public class SavePoint : SetsunaSlashScript
     void AreaStart()
     {
         player.Status.SetRecommendCount(status.recommendSlashCount);
+
+        if (isGoalSave){
+            player.ui.SlashCountUI.SetSubtitleLabel("", "");
+        }
+        else{
+            player.ui.SlashCountUI.SetSubtitleLabel(part.GetTitle(), this.gameObject.name);
+        }
     }
     void AreaClear()
     {
