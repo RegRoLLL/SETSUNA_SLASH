@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using JetBrains.Annotations;
+using System.Linq;
 
 public class StagePart : MonoBehaviour
 {
@@ -50,6 +50,13 @@ public class StagePart : MonoBehaviour
     public class PartClearStatus
     {
         public int currentPoint, recommendMaxPoint;
+    }
+
+    public void SetClearStatus(int currentPoint)
+    {
+        clearStat.currentPoint = currentPoint;
+        clearStat.recommendMaxPoint = savePoints.GetSavePoints()
+                                      .Select((point)=>!point.isGoalSave).ToList().Count * 3;
     }
 
     public void AddPoint(int point)

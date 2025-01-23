@@ -7,7 +7,7 @@ using UnityEngine;
 public class SavePoint : SetsunaSlashScript
 {
     [SerializeField] SavePointStatus status = new();
-    public bool isArcSavePoint;
+    public bool isGoalSave;
 
     [SerializeField] AudioSource seAS;
     public ParticleSystem saveEffect_front, saveEffect_back;
@@ -36,6 +36,8 @@ public class SavePoint : SetsunaSlashScript
 
         sprite.sprite = inactive;
 
+        if(isGoalSave) status.recommendSlashCount = -1;
+
         initialized = true;
     }
 
@@ -50,7 +52,7 @@ public class SavePoint : SetsunaSlashScript
 
         dTime += Time.deltaTime;
 
-        if (isArcSavePoint && area.detected)
+        if (isGoalSave && area.detected)
         {
             Debug.LogWarning("mpシステム改築中、アークセーブポイントの固有挙動は未実装です");
         }
@@ -74,12 +76,13 @@ public class SavePoint : SetsunaSlashScript
     void SavePointExcute()
     {
         if (manager.latestSavePoint != null){
-            if (manager.latestSavePoint.status.nextSave == this)
+            if (manager.latestSavePoint.status.nextSave is var lastNext and not null)
             {
-                part.AddPoint(player.Status.CalcScore());
+                if (lastNext != this) return;
             }
         }
-        
+
+        part.AddPoint(player.Status.CalcScore());
 
         manager.savedPlayerPosition = transform.position;
         manager.latestSavePoint = this;
@@ -88,7 +91,7 @@ public class SavePoint : SetsunaSlashScript
 
         sprite.sprite = active;
 
-        player.Status.SetRecomendCount(status.recommendSlashCount);
+        player.Status.SetRecommendCount(status.recommendSlashCount);
 
         seAS.PlayOneShot(audioBind.gimmick.savePoint);
         saveEffect_front.Play();

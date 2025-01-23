@@ -66,10 +66,10 @@ public class SavePointManager : MonoBehaviour
 #if UNITY_EDITOR
             var recommend = data.recommendSlashCount;
             Handles.Label(point.transform.position + Vector3.up,
-                          $"êÑèß:{recommend}",
+                          $"{(point.isGoalSave?("ÉSÅ[Éã"):("êÑèß: "+ recommend))}",
                           new GUIStyle { 
-                              fontSize = 20,
-                              normal={ textColor=Color.green },
+                              fontSize = point.isGoalSave ? 30 : 20,
+                              normal={ textColor=(point.isGoalSave ? Color.cyan : Color.green) },
                               fontStyle = FontStyle.Bold,
                               alignment = TextAnchor.MiddleCenter
                           });
