@@ -36,7 +36,7 @@ public class SlashCountUI : MonoBehaviour
         foreach (var cell in scoreCells) cell.Initialize();
         foreach (var cell in slashCells) cell.Initialize();
 
-        StartCoroutine(ResetUICoroutine(true));
+        StartCoroutine(VanishCellsCoroutine());
     }
 
     void ListCells()
@@ -44,7 +44,7 @@ public class SlashCountUI : MonoBehaviour
         slashCells.Clear();
         scoreCells.Clear();
 
-        foreach(Transform t in score_container)
+        foreach (Transform t in score_container)
             scoreCells.Add(t.GetComponent<SlashCountCell>());
 
         foreach (Transform t in slashL_container)
@@ -54,12 +54,15 @@ public class SlashCountUI : MonoBehaviour
             slashCells.Add(t.GetComponent<SlashCountCell>());
     }
 
-    public void SetCells(int recommend, int hintUsed, bool disableAnimation)
+    public void SetCells(int recommend, int hintUsed, bool disableAnimation, bool inPuzzle)
     {
         scoreRemains = 3 - hintUsed;
         slashRemains = recommend;
 
-        StartCoroutine(ResetUICoroutine(disableAnimation));
+        if (!inPuzzle)
+            StartCoroutine(VanishCellsCoroutine());
+        else
+            StartCoroutine(ResetUICoroutine(disableAnimation));
     }
     public void ConsumeSlashCell()
     {
@@ -94,10 +97,10 @@ public class SlashCountUI : MonoBehaviour
         pointPopupCommentTMP.text = $"{comment} +{point}";
 
         float dt = 0, lerp;
-        while (dt <= settings.pointPopupShowT){
-            lerp = dt/settings.pointPopupShowT;
+        while (dt <= settings.pointPopupShowT) {
+            lerp = dt / settings.pointPopupShowT;
 
-            pointPopupRectTransform.localPosition 
+            pointPopupRectTransform.localPosition
                 = Vector3.Lerp(slideStartPos, pointPopupOriginPos, lerp);
 
             dt += Time.deltaTime;
@@ -127,50 +130,51 @@ public class SlashCountUI : MonoBehaviour
         var wait = new WaitForSeconds(settings.cellSetInterval);
 
         //全セルを非表示
-        if(disableAnimation)
+        if (disableAnimation)
         {
-            foreach (var cell in Enumerable.Reverse(slashCells))
-            {
-                if (!cell.state.back) continue;
-                yield return wait;
-                cell.SetCell(false);
-            }
-            foreach (var cell in Enumerable.Reverse(scoreCells))
-            {
-                if (!cell.state.back) continue;
-                yield return wait;
-                cell.SetCell(false);
-            }
+            yield return StartCoroutine(VanishCellsCoroutine());
         }
 
         //スコアセルを表示
-        foreach (var (cell, index) in scoreCells.Select((cell,index)=> (cell, index)))
-        {
-            if (index + 1 > scoreRemains) continue;
-
-            yield return wait;
-
-            if(disableAnimation || !cell.state.back)
-            {
-                cell.SetCell(true);
-            }
-            else{
-                cell.Recover();
-            }
-        }
+        yield return StartCoroutine(ShowCellsCoroutine(scoreCells, wait, true));
 
         //斬撃セルを表示
-        foreach ( var(cell,index) in slashCells.Select((cell, index) => (cell, index)))
+        yield return StartCoroutine(ShowCellsCoroutine(slashCells, wait, false));
+    }
+    public IEnumerator VanishCellsCoroutine()
+    {
+        var wait = new WaitForSeconds(settings.cellSetInterval);
+        yield return StartCoroutine(VanishCellsCoroutine(wait));
+    }
+    public IEnumerator VanishCellsCoroutine(WaitForSeconds wait)
+    {
+        foreach (var cell in Enumerable.Reverse(slashCells))
         {
-            if (index + 1 > slashRemains) continue;
-            
+            if (!cell.state.back) continue;
+            yield return wait;
+            cell.SetCell(false);
+        }
+        foreach (var cell in Enumerable.Reverse(scoreCells))
+        {
+            if (!cell.state.back) continue;
+            yield return wait;
+            cell.SetCell(false);
+        }
+    }
+    IEnumerator ShowCellsCoroutine(List<SlashCountCell> cells, WaitForSeconds wait, bool showAll)
+    {
+        foreach (var (cell, index) in cells.Select((cell, index) => (cell, index)))
+        {
+            if (!showAll && (index + 1 > slashRemains)) continue;
+
             yield return wait;
 
-            if(disableAnimation || !cell.state.back)
+            if (!cell.state.back)
             {
                 cell.SetCell(true);
             }
-            else {
+            else
+            {
                 cell.Recover();
             }
         }
