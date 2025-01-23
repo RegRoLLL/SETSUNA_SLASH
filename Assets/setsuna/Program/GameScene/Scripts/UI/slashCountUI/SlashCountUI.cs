@@ -167,6 +167,7 @@ public class SlashCountUI : MonoBehaviour
         {
             if (!showAll && (index + 1 > slashRemains)) continue;
 
+            if (cell.state.fore) continue;
             yield return wait;
 
             if (!cell.state.back)
