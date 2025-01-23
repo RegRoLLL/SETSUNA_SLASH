@@ -36,6 +36,8 @@ public class SavePoint : SetsunaSlashScript
 
         sprite.sprite = inactive;
 
+        if(isArcSavePoint) status.recommendSlashCount = -1;
+
         initialized = true;
     }
 
@@ -88,7 +90,7 @@ public class SavePoint : SetsunaSlashScript
 
         sprite.sprite = active;
 
-        player.Status.SetRecomendCount(status.recommendSlashCount);
+        player.Status.SetRecommendCount(status.recommendSlashCount);
 
         seAS.PlayOneShot(audioBind.gimmick.savePoint);
         saveEffect_front.Play();
