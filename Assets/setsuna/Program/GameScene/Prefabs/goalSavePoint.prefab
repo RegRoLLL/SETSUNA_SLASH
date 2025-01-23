@@ -52,21 +52,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 11400000, guid: 968dacedbc7e006449c2566a8c30f24c, type: 2}
-  manager: {fileID: 0}
-  part: {fileID: 0}
+  status:
+    isActivated: 0
+    recommendSlashCount: 0
+    isAreaCleared: 0
+    nextSave: {fileID: 0}
+  isGoalSave: 1
   seAS: {fileID: 2466918243315230363}
-  area: {fileID: 3845284405536593977}
-  isArcSavePoint: 1
-  healPerSec: 30
-  sprite: {fileID: 6023495149618863452}
-  particle: {fileID: 7063937244097166392}
   saveEffect_front: {fileID: 2528371966188019789}
   saveEffect_back: {fileID: 2602505800269707311}
   inactive: {fileID: 21300000, guid: 37599d19f87a373469f8ae379a3fc17e, type: 3}
   active: {fileID: 21300000, guid: 9f87c58bf9ef25646a4abdceab70a833, type: 3}
   floatingCycle: 0.5
   floatHight: 0.03
-  dTime: 0
 --- !u!58 &33949319058235519
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -9914,6 +9912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476f24877e48a6446add8e66e4cd3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeScale: 0
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   type: 1
 --- !u!1 &8055072295358293243
