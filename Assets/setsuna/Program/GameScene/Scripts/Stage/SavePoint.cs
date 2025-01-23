@@ -18,7 +18,6 @@ public class SavePoint : SetsunaSlashScript
 
     StageManager manager;
     StagePart part;
-    PlayerDetectArea area;
     SpriteRenderer sprite;
 
     Game_HubScript hub;
@@ -31,7 +30,6 @@ public class SavePoint : SetsunaSlashScript
     {
         part = GetComponentInParent<StagePart>();
         manager = GetComponentInParent<StageManager>();
-        area = GetComponentInChildren<PlayerDetectArea>();
         sprite = GetComponentInChildren<SpriteRenderer>();
 
         sprite.sprite = inactive;
@@ -51,11 +49,6 @@ public class SavePoint : SetsunaSlashScript
         sprite.transform.localPosition = Vector2.up * (Mathf.Sin(dTime / floatingCycle) * floatHight);
 
         dTime += Time.deltaTime;
-
-        if (isGoalSave && area.detected)
-        {
-            Debug.LogWarning("mpシステム改築中、アークセーブポイントの固有挙動は未実装です");
-        }
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -76,27 +69,40 @@ public class SavePoint : SetsunaSlashScript
     void SavePointExcute()
     {
         if (manager.latestSavePoint != null){
-            if (manager.latestSavePoint.status.nextSave is var lastNext and not null)
-            {
-                if (lastNext != this) return;
+            if (manager.latestSavePoint.status.nextSave is var lastNext and not null){
+                //区間終わりのセーブポイント
+                if (lastNext == this) AreaClear();
             }
         }
 
-        part.AddPoint(player.Status.CalcScore());
+        AreaStart();
 
+        Save();
+        Activate();
+    }
+    void AreaStart()
+    {
+        player.Status.SetRecommendCount(status.recommendSlashCount);
+    }
+    void AreaClear()
+    {
+        part.AddPoint(player.Status.CalcScore());
+    }
+    void Save()
+    {
         manager.savedPlayerPosition = transform.position;
         manager.latestSavePoint = this;
-        status.isActivated = true;
         manager.hub.playingStage.SaveNotOverWrite(part.gameObject);
-
+    }
+    void Activate()
+    {
+        status.isActivated = true;
         sprite.sprite = active;
-
-        player.Status.SetRecommendCount(status.recommendSlashCount);
-
         seAS.PlayOneShot(audioBind.gimmick.savePoint);
         saveEffect_front.Play();
         saveEffect_back.Play();
     }
+
 
 
     [Serializable]
