@@ -37,8 +37,11 @@ public class StageManager : SetsunaSlashScript
         stageParts.Clear();
         foreach (Transform tra in transform)
         {
-            if (tra.GetComponent<StagePart>())
+            if (tra.TryGetComponent<StagePart>(out var part))
+            {
+                part.SetClearStatus(0);
                 stageParts.Add(tra.gameObject);
+            }
         }
 
         var bgList = backGroundsContainer.GetComponentsInChildren<BackGroundGroup>().ToList();
@@ -77,9 +80,6 @@ public class StageManager : SetsunaSlashScript
             p.SetActive(false);
             p.transform.parent = part.transform.parent;
             stageClones.Add(p);
-
-            var component = part.GetComponent<StagePart>();
-            component.clearStat.recommendMaxPoint = component.savePoints.GetSavePointsData().Count * 3;
         }
     }
 
@@ -128,6 +128,8 @@ public class StageManager : SetsunaSlashScript
         var data = oldPartComponent.savePoints.GetSavePointsData();
         newPartComponent.savePoints.SetSavePointsData(data);
         newPartComponent.savePoints.ConnectSavePoints_InRuntime();
+
+        newPartComponent.SetClearStatus(oldPartComponent.clearStat.currentPoint);
 
         var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(latestSavePoint);
         if(pointIndex != -1) latestSavePoint = newPartComponent.savePoints.GetSavePoints()[pointIndex];
