@@ -12,6 +12,7 @@ using UnityEditor.SceneManagement;
 public class SavePointManager : MonoBehaviour
 {
     [SerializeField] bool drawGizmoLine = true;
+    [SerializeField, Header("˜A”Ô‚ğ“ü‚ê‚éêŠ‚É{0}‚ğ‘‚­")] string nameFormat = "1-{0}";
     [SerializeField] List<SavePoint> savePointList = new();
 
     public void ListSavePoints()
@@ -109,6 +110,23 @@ public class SavePointManager : MonoBehaviour
             Undo.RecordObject(point, "SetComponent Reference");
         }
     }
+
+    public void NameSavePoints_InEditor()
+    {
+        Undo.RecordObjects(savePointList.Select((point) => point.gameObject).ToArray(), "modify name");
+
+        foreach(var (point, index) in savePointList.Select((point, index) => (point, index)))
+        {
+            if (savePointList.Last() == point)
+            {
+                point.gameObject.name = string.Format(nameFormat, "goal");
+            }
+            else
+            {
+                point.gameObject.name = string.Format(nameFormat, index + 1);
+            }
+        }
+    }
 #endif
 }
 
@@ -127,9 +145,17 @@ public class SavePointeManagerInspector : Editor
             instance.ListSavePoints();
         }
 
-        if (GUILayout.Button("ConnectSavePoints"))
+        if (instance.GetSavePoints().Count > 0)
         {
-            instance.ConnectSavePoints_InEditor();
+            if (GUILayout.Button("ConnectSavePoints"))
+            {
+                instance.ConnectSavePoints_InEditor();
+            }
+
+            if (GUILayout.Button("NameSavePointsFromIndex"))
+            {
+                instance.NameSavePoints_InEditor();
+            }
         }
     }
 }

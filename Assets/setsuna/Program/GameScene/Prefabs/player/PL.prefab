@@ -151,6 +151,8 @@ MonoBehaviour:
   score2: Great!
   score3: Perfect!!
   overScore: Excellet!!!
+  partTitleTMP: {fileID: 8925216304838153374}
+  areaNameTMP: {fileID: 382784392625084994}
   scoreCells: []
   slashCells: []
 --- !u!114 &11879554392120583
@@ -4406,7 +4408,7 @@ GameObject:
   - component: {fileID: 4011827967314447668}
   - component: {fileID: 8925216304838153374}
   m_Layer: 5
-  m_Name: underLabel_title (TMP) (1)
+  m_Name: underLabel_partTitle (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7855,8 +7857,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1611807371252133023}
   - {fileID: 1442989621254743778}
+  - {fileID: 1611807371252133023}
   m_Father: {fileID: 7280677551282029014}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12998,7 +13000,7 @@ GameObject:
   - component: {fileID: 4062579259479666261}
   - component: {fileID: 382784392625084994}
   m_Layer: 5
-  m_Name: underLabel_number (TMP)
+  m_Name: underLabel_areaName (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14807,6 +14809,7 @@ MonoBehaviour:
   currentCount: 0
   currentScoreAdditional: 0
   hintUsed: 0
+  inPuzzle: 0
 --- !u!114 &2886060049110822273
 MonoBehaviour:
   m_ObjectHideFlags: 0
