@@ -7,7 +7,7 @@ using UnityEngine;
 public class SavePoint : SetsunaSlashScript
 {
     [SerializeField] SavePointStatus status = new();
-    public bool isGoalSave;
+    public bool isGoalSave, isAnotherPart;
 
     [SerializeField] AudioSource seAS;
     public ParticleSystem saveEffect_front, saveEffect_back;
@@ -82,6 +82,12 @@ public class SavePoint : SetsunaSlashScript
     }
     void AreaStart()
     {
+        if (isAnotherPart)
+        {
+            player.Status.SetAnotherPart();
+            return;
+        }
+
         player.Status.SetRecommendCount(status.recommendSlashCount);
 
         if (isGoalSave){
