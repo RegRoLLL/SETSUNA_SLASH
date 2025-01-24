@@ -66,6 +66,14 @@ public class SavePoint : SetsunaSlashScript
         SavePointExcute();
     }
 
+    public void Excute(Player pl)
+    {
+        if (!initialized) Initialize();
+        player = pl;
+
+        SavePointExcute();
+    }
+
     void SavePointExcute()
     {
         if (manager.latestSavePoint != null){
@@ -108,6 +116,7 @@ public class SavePoint : SetsunaSlashScript
         if (!isAnotherPart)
         {
             manager.latestSavePoint = this;
+            if (manager.anotherPartSave != null) manager.anotherPartSave.Inactive();
         }
         manager.anotherPartSave = isAnotherPart ? this : null;
         
@@ -120,6 +129,12 @@ public class SavePoint : SetsunaSlashScript
         seAS.PlayOneShot(audioBind.gimmick.savePoint);
         saveEffect_front.Play();
         saveEffect_back.Play();
+    }
+
+    public void Inactive()
+    {
+        status.isActivated = false;
+        sprite.sprite = inactive;
     }
 
 

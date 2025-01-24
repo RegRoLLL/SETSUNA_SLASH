@@ -50,13 +50,14 @@ public class TeleDoor : TeleportGimmick
             if (stage.latestSavePoint is var save and not null)
             {
                 pl.transform.position = save.transform.position;
+                save.Excute(player);
             }
             else if (stage.anotherPartSave is var anotherSave and not null)
             {
                 pl.transform.position = anotherSave.transform.position;
+                anotherSave.Excute(player);
             }
-            else
-            {
+            else{
                 Teleport(pl.transform);
             }
         }

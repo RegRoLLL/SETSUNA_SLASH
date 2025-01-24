@@ -18,7 +18,7 @@ public class PL_Status:SetsunaSlashScript
         ui = pl.ui.SlashCountUI;
 
         if(!config.debugMode){
-            hintUsed = 0;
+            hintUsed = 3;
             recommendCount = 0;
             currentCount = 0;
             currentScoreAdditional = 0;
@@ -56,6 +56,7 @@ public class PL_Status:SetsunaSlashScript
     public void SetRecommendCount(int max)
     {
         inPuzzle = (max >= 0);
+        inAnotherPart = false;
 
         this.recommendCount = max;
         currentCount = max;
