@@ -7,7 +7,7 @@ using UnityEngine;
 public class SavePoint : SetsunaSlashScript
 {
     [SerializeField] SavePointStatus status = new();
-    public bool isGoalSave;
+    public bool isGoalSave, isAnotherPart;
 
     [SerializeField] AudioSource seAS;
     public ParticleSystem saveEffect_front, saveEffect_back;
@@ -66,6 +66,14 @@ public class SavePoint : SetsunaSlashScript
         SavePointExcute();
     }
 
+    public void Excute(Player pl)
+    {
+        if (!initialized) Initialize();
+        player = pl;
+
+        SavePointExcute();
+    }
+
     void SavePointExcute()
     {
         if (manager.latestSavePoint != null){
@@ -82,7 +90,24 @@ public class SavePoint : SetsunaSlashScript
     }
     void AreaStart()
     {
-        player.Status.SetRecommendCount(status.recommendSlashCount);
+        if (isAnotherPart)
+        {
+            player.Status.SetAnotherPart();
+        }
+        else
+        {
+            player.Status.SetRecommendCount(status.recommendSlashCount);
+        }
+
+        if (isGoalSave){
+            player.ui.SlashCountUI.SetSubtitleLabel("", "");
+        }
+        else if(isAnotherPart){
+            player.ui.SlashCountUI.SetSubtitleLabel(part.GetTitle(), "");
+        }
+        else{
+            player.ui.SlashCountUI.SetSubtitleLabel(part.GetTitle(), this.gameObject.name);
+        }
     }
     void AreaClear()
     {
@@ -91,7 +116,14 @@ public class SavePoint : SetsunaSlashScript
     void Save()
     {
         manager.savedPlayerPosition = transform.position;
-        manager.latestSavePoint = this;
+
+        if (!isAnotherPart)
+        {
+            manager.latestSavePoint = this;
+            if (manager.anotherPartSave != null) manager.anotherPartSave.Inactive();
+        }
+        manager.anotherPartSave = isAnotherPart ? this : null;
+        
         manager.hub.playingStage.SaveNotOverWrite(part.gameObject);
     }
     void Activate()
@@ -101,6 +133,12 @@ public class SavePoint : SetsunaSlashScript
         seAS.PlayOneShot(audioBind.gimmick.savePoint);
         saveEffect_front.Play();
         saveEffect_back.Play();
+    }
+
+    public void Inactive()
+    {
+        status.isActivated = false;
+        sprite.sprite = inactive;
     }
 
 

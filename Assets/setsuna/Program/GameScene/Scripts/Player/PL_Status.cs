@@ -7,6 +7,7 @@ public class PL_Status:SetsunaSlashScript
     [SerializeField] int recommendCount, currentCount, currentScoreAdditional;
     [SerializeField] int hintUsed;
     [SerializeField] bool inPuzzle;
+    public bool inAnotherPart;
 
     Player pl;
     SlashCountUI ui;
@@ -17,7 +18,7 @@ public class PL_Status:SetsunaSlashScript
         ui = pl.ui.SlashCountUI;
 
         if(!config.debugMode){
-            hintUsed = 0;
+            hintUsed = 3;
             recommendCount = 0;
             currentCount = 0;
             currentScoreAdditional = 0;
@@ -46,9 +47,16 @@ public class PL_Status:SetsunaSlashScript
         return true;
     }
 
+    public void SetAnotherPart()
+    {
+        inAnotherPart = true;
+        ui.SetAnotherRoom();
+    }
+
     public void SetRecommendCount(int max)
     {
         inPuzzle = (max >= 0);
+        inAnotherPart = false;
 
         this.recommendCount = max;
         currentCount = max;
@@ -58,6 +66,8 @@ public class PL_Status:SetsunaSlashScript
     }
     public void ResetCount()
     {
+        if (inAnotherPart) return;
+
         currentCount = recommendCount;
         currentScoreAdditional = 3 - hintUsed;
         ui.SetCells(recommendCount, hintUsed, false, inPuzzle);

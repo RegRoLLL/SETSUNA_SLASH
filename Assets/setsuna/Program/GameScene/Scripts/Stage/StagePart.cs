@@ -6,6 +6,8 @@ using System.Linq;
 
 public class StagePart : MonoBehaviour
 {
+    [SerializeField] string partTitle;
+    public bool isAnotherRoom;
     public Color backGroundColor;
     public BackGroundGroup backGroundGroup;
 
@@ -67,4 +69,6 @@ public class StagePart : MonoBehaviour
 
         stageManager.hub.player.ui.SlashCountUI.ShowPointPopup(clearStat, point);
     }
+
+    public string GetTitle() => partTitle;
 }
