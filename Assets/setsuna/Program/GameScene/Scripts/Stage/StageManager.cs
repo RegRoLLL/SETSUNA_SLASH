@@ -19,7 +19,7 @@ public class StageManager : SetsunaSlashScript
     public int currentIndex, saveIndex;
     public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
-    public SavePoint latestSavePoint;
+    public SavePoint latestSavePoint, anotherPartSave;
     public float savedPlayerHP, savedPlayerMP;
 
 
@@ -131,8 +131,16 @@ public class StageManager : SetsunaSlashScript
 
         newPartComponent.SetClearStatus(oldPartComponent.clearStat.currentPoint);
 
-        var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(latestSavePoint);
-        if(pointIndex != -1) latestSavePoint = newPartComponent.savePoints.GetSavePoints()[pointIndex];
+        if (anotherPartSave != null)
+        {
+            var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(anotherPartSave);
+            if (pointIndex != -1) anotherPartSave = newPartComponent.savePoints.GetSavePoints()[pointIndex];
+        }
+        else
+        {
+            var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(latestSavePoint);
+            if (pointIndex != -1) latestSavePoint = newPartComponent.savePoints.GetSavePoints()[pointIndex];
+        }
 
         Destroy(oldPart);
         stageParts[index] = newPart;

@@ -5,7 +5,7 @@ using UnityEngine;
 [AddComponentMenu("")]
 public class TeleportGimmick : SetsunaSlashScript
 {
-    [SerializeField] TeleportGimmick target;
+    public TeleportGimmick target;
     bool teleported;
 
     void Start()

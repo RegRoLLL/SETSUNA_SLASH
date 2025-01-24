@@ -7,13 +7,14 @@ using UnityEngine.InputSystem;
 public class TeleDoor : TeleportGimmick
 {
     [Space(10)]
-    [SerializeField] bool onlyGrounded = true;
+    [SerializeField] bool onlyGrounded = true, dontResetAfterTeleport = false;
     [SerializeField] TeleDoorToMode teleportTo = TeleDoorToMode.teleDoor;
-    [SerializeField] SavePoint targetSavePoint;
     [SerializeField] SpriteRenderer interactIcon;
 
     Player player;
     bool touchingToPlayer;
+    StageManager stage;
+    [HideInInspector] public StagePart part;
 
     enum TeleDoorToMode { teleDoor, savePoint }
 
@@ -34,6 +35,8 @@ public class TeleDoor : TeleportGimmick
 
     public void InteractDoor(Player pl)
     {
+        if (stage == null) stage = GetComponentInParent<StageManager>();
+
         if (touchingToPlayer == false) return;
 
         if(onlyGrounded && !pl.IsGounded()) return;
@@ -44,13 +47,46 @@ public class TeleDoor : TeleportGimmick
         }
         else
         {
-            pl.transform.position = targetSavePoint.transform.position;
+            if (stage.latestSavePoint is var save and not null)
+            {
+                pl.transform.position = save.transform.position;
+            }
+            else if (stage.anotherPartSave is var anotherSave and not null)
+            {
+                pl.transform.position = anotherSave.transform.position;
+            }
+            else
+            {
+                Teleport(pl.transform);
+            }
         }
+
+        if (dontResetAfterTeleport) return;
+
+        StartCoroutine(ResetAfterTeleportCoroutine());
+    }
+
+    IEnumerator ResetAfterTeleportCoroutine()
+    {
+        yield return null;
+
+        var targetDoor = target.gameObject.GetComponent<TeleDoor>();
+        Debug.Log(targetDoor.part.gameObject, targetDoor.part.gameObject);
+        stage.SaveNotOverWrite(targetDoor.part.gameObject);
+        stage.Load();
     }
 
 
     private void OnTriggerEnter2D(Collider2D col)
     {
+        if (part == null)
+        {
+            if (col.TryGetComponent<StagePart>(out var colPart))
+            {
+                part = colPart;
+            }
+        }
+
         if (col.gameObject.layer != playerLayer) return;
 
         BecomeTeleportable();

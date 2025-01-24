@@ -94,6 +94,9 @@ public class Player : SetsunaSlashScript
         if (gm.hub.playingStage.latestSavePoint is var lastSave and not null){
             toPos = lastSave.transform.position;
         }
+        else if(gm.hub.playingStage.anotherPartSave is var anotherSave and not null){
+            toPos = anotherSave.transform.position;
+        }
         else{
             toPos = transform.position;
         }

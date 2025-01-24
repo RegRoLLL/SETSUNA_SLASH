@@ -104,7 +104,13 @@ public class SavePoint : SetsunaSlashScript
     void Save()
     {
         manager.savedPlayerPosition = transform.position;
-        manager.latestSavePoint = this;
+
+        if (!isAnotherPart)
+        {
+            manager.latestSavePoint = this;
+        }
+        manager.anotherPartSave = isAnotherPart ? this : null;
+        
         manager.hub.playingStage.SaveNotOverWrite(part.gameObject);
     }
     void Activate()
