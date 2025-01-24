@@ -21,6 +21,8 @@ public class SlashCountUI : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI partTitleTMP, areaNameTMP;
 
+    public JewelCountUI jewelCounter;
+
     int scoreRemains, slashRemains;
     [SerializeField] List<SlashCountCell> scoreCells = new();
     [SerializeField] List<SlashCountCell> slashCells = new();
@@ -37,6 +39,7 @@ public class SlashCountUI : MonoBehaviour
         pointPopupRectTransform.localPosition += Vector3.left * settings.pointPopupSlide;
 
         infinityGauge.enabled = false;
+        jewelCounter.Hide(false);
 
         ListCells();
 
@@ -61,18 +64,20 @@ public class SlashCountUI : MonoBehaviour
             slashCells.Add(t.GetComponent<SlashCountCell>());
     }
 
-    public void SetInfinity()
+    public void SetAnotherRoom()
     {
         infinityGauge.enabled = true;
         isInfinity = true;
         scoreRemains = 0;
         slashRemains = 10;
+        jewelCounter.Show(true);
         StartCoroutine(ResetUICoroutine(false));
     }
 
     public void SetCells(int recommend, int hintUsed, bool disableAnimation, bool inPuzzle)
     {
         isInfinity = false;
+        jewelCounter.Hide(true);
 
         scoreRemains = 3 - hintUsed;
         slashRemains = recommend;

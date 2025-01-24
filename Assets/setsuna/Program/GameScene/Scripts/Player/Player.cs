@@ -82,6 +82,12 @@ public class Player : SetsunaSlashScript
     //dead
     public void Death() => dead.Death();
 
+    //ui
+    public void CollectJewel(int index)
+    {
+        ui.SlashCountUI.jewelCounter.GetJewel(index);
+    }
+
     public IEnumerator ReturnPlayerPos()
     {
         gm.isSaving = true;

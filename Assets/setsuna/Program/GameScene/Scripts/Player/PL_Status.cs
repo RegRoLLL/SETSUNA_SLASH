@@ -50,7 +50,7 @@ public class PL_Status:SetsunaSlashScript
     public void SetAnotherPart()
     {
         inAnotherPart = true;
-        ui.SetInfinity();
+        ui.SetAnotherRoom();
     }
 
     public void SetRecommendCount(int max)
@@ -66,6 +66,8 @@ public class PL_Status:SetsunaSlashScript
     }
     public void ResetCount()
     {
+        if (inAnotherPart) return;
+
         currentCount = recommendCount;
         currentScoreAdditional = 3 - hintUsed;
         ui.SetCells(recommendCount, hintUsed, false, inPuzzle);

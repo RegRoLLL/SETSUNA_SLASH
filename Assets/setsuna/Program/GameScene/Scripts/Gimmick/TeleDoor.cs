@@ -72,7 +72,7 @@ public class TeleDoor : TeleportGimmick
         yield return null;
 
         var targetDoor = target.gameObject.GetComponent<TeleDoor>();
-        Debug.Log(targetDoor.part.gameObject, targetDoor.part.gameObject);
+        //Debug.Log(targetDoor.part.gameObject, targetDoor.part.gameObject);
         stage.SaveNotOverWrite(targetDoor.part.gameObject);
         stage.Load();
     }

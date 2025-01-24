@@ -16,6 +16,7 @@ public class StageManager : SetsunaSlashScript
     [Header("Internal Data")]
     public List<GameObject> stageParts = new();
     public List<GameObject> stageClones = new();
+    public List<string> jewelRoomNames = new();
     public int currentIndex, saveIndex;
     public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
@@ -41,8 +42,12 @@ public class StageManager : SetsunaSlashScript
             {
                 part.SetClearStatus(0);
                 stageParts.Add(tra.gameObject);
+
+                if(part.isAnotherRoom) jewelRoomNames.Add(part.GetTitle());
             }
         }
+
+        hub.player.ui.SlashCountUI.jewelCounter.GenerateJewelCells(jewelRoomNames.Count);
 
         var bgList = backGroundsContainer.GetComponentsInChildren<BackGroundGroup>().ToList();
         foreach (var bgg in bgList)
@@ -131,6 +136,16 @@ public class StageManager : SetsunaSlashScript
 
         newPartComponent.SetClearStatus(oldPartComponent.clearStat.currentPoint);
 
+        if (newPartComponent.isAnotherRoom)
+        {
+            var oldJewel = oldPartComponent.GetComponentInChildren<CollectableJewel>(true);
+
+            if (oldJewel.IsCollected)
+            {
+                newPartComponent.GetComponentInChildren<CollectableJewel>(true).SetCollected();
+            }
+        }
+
         if (anotherPartSave != null)
         {
             var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(anotherPartSave);
@@ -164,5 +179,11 @@ public class StageManager : SetsunaSlashScript
         next.backGroundGroup.SetEnable(true);
 
         currentBG = next.backGroundGroup;
+    }
+
+
+    public void CollectJewel(string partTitle)
+    {
+        hub.player.CollectJewel(jewelRoomNames.FindIndex((title)=>title ==  partTitle));
     }
 }
