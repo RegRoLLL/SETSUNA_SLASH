@@ -5,18 +5,23 @@ using System.Linq;
 using Unity.VisualScripting;
 using System;
 using TMPro;
+using UnityEngine.UI;
 
 public class SlashCountUI : MonoBehaviour
 {
     [SerializeField] SlashCountUISettings settings = new();
 
     [SerializeField] Transform score_container, slashL_container, slashS_container;
+    [SerializeField] Image infinityGauge;
+    [SerializeField] bool isInfinity;
 
     [SerializeField] CanvasGroup pointPopupGroup;
     [SerializeField] TextMeshProUGUI pointPopupLabelTMP, pointPopupCommentTMP;
     [SerializeField] string score0, score1, score2, score3, overScore;
 
     [SerializeField] TextMeshProUGUI partTitleTMP, areaNameTMP;
+
+    public JewelCountUI jewelCounter;
 
     int scoreRemains, slashRemains;
     [SerializeField] List<SlashCountCell> scoreCells = new();
@@ -32,6 +37,9 @@ public class SlashCountUI : MonoBehaviour
         pointPopupRectTransform = pointPopupGroup.GetComponent<RectTransform>();
         pointPopupOriginPos = pointPopupRectTransform.localPosition;
         pointPopupRectTransform.localPosition += Vector3.left * settings.pointPopupSlide;
+
+        infinityGauge.enabled = false;
+        jewelCounter.Hide(false);
 
         ListCells();
 
@@ -56,8 +64,21 @@ public class SlashCountUI : MonoBehaviour
             slashCells.Add(t.GetComponent<SlashCountCell>());
     }
 
+    public void SetAnotherRoom()
+    {
+        infinityGauge.enabled = true;
+        isInfinity = true;
+        scoreRemains = 0;
+        slashRemains = 10;
+        jewelCounter.Show(true);
+        StartCoroutine(ResetUICoroutine(false));
+    }
+
     public void SetCells(int recommend, int hintUsed, bool disableAnimation, bool inPuzzle)
     {
+        isInfinity = false;
+        jewelCounter.Hide(true);
+
         scoreRemains = 3 - hintUsed;
         slashRemains = recommend;
 
@@ -142,11 +163,13 @@ public class SlashCountUI : MonoBehaviour
             yield return StartCoroutine(VanishCellsCoroutine());
         }
 
+        infinityGauge.enabled = isInfinity;
+
         //スコアセルを表示
-        yield return StartCoroutine(ShowCellsCoroutine(scoreCells, wait, true));
+        yield return StartCoroutine(ShowCellsCoroutine(scoreCells,scoreRemains , wait));
 
         //斬撃セルを表示
-        yield return StartCoroutine(ShowCellsCoroutine(slashCells, wait, false));
+        yield return StartCoroutine(ShowCellsCoroutine(slashCells,slashRemains , wait));
     }
     public IEnumerator VanishCellsCoroutine()
     {
@@ -168,11 +191,11 @@ public class SlashCountUI : MonoBehaviour
             cell.SetCell(false);
         }
     }
-    IEnumerator ShowCellsCoroutine(List<SlashCountCell> cells, WaitForSeconds wait, bool showAll)
+    IEnumerator ShowCellsCoroutine(List<SlashCountCell> cells,int count, WaitForSeconds wait)
     {
         foreach (var (cell, index) in cells.Select((cell, index) => (cell, index)))
         {
-            if (!showAll && (index + 1 > slashRemains)) continue;
+            if (index + 1 > count) continue;
 
             if (cell.state.fore) continue;
             yield return wait;

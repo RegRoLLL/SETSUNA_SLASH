@@ -65,12 +65,39 @@ public class SavePointManager : MonoBehaviour
             var data = point.GetData();
 
 #if UNITY_EDITOR
-            var recommend = data.recommendSlashCount;
+            string label;
+
+            if (point.isGoalSave)
+            {
+                label = "ÉSÅ[Éã";
+            }
+            else if (point.isAnotherPart){
+                label = $"è¨ïîâÆ {point.gameObject.name}";
+            }
+            else{
+                label = $"êÑèß: {data.recommendSlashCount}";
+            }
+
+            Color labelColor;
+
+            if (point.isGoalSave)
+            {
+                labelColor = Color.cyan;
+            }
+            else if (point.isAnotherPart)
+            {
+                labelColor = Color.magenta;
+            }
+            else
+            {
+                labelColor = Color.green;
+            }
+
             Handles.Label(point.transform.position + Vector3.up,
-                          $"{(point.isGoalSave?("ÉSÅ[Éã"):("êÑèß: "+ recommend))}",
+                          label,
                           new GUIStyle { 
                               fontSize = point.isGoalSave ? 30 : 20,
-                              normal={ textColor=(point.isGoalSave ? Color.cyan : Color.green) },
+                              normal={ textColor=labelColor },
                               fontStyle = FontStyle.Bold,
                               alignment = TextAnchor.MiddleCenter
                           });

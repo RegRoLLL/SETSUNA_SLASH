@@ -7,6 +7,7 @@ using System.Linq;
 public class StagePart : MonoBehaviour
 {
     [SerializeField] string partTitle;
+    public bool isAnotherRoom;
     public Color backGroundColor;
     public BackGroundGroup backGroundGroup;
 
