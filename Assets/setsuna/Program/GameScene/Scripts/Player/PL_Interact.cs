@@ -1,3 +1,4 @@
+using RegUtil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ public class PL_Interact : MonoBehaviour
     public void OnInteract(InputValue value)
     {
         if (!value.isPressed) return;
+        if (Time.timeScale == 0) return;
 
         var targetTrigger = pl.GetTriggers().Find(
             (t) => !t.GetComponent<StagePart>() && t.GetComponentInChildren<InteractGimmick>()

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using Unity.Burst.CompilerServices;
 
 public class Game_SetsunaUI : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Game_SetsunaUI : MonoBehaviour
     [SerializeField] Game_menuUI menuUI;
     [SerializeField] SlashCountUI slashCountUI;
     public SlashCountUI SlashCountUI { get => slashCountUI; }
+    [SerializeField] HintUI hintUI;
 
     [SerializeField] GameObject touchController;
     [Space]
@@ -122,5 +124,12 @@ public class Game_SetsunaUI : MonoBehaviour
 
 
         titlePanel.gameObject.SetActive(false);
+    }
+
+
+    public void OpenHintUI(List<HintUI.Hint> hints)
+    {
+        hintUI.SetHints(hints);
+        hintUI.Open();
     }
 }

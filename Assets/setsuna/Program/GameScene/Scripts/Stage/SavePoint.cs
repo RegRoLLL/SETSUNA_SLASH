@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
+[Serializable, RequireComponent(typeof(InteractGimmick))]
 public class SavePoint : SetsunaSlashScript
 {
     [SerializeField] SavePointStatus status = new();
     public bool isGoalSave, isAnotherPart;
+    [SerializeField] List<HintUI.Hint> hints = new();
 
+    [Space]
     [SerializeField] AudioSource seAS;
+    [SerializeField] SpriteRenderer sprite, interactIcon;
     public ParticleSystem saveEffect_front, saveEffect_back;
     [SerializeField] Sprite inactive, active;
 
@@ -18,19 +21,23 @@ public class SavePoint : SetsunaSlashScript
 
     StageManager manager;
     StagePart part;
-    SpriteRenderer sprite;
+    PlayerDetectArea area;
 
     Game_HubScript hub;
     Player player;
 
     bool initialized;
 
+    private void Start()
+    {
+        area = GetComponent<PlayerDetectArea>();
+        GetComponent<InteractGimmick>().onInteractEvent.AddListener(InteractSavePoint);
+    }
 
     void Initialize()
     {
         part = GetComponentInParent<StagePart>();
         manager = GetComponentInParent<StageManager>();
-        sprite = GetComponentInChildren<SpriteRenderer>();
 
         sprite.sprite = inactive;
 
@@ -38,7 +45,6 @@ public class SavePoint : SetsunaSlashScript
 
         initialized = true;
     }
-
 
     void Update()
     {
@@ -49,6 +55,8 @@ public class SavePoint : SetsunaSlashScript
         sprite.transform.localPosition = Vector2.up * (Mathf.Sin(dTime / floatingCycle) * floatHight);
 
         dTime += Time.deltaTime;
+
+        interactIcon.enabled = area.detected;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -141,7 +149,10 @@ public class SavePoint : SetsunaSlashScript
         sprite.sprite = inactive;
     }
 
-
+    public void InteractSavePoint(Player pl)
+    {
+        pl.ui.OpenHintUI(hints);
+    }
 
     [Serializable]
     public class SavePointStatus
