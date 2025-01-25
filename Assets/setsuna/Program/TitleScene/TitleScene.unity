@@ -3460,6 +3460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476f24877e48a6446add8e66e4cd3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeScale: 1
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   type: 1
 --- !u!1 &1031685694
@@ -6522,6 +6523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476f24877e48a6446add8e66e4cd3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeScale: 1
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   type: 0
 --- !u!1 &1730969132

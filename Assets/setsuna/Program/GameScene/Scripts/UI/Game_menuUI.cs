@@ -128,17 +128,18 @@ public class Game_menuUI : SetsunaSlashScript
 
     public void SetCurrentPlayData()
     {
-        currentPlayData.hp = Hub.playingStage.savedPlayerHP;
+        currentPlayData.maxPart = Hub.playingStage.saveIndex+1;
 
-        currentPlayData.mp = Hub.playingStage.savedPlayerMP;
+        var text = "";
+        text += $"宝石：{currentPlayData.collectedJewel}/{currentPlayData.maxJewel}\r\n";
+        text += $"最新エリア：{Convert.ToInt32(currentPlayData.maxPart) + 1}\r\n";
+        text += $"スコア：\r\n";
 
-        currentPlayData.pos = Hub.playingStage.savedPlayerPosition;
-
-        currentPlayData.area = Hub.playingStage.saveIndex;
-
-        currentPlayData.easyMode = config.easyMode;
-
-        dataDisplay.text = $"HP：{currentPlayData.hp}　　 MP：{currentPlayData.mp}\r\nセーブポイント：({currentPlayData.pos.x}, {currentPlayData.pos.y})\r\nエリア：{Convert.ToInt32(currentPlayData.area) + 1}";
+        int part = 1;
+        foreach (var (maxScore, score) in currentPlayData.partScores)
+        {
+            text += $"part{part++} {score}/{maxScore}   ";
+        }
     }
 
     public void CheckPassword(TMP_InputField field)

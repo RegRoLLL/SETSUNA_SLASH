@@ -62,15 +62,16 @@ public class GameManager : SetsunaSlashScript
 
     void SetContinueData()
     {
-        //システム変更に伴いMPとHPのセーブ廃止
+        hub.playingStage.savedPlayerPosition
+            = hub.playingStage.stageParts[config.loadedSaveData.maxPart-1]
+                .GetComponent<StagePart>()
+                .savePoints.GetSavePoints()[0]
+                .transform.position;
 
-        hub.PL_Ctrler.transform.position = config.loadedSaveData.pos;
-        hub.playingStage.savedPlayerPosition = config.loadedSaveData.pos;
+        hub.playingStage.saveIndex = config.loadedSaveData.maxPart - 1;
+        hub.playingStage.currentIndex = config.loadedSaveData.maxPart - 1;
 
-        hub.playingStage.saveIndex = config.loadedSaveData.area;
-        hub.playingStage.currentIndex = config.loadedSaveData.area;
-
-        config.easyMode = config.loadedSaveData.easyMode;
+        config.easyMode = false;
 
         config.isContinueStart = false;
     }

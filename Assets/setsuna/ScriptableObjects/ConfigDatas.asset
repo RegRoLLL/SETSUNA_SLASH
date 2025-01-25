@@ -21,12 +21,10 @@ MonoBehaviour:
   demoMode: 0
   debugMode: 1
   loadedSaveData:
-    pass: "\u3042\u3042\u3042"
-    hp: 100
-    mp: 100
-    pos: {x: 211.9776, y: 85.752}
-    area: 2
-    easyMode: 0
+    pass: startPoint
+    maxPart: 100
+    maxJewel: 100
+    collectedJewel: 0
   isContinueStart: 0
   saveDataCSV_name: savedata
-  outPutSaveDataLog: 0
+  outPutSaveDataLog: 1

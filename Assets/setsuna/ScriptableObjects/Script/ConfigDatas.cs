@@ -122,10 +122,9 @@ public class ConfigDatas : ScriptableObject
     public class SaveData
     {
         public string pass;
-        public float hp, mp;
-        public Vector2 pos;
-        public int area;
-        public bool easyMode;
+        public int maxPart;
+        public int maxJewel, collectedJewel;
+        public List<(int maxScore, int score)> partScores = new();
     }
 
     [ContextMenu("loadDatas")]
@@ -153,12 +152,15 @@ public class ConfigDatas : ScriptableObject
     {
         string data = "";
         data += currentPlayData.pass + ",";
-        data += currentPlayData.hp + ",";
-        data += currentPlayData.mp + ",";
-        data += currentPlayData.pos.x + ",";
-        data += currentPlayData.pos.y + ",";
-        data += currentPlayData.area + ",";
-        data += Convert.ToInt32(currentPlayData.easyMode);
+        data += currentPlayData.maxPart + ",";
+        data += currentPlayData.maxJewel + ",";
+        data += currentPlayData.collectedJewel + ",";
+        
+        foreach (var (maxScore, score) in currentPlayData.partScores)
+        {
+            data += maxScore + ",";
+            data += score + ",";
+        }
 
         var sr = new StreamWriter(saveDataFilePath, true);
         sr.WriteLine(data);

@@ -10,9 +10,6 @@ using RegUtility;
 
 public class TitleManager : SetsunaSlashScript
 {
-    ConfigDatas.ControllMode lastControllMode;
-
-
     [SerializeField] GameObject continueWindow;
     [SerializeField] TMP_InputField passwordField;
     [SerializeField] TextMeshProUGUI passNotFoundCaution;
@@ -63,12 +60,19 @@ public class TitleManager : SetsunaSlashScript
     public void ContinueDecide()
     {
         config.loadedSaveData.pass = selectedSaveData[0];
-        config.loadedSaveData.hp = (float)Convert.ToDouble(selectedSaveData[1]);
-        config.loadedSaveData.mp = (float)Convert.ToDouble(selectedSaveData[2]);
-        config.loadedSaveData.pos.x = (float)Convert.ToDouble(selectedSaveData[3]);
-        config.loadedSaveData.pos.y = (float)Convert.ToDouble(selectedSaveData[4]);
-        config.loadedSaveData.area = Convert.ToInt32(selectedSaveData[5]);
-        config.loadedSaveData.easyMode = Convert.ToBoolean(Convert.ToInt32(selectedSaveData[6]));
+        config.loadedSaveData.maxPart = Convert.ToInt32(selectedSaveData[1]);
+        config.loadedSaveData.maxJewel = Convert.ToInt32(selectedSaveData[2]);
+        config.loadedSaveData.collectedJewel = Convert.ToInt32(selectedSaveData[3]);
+        config.loadedSaveData.partScores.Clear();
+        for (int i = 4; i < config.loadedSaveData.partScores.Count; i+=2)
+        {
+            config.loadedSaveData.partScores.Add(
+                (
+                    maxScore: Convert.ToInt32(selectedSaveData[i]),
+                    score: Convert.ToInt32(selectedSaveData[i+1])
+                )
+            );
+        }
         config.isContinueStart = true;
 
         SceneManager.LoadScene(gameScene);
