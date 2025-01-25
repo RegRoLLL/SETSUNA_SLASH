@@ -68,7 +68,7 @@ public class SlashCountUI : MonoBehaviour
     {
         infinityGauge.enabled = true;
         isInfinity = true;
-        scoreRemains = 0;
+        scoreRemains = 3;
         slashRemains = 10;
         jewelCounter.Show(true);
         StartCoroutine(ResetUICoroutine(false));
