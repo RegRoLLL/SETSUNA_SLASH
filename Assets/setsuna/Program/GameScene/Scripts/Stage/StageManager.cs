@@ -146,15 +146,22 @@ public class StageManager : SetsunaSlashScript
             }
         }
 
+        var oldSavePoints = oldPartComponent.savePoints.GetSavePoints();
+        var newSavePoints = newPartComponent.savePoints.GetSavePoints();
         if (anotherPartSave != null)
         {
-            var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(anotherPartSave);
-            if (pointIndex != -1) anotherPartSave = newPartComponent.savePoints.GetSavePoints()[pointIndex];
+            var pointIndex = oldSavePoints.IndexOf(anotherPartSave);
+            if (pointIndex != -1) anotherPartSave = newSavePoints[pointIndex];
         }
         else
         {
-            var pointIndex = oldPartComponent.savePoints.GetSavePoints().IndexOf(latestSavePoint);
-            if (pointIndex != -1) latestSavePoint = newPartComponent.savePoints.GetSavePoints()[pointIndex];
+            var pointIndex = oldSavePoints.IndexOf(latestSavePoint);
+            if (pointIndex != -1) latestSavePoint = newSavePoints[pointIndex];
+        }
+
+        foreach (var (point,_index) in newSavePoints.Select((point,_index)=>(point,_index)))
+        {
+            point.SetHints(oldSavePoints[_index].GetHints());
         }
 
         Destroy(oldPart);

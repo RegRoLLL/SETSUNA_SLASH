@@ -47,6 +47,22 @@ public class PL_Status:SetsunaSlashScript
         return true;
     }
 
+    /// <summary>
+    /// ƒqƒ“ƒg‚ðŽg‚¤
+    /// </summary>
+    /// <returns>•]‰¿“_‚ª‘«‚è‚È‚¢‚Æfalse‚ð•Ô‚·</returns>
+    public bool UseHint()
+    {
+        if (currentScoreAdditional <= 0) return false;
+        else
+        {
+            currentScoreAdditional--;
+            hintUsed++;
+            ui.ConsumeScoreCell();
+            return true;
+        }
+    }
+
     public void SetAnotherPart()
     {
         inAnotherPart = true;
