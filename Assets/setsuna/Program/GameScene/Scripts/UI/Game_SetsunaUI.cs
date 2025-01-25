@@ -127,9 +127,9 @@ public class Game_SetsunaUI : MonoBehaviour
     }
 
 
-    public void OpenHintUI(List<HintUI.Hint> hints)
+    public void OpenHintUI(List<HintUI.Hint> hints, Player pl)
     {
         hintUI.SetHints(hints);
-        hintUI.Open();
+        hintUI.Open(pl);
     }
 }

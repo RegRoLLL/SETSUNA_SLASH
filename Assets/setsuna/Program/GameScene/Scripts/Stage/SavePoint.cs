@@ -151,8 +151,11 @@ public class SavePoint : SetsunaSlashScript
 
     public void InteractSavePoint(Player pl)
     {
-        pl.ui.OpenHintUI(hints);
+        pl.ui.OpenHintUI(hints, pl);
     }
+
+    public List<HintUI.Hint> GetHints() => hints;
+    public void SetHints(List<HintUI.Hint> hintsData) => hints = hintsData;
 
     [Serializable]
     public class SavePointStatus

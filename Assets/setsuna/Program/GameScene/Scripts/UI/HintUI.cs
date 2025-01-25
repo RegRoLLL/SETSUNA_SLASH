@@ -9,6 +9,8 @@ public class HintUI : MonoBehaviour
 {
     [SerializeField] float openCloseTime;
     [SerializeField] Color bgDefColor;
+    [SerializeField, Multiline] string hintMenuTextFormatt, scoreNotEnough;
+    [SerializeField] Hint displayOnNoHints = new();
     [SerializeField] GameObject hintContainer, hint, hintMenu, closeButton;
     [SerializeField] Button backButton,nextButton;
     [SerializeField] List<Hint> hints = new();
@@ -18,8 +20,10 @@ public class HintUI : MonoBehaviour
     [SerializeField] Image hintImg;
     [SerializeField] TextMeshProUGUI hintNumText;
     [SerializeField] TextMeshProUGUI hintMenuText;
+    [SerializeField] TextMeshProUGUI scoreNotEnoughText;
 
     Image bg;
+    Player player;
 
     int displayingIndex;
     Hint displayingHint;
@@ -28,14 +32,19 @@ public class HintUI : MonoBehaviour
     {
         hints.Clear();
         hints.AddRange(hintsData);
+        if (hintsData.Count == 0)
+        {
+            hints.Add(displayOnNoHints);
+        }
         displayingIndex = 0;
         displayingHint = hints[0];
         Display();
     }
 
-    public void Open()
+    public void Open(Player pl)
     {
-        if(bg==null) bg = GetComponent<Image>();
+        if (player == null) player = pl;
+        if (bg == null) bg = GetComponent<Image>();
         gameObject.SetActive(true);
         StartCoroutine(OpenClose(true));
     }
@@ -56,7 +65,7 @@ public class HintUI : MonoBehaviour
             color.a = bgDefColor.a * (open? lerp : 1 - lerp);
             bg.color = color;
             closeButton.transform.localScale = Vector3.one * (open ? lerp : 1 - lerp);
-            closeButton.transform.localEulerAngles = lerp * Vector3.forward * 360;
+            closeButton.transform.localEulerAngles = 360 * lerp * Vector3.forward;
 
             dt += Time.deltaTime;
             yield return null;
@@ -80,13 +89,36 @@ public class HintUI : MonoBehaviour
         hintText.text = displayingHint.text;
         hintImg.sprite = displayingHint.image;
 
+        if (displayingHint == displayOnNoHints) hintNumText.text = "";
+
         backButton.targetGraphic.enabled = (displayingIndex != 0);
         nextButton.targetGraphic.enabled = (displayingIndex != hints.Count - 1);
+        nextButton.interactable = displayingHint.unLocked;
+
+        hintMenuText.text = string.Format(hintMenuTextFormatt, displayingIndex + 1);
+        scoreNotEnoughText.text = "";
+
+        hintMenu.SetActive(!displayingHint.unLocked);
+        hint.SetActive(displayingHint.unLocked);
+    }
+
+    public void Unlock()
+    {
+        if (player.Status.UseHint())
+        {
+            displayingHint.unLocked = true;
+            Display();
+        }
+        else
+        {
+            scoreNotEnoughText.text = scoreNotEnough;
+        }
     }
 
     [Serializable]
     public class Hint
     {
+        public bool unLocked;
         [Multiline] public string text;
         public Sprite image;
     }
