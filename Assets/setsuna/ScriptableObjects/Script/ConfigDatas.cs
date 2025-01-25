@@ -123,7 +123,7 @@ public class ConfigDatas : ScriptableObject
     {
         public string pass;
         public int maxPart;
-        public int maxJewel, collectedJewel;
+        public int maxJewel, collectedJewel,jewelsBit;
         public List<(int maxScore, int score)> partScores = new();
     }
 
@@ -155,6 +155,7 @@ public class ConfigDatas : ScriptableObject
         data += currentPlayData.maxPart + ",";
         data += currentPlayData.maxJewel + ",";
         data += currentPlayData.collectedJewel + ",";
+        data += currentPlayData.jewelsBit + ",";
         
         foreach (var (maxScore, score) in currentPlayData.partScores)
         {

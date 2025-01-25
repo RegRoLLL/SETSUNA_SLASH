@@ -7,6 +7,8 @@ using TMPro;
 using System;
 using System.IO;
 using RegUtility;
+using Cysharp.Threading.Tasks.Triggers;
+using System.Linq;
 
 public class Game_menuUI : SetsunaSlashScript
 {
@@ -129,17 +131,33 @@ public class Game_menuUI : SetsunaSlashScript
     public void SetCurrentPlayData()
     {
         currentPlayData.maxPart = Hub.playingStage.saveIndex+1;
+        currentPlayData.maxPart = Hub.playingStage.saveIndex + 1;
+
+        var jewelBit = ssUI.SlashCountUI.jewelCounter.GetJewelsCollecting();
+        currentPlayData.maxJewel = jewelBit.ToString().Count() - 1;
+        currentPlayData.collectedJewel = jewelBit.ToString().Select(c => c == '1').Count() - 1;
+        currentPlayData.jewelsBit = jewelBit;
+
+        var parts = Hub.playingStage.stageParts.Select((p)=>p.GetComponent<StagePart>());
+        var mainParts = parts.Where((p)=>!p.isAnotherRoom).ToList();
+        currentPlayData.partScores.Clear();
+        foreach (var stat in mainParts.Select((p) => p.clearStat))
+        {
+            currentPlayData.partScores.Add((stat.recommendMaxPoint, stat.currentPoint));
+        }
 
         var text = "";
-        text += $"宝石：{currentPlayData.collectedJewel}/{currentPlayData.maxJewel}\r\n";
+        text += $"宝石：{currentPlayData.collectedJewel}/{currentPlayData.maxJewel} | {currentPlayData.jewelsBit}\r\n";
         text += $"最新エリア：{Convert.ToInt32(currentPlayData.maxPart) + 1}\r\n";
         text += $"スコア：\r\n";
 
         int part = 1;
         foreach (var (maxScore, score) in currentPlayData.partScores)
         {
-            text += $"part{part++} {score}/{maxScore}   ";
+            text += $"part{part++} {score}/{maxScore}  ";
         }
+
+        dataDisplay.text = text ;
     }
 
     public void CheckPassword(TMP_InputField field)
