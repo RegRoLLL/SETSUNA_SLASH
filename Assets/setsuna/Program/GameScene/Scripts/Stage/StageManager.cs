@@ -8,20 +8,15 @@ public class StageManager : SetsunaSlashScript
     public Game_HubScript hub;
 
     public string stageName;
-
-    [Space()]
-    [SerializeField] Transform backGroundsContainer;
-    [SerializeField] CanvasGroup showGroup, fadeGroup, invisibleGroup;
+    public Color stageColor;
 
     [Header("Internal Data")]
     public List<GameObject> stageParts = new();
     public List<GameObject> stageClones = new();
     public List<string> jewelRoomNames = new();
     public int currentIndex, saveIndex;
-    public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
     public SavePoint latestSavePoint, anotherPartSave;
-    public float savedPlayerHP, savedPlayerMP;
 
 
     void Start()
@@ -48,16 +43,6 @@ public class StageManager : SetsunaSlashScript
         }
 
         hub.player.ui.SlashCountUI.jewelCounter.GenerateJewelCells(jewelRoomNames.Count);
-
-        var bgList = backGroundsContainer.GetComponentsInChildren<BackGroundGroup>().ToList();
-        foreach (var bgg in bgList)
-        {
-            bgg.SetParent(invisibleGroup.transform);
-            bgg.SetEnable(false);
-        }
-        Destroy(backGroundsContainer.gameObject);
-
-        currentBG = null;
 
         SaveAll();
 
@@ -166,26 +151,6 @@ public class StageManager : SetsunaSlashScript
 
         Destroy(oldPart);
         stageParts[index] = newPart;
-    }
-
-
-    public void SetBackGround(StagePart next)
-    {
-        if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
-
-        Camera.main.GetComponent<Camera>().backgroundColor = next.backGroundColor;
-
-        if (currentBG != null) { 
-            //Debug.Log($"disable:{currentBG}");
-            currentBG.SetParent(invisibleGroup.transform);
-            currentBG.SetEnable(false);
-        }
-
-        //Debug.Log($"enable:{next.backGroundGroup}");
-        next.backGroundGroup.SetParent(showGroup.transform);
-        next.backGroundGroup.SetEnable(true);
-
-        currentBG = next.backGroundGroup;
     }
 
 

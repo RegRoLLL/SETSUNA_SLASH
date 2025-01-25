@@ -38,8 +38,6 @@ public class Game_HubScript : SetsunaSlashScript
     {
         playingStage.currentIndex = playingStage.stageParts.FindIndex((n) => (n == stage.gameObject));
 
-        playingStage.SetBackGround(next: stage);
-
         if (bgmAS.clip != stage.bgm)
         {
             bgmAS.clip = stage.bgm;
@@ -47,6 +45,7 @@ public class Game_HubScript : SetsunaSlashScript
             if (stage.bgm_playOnEnter) bgmAS.Play();
             else bgmAS.Stop();
         }
+        Camera.main.backgroundColor = stage.backGroundColor;
 
         currentPart = stage;
     }
