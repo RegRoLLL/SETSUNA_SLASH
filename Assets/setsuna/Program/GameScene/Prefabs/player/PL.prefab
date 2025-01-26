@@ -18614,7 +18614,7 @@ MonoBehaviour:
   baseHeight: 1080
   baseWidth: 1920
   baseOrthoGraphicSize: 8.5
-  isAlwaysUpdate: 1
+  isAlwaysUpdate: 0
 --- !u!50 &5646222628549157709
 Rigidbody2D:
   serializedVersion: 4

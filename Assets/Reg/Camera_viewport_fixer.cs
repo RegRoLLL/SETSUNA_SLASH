@@ -9,7 +9,7 @@ public class Camera_viewport_fixer : MonoBehaviour
                  baseWidth = 1920,
                  baseOrthoGraphicSize = 5;
     Camera cam;
-    float lastFrameAspect;
+    float lastFrameAspect, currentAspect;
 
     public bool isAlwaysUpdate = true;
 
@@ -17,6 +17,7 @@ public class Camera_viewport_fixer : MonoBehaviour
     {
         cam = this.GetComponent<Camera>();
         lastFrameAspect = 0;
+        Fix();
     }
 
     [ExecuteAlways]
@@ -24,7 +25,7 @@ public class Camera_viewport_fixer : MonoBehaviour
     {
         if (!isAlwaysUpdate) return;
 
-        float currentAspect = (float)Screen.height / (float)Screen.width;
+        currentAspect = (float)Screen.height / (float)Screen.width;
 
         if (Mathf.Approximately(currentAspect, lastFrameAspect))
         {
@@ -32,8 +33,11 @@ public class Camera_viewport_fixer : MonoBehaviour
         }
         lastFrameAspect = currentAspect;
 
+        Fix();
+    }
 
-
+    private void Fix()
+    {
         //‚±‚Á‚©‚ç–{”Ô
         float targetAspect = baseHeight / baseWidth;
 
