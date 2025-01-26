@@ -34,6 +34,8 @@ public class Game_SetsunaUI : MonoBehaviour
 
     public void TogglePauseMenu(bool pause)
     {
+        if (Time.timeScale == 0 && pause) return;
+        gm.hub.player.ToggleStopPlayerControll(pause);
         menuUI.gameObject.SetActive(pause);
     }
 

@@ -9,6 +9,7 @@ using System.IO;
 using RegUtility;
 using Cysharp.Threading.Tasks.Triggers;
 using System.Linq;
+using RegUtil;
 
 public class Game_menuUI : SetsunaSlashScript
 {
@@ -58,6 +59,8 @@ public class Game_menuUI : SetsunaSlashScript
 
         if (obj == null) EventSystem.current.SetSelectedGameObject(onDeSelectPointer.gameObject);
 
+        if (this.gameObject.activeInHierarchy) RegTimeKeeper.Pause();
+
         if (!cursorSetable.Contains(obj)) return;
 
         var pos = cursor.position;
@@ -82,7 +85,7 @@ public class Game_menuUI : SetsunaSlashScript
         config.masterVolume = GetSliderValue01(sliders[0].slider);
         config.bgmVolume = GetSliderValue01(sliders[1].slider);
         config.seVolume = GetSliderValue01(sliders[2].slider);
-        //config.SetVolumes();
+        config.SetVolumes();
     }
 
     float GetSliderValue01(Slider slider)
@@ -116,7 +119,8 @@ public class Game_menuUI : SetsunaSlashScript
         toggles[0].isOn = (config.controllMode == ConfigDatas.ControllMode.keyboard_mouse);
         toggles[1].isOn = (config.controllMode == ConfigDatas.ControllMode.gamepad);
 
-        deviceToggles.SetActive(config.controllMode != ConfigDatas.ControllMode.touch);
+        //一時的にマウキーのみに変更
+        //deviceToggles.SetActive(config.controllMode != ConfigDatas.ControllMode.touch);
     }
 
     [Serializable]
@@ -131,9 +135,9 @@ public class Game_menuUI : SetsunaSlashScript
     public void SetCurrentPlayData()
     {
         var parts = Hub.playingStage.stageParts.Select((p)=>p.GetComponent<StagePart>()).ToList();
-        
+        var currentPartSave = parts.FindIndex(p => (p == Hub.playingStage.latestSavePoint.GetPart()));
         currentPlayData.currentPart
-            = parts.FindIndex(p=>( p == Hub.playingStage.latestSavePoint.GetPart())) + 1;
+            = (currentPartSave == -1) ? 1 : currentPartSave+1;
 
         var jewelBit = ssUI.SlashCountUI.jewelCounter.GetJewelsCollecting();
         currentPlayData.maxJewel = jewelBit.ToString().Count() - 1;

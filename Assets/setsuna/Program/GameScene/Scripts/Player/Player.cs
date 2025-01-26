@@ -88,6 +88,12 @@ public class Player : SetsunaSlashScript
         ui.SlashCountUI.jewelCounter.GetJewel(index);
     }
 
+    public void ToggleStopPlayerControll(bool stop)
+    {
+        ctrler.enabled = !stop;
+        attack.enabled = !stop;
+    }
+
     public IEnumerator ReturnPlayerPos()
     {
         gm.isSaving = true;

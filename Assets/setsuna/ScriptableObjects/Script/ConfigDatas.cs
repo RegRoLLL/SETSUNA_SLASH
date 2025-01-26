@@ -54,7 +54,7 @@ public class ConfigDatas : ScriptableObject
     void OnValidate()
     {
         SetDevice();
-        //SetVolumes();
+        SetVolumes();
     }
 
 
@@ -88,7 +88,7 @@ public class ConfigDatas : ScriptableObject
         easyMode = easy;
     }
 
-    /*
+    
     [ContextMenu("setVolumes")]
     public void SetVolumes()
     {
@@ -104,7 +104,7 @@ public class ConfigDatas : ScriptableObject
     {
         if (obj == null)
         {
-            //Debug.Log("SetVolumes failed. object was null.");
+            Debug.Log("SetVolumes failed. object was null.");
             return;
         }
 
@@ -116,7 +116,7 @@ public class ConfigDatas : ScriptableObject
             }
         }
     }
-    */
+    
 
 
     [Serializable]
