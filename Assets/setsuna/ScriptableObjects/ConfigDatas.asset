@@ -21,11 +21,11 @@ MonoBehaviour:
   demoMode: 0
   debugMode: 0
   loadedSaveData:
-    pass: testsave2
-    maxPart: 1
+    pass: testsave5
+    currentPart: 0
     maxJewel: 5
-    collectedJewel: 5
-    jewelsBit: 0
+    collectedJewel: 2
+    jewelsBit: 111000
   isContinueStart: 0
   saveDataCSV_name: savedata
   outPutSaveDataLog: 0
