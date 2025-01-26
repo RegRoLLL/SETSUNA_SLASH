@@ -38,11 +38,13 @@ public class PlayerCursor : MonoBehaviour
     public enum CursorType { allow,scope }
     public void SetCursor(CursorType cursorType)
     {
-        sr.sprite = cursorType switch
-        {
-            CursorType.allow => allow,
-            CursorType.scope => scope,
-            _ => allow,
-        };
+        //一旦スコープのみ
+        sr.sprite = scope;
+        //sr.sprite = cursorType switch
+        //{
+        //    CursorType.allow => allow,
+        //    CursorType.scope => scope,
+        //    _ => allow,
+        //};
     }
 }
