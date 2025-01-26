@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using UnityEngine.SceneManagement;
 using RegUtility;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "ConfigData", menuName = "ScriptableObject/ConfigDatas")]
 public class ConfigDatas : ScriptableObject
@@ -53,7 +54,7 @@ public class ConfigDatas : ScriptableObject
     void OnValidate()
     {
         SetDevice();
-        //SetVolumes();
+        SetVolumes();
     }
 
 
@@ -87,7 +88,7 @@ public class ConfigDatas : ScriptableObject
         easyMode = easy;
     }
 
-    /*
+    
     [ContextMenu("setVolumes")]
     public void SetVolumes()
     {
@@ -103,7 +104,7 @@ public class ConfigDatas : ScriptableObject
     {
         if (obj == null)
         {
-            //Debug.Log("SetVolumes failed. object was null.");
+            Debug.Log("SetVolumes failed. object was null.");
             return;
         }
 
@@ -115,23 +116,24 @@ public class ConfigDatas : ScriptableObject
             }
         }
     }
-    */
+    
 
 
     [Serializable]
     public class SaveData
     {
         public string pass;
-        public float hp, mp;
-        public Vector2 pos;
-        public int area;
-        public bool easyMode;
+        public int currentPart;
+        public int maxJewel, collectedJewel,jewelsBit;
+        public List<(int maxScore, int score)> partScores = new();
     }
 
     [ContextMenu("loadDatas")]
     void LoadSaveDatas()
     {
-        saveDatas = RegIO.ReadCSV(saveDataFilePath);
+        saveDatas = RegIO.ReadCSV(saveDataFilePath)
+            .Select(line => line.Where(data => !string.Equals(data, ""))
+            .ToArray()).ToList();
 
         if (!outPutSaveDataLog) return;
 
@@ -153,12 +155,16 @@ public class ConfigDatas : ScriptableObject
     {
         string data = "";
         data += currentPlayData.pass + ",";
-        data += currentPlayData.hp + ",";
-        data += currentPlayData.mp + ",";
-        data += currentPlayData.pos.x + ",";
-        data += currentPlayData.pos.y + ",";
-        data += currentPlayData.area + ",";
-        data += Convert.ToInt32(currentPlayData.easyMode);
+        data += currentPlayData.currentPart + ",";
+        data += currentPlayData.maxJewel + ",";
+        data += currentPlayData.collectedJewel + ",";
+        data += currentPlayData.jewelsBit + ",";
+        
+        foreach (var (maxScore, score) in currentPlayData.partScores)
+        {
+            data += maxScore + ",";
+            data += score + ",";
+        }
 
         var sr = new StreamWriter(saveDataFilePath, true);
         sr.WriteLine(data);

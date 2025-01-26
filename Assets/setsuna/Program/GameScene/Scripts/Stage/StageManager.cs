@@ -8,20 +8,15 @@ public class StageManager : SetsunaSlashScript
     public Game_HubScript hub;
 
     public string stageName;
-
-    [Space()]
-    [SerializeField] Transform backGroundsContainer;
-    [SerializeField] CanvasGroup showGroup, fadeGroup, invisibleGroup;
+    public Color stageColor;
 
     [Header("Internal Data")]
     public List<GameObject> stageParts = new();
     public List<GameObject> stageClones = new();
     public List<string> jewelRoomNames = new();
     public int currentIndex, saveIndex;
-    public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
     public SavePoint latestSavePoint, anotherPartSave;
-    public float savedPlayerHP, savedPlayerMP;
 
 
     void Start()
@@ -49,23 +44,34 @@ public class StageManager : SetsunaSlashScript
 
         hub.player.ui.SlashCountUI.jewelCounter.GenerateJewelCells(jewelRoomNames.Count);
 
-        var bgList = backGroundsContainer.GetComponentsInChildren<BackGroundGroup>().ToList();
-        foreach (var bgg in bgList)
-        {
-            bgg.SetParent(invisibleGroup.transform);
-            bgg.SetEnable(false);
-        }
-        Destroy(backGroundsContainer.gameObject);
-
-        currentBG = null;
-
         SaveAll();
 
-        if (config.isContinueStart) return;
+        if (config.isContinueStart)
+        {
+            SetJewelsContinueData();
+            return;
+        }
 
         if (!config.debugMode) hub.PL_Ctrler.transform.position = primaryPlayerPosition;
 
         savedPlayerPosition = hub.PL_Ctrler.transform.position;
+    }
+
+    void SetJewelsContinueData()
+    {
+        var jewels = config.loadedSaveData.jewelsBit;
+        var jewelsList = jewels.ToString().ToList();
+        jewelsList.RemoveAt(0);
+        jewelsList.Reverse();
+        foreach (var (jewel,index) in jewelsList.Select((jewel,index)=>(jewel,index)))
+        {
+            if (!jewel.Equals('1')) continue;
+
+            CollectJewel(index);
+            stageParts.Select(p => p.GetComponent<StagePart>())
+                .Where(p => p.isAnotherRoom).ToList()[index]
+                .GetComponentInChildren<CollectableJewel>(true).SetCollected();
+        }
     }
 
 
@@ -169,28 +175,12 @@ public class StageManager : SetsunaSlashScript
     }
 
 
-    public void SetBackGround(StagePart next)
-    {
-        if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
-
-        Camera.main.GetComponent<Camera>().backgroundColor = next.backGroundColor;
-
-        if (currentBG != null) { 
-            //Debug.Log($"disable:{currentBG}");
-            currentBG.SetParent(invisibleGroup.transform);
-            currentBG.SetEnable(false);
-        }
-
-        //Debug.Log($"enable:{next.backGroundGroup}");
-        next.backGroundGroup.SetParent(showGroup.transform);
-        next.backGroundGroup.SetEnable(true);
-
-        currentBG = next.backGroundGroup;
-    }
-
-
     public void CollectJewel(string partTitle)
     {
-        hub.player.CollectJewel(jewelRoomNames.FindIndex((title)=>title ==  partTitle));
+        CollectJewel(jewelRoomNames.FindIndex((title) => title == partTitle));
+    }
+    void CollectJewel(int index)
+    {
+        hub.player.CollectJewel(index);
     }
 }

@@ -993,13 +993,11 @@ MonoBehaviour:
   openSE: {fileID: 8300000, guid: 7050cf329e90dc64dbddc44efd955a77, type: 3}
   text: {fileID: 1068898771}
   primeSelect: {fileID: 992738534}
-  menu2Prime: {fileID: 166163245}
+  menu1Prime: {fileID: 842349839}
   fadeStartTime: 0.24
   fadeTime: 0.2
   whiteBackAlpha: 200
-  temp: "\u96E3\u6613\u5EA6 : {0}\u3067\u958B\u59CB\u3057\u307E\u3059"
-  easy: "\u30A4\u30FC\u30B8\u30FC"
-  normal: "\u30CE\u30FC\u30DE\u30EB"
+  sentence: "\u521D\u3081\u304B\u3089\u958B\u59CB\u3057\u307E\u3059\u3002\u6E96\u5099\u306F\u826F\u3044\u3067\u3059\u304B\uFF1F"
 --- !u!1 &474798785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,7 +1473,7 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 0}
   mask: {fileID: 1956532742}
-  menu2: {fileID: 784380482}
+  menu3: {fileID: 421056856}
   primeSelect: {fileID: 842349839}
   openCloseTime: 0.1
 --- !u!1 &606305837
@@ -2343,7 +2341,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &811913154
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3460,6 +3458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476f24877e48a6446add8e66e4cd3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeScale: 1
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   type: 1
 --- !u!1 &1031685694
@@ -4224,7 +4223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1186657043
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4811,7 +4810,7 @@ MonoBehaviour:
   m_fontSize: 64
   m_fontSizeBase: 64
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -6522,6 +6521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476f24877e48a6446add8e66e4cd3e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volumeScale: 1
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   type: 0
 --- !u!1 &1730969132
@@ -7126,21 +7126,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1027280761}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 7050cf329e90dc64dbddc44efd955a77, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 586329237}
         m_TargetAssemblyTypeName: Title_menu1, Assembly-CSharp
-        m_MethodName: GotoMenu2
+        m_MethodName: GotoMenu3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

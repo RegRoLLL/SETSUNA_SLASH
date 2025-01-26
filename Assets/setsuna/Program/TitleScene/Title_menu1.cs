@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class Title_menu1 : SetsunaSlashScript
 {
     [SerializeField] Image mask;
-    [SerializeField] Title_menu2 menu2;
+    [SerializeField] Title_menu3 menu3;
     public GameObject primeSelect;
     public float openCloseTime;
 
@@ -24,10 +24,17 @@ public class Title_menu1 : SetsunaSlashScript
         }
     }
 
-    public void GotoMenu2()
+    public void GotoMenu3()
     {
-        StartCoroutine(OpenClose(open: false));
+        menu3.gameObject.SetActive(true);
+        menu3.StartCoroutine(menu3.Open(false));
     }
+
+    //ÉCÅ[ÉWÅ[ÉÇÅ[Éhîpé~Ç…Ç¬Ç´Menu2îpé~
+    //public void GotoMenu2()
+    //{
+    //    StartCoroutine(OpenClose(open: false));
+    //}
 
     public IEnumerator OpenClose(bool open)
     {
@@ -58,8 +65,8 @@ public class Title_menu1 : SetsunaSlashScript
         {
             gameObject.SetActive(false);
 
-            menu2.gameObject.SetActive(true);
-            menu2.StartCoroutine(menu2.OpenClose(open: true));
+            menu3.gameObject.SetActive(true);
+            menu3.StartCoroutine(menu3.Open(false));
         }
     }
 }
