@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using UnityEngine.SceneManagement;
 using RegUtility;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "ConfigData", menuName = "ScriptableObject/ConfigDatas")]
 public class ConfigDatas : ScriptableObject
@@ -122,7 +123,7 @@ public class ConfigDatas : ScriptableObject
     public class SaveData
     {
         public string pass;
-        public int maxPart;
+        public int currentPart;
         public int maxJewel, collectedJewel,jewelsBit;
         public List<(int maxScore, int score)> partScores = new();
     }
@@ -130,7 +131,9 @@ public class ConfigDatas : ScriptableObject
     [ContextMenu("loadDatas")]
     void LoadSaveDatas()
     {
-        saveDatas = RegIO.ReadCSV(saveDataFilePath);
+        saveDatas = RegIO.ReadCSV(saveDataFilePath)
+            .Select(line => line.Where(data => !string.Equals(data, ""))
+            .ToArray()).ToList();
 
         if (!outPutSaveDataLog) return;
 
@@ -152,7 +155,7 @@ public class ConfigDatas : ScriptableObject
     {
         string data = "";
         data += currentPlayData.pass + ",";
-        data += currentPlayData.maxPart + ",";
+        data += currentPlayData.currentPart + ",";
         data += currentPlayData.maxJewel + ",";
         data += currentPlayData.collectedJewel + ",";
         data += currentPlayData.jewelsBit + ",";

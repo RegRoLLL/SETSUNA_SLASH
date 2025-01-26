@@ -46,11 +46,32 @@ public class StageManager : SetsunaSlashScript
 
         SaveAll();
 
-        if (config.isContinueStart) return;
+        if (config.isContinueStart)
+        {
+            SetJewelsContinueData();
+            return;
+        }
 
         if (!config.debugMode) hub.PL_Ctrler.transform.position = primaryPlayerPosition;
 
         savedPlayerPosition = hub.PL_Ctrler.transform.position;
+    }
+
+    void SetJewelsContinueData()
+    {
+        var jewels = config.loadedSaveData.jewelsBit;
+        var jewelsList = jewels.ToString().ToList();
+        jewelsList.RemoveAt(0);
+        jewelsList.Reverse();
+        foreach (var (jewel,index) in jewelsList.Select((jewel,index)=>(jewel,index)))
+        {
+            if (!jewel.Equals('1')) continue;
+
+            CollectJewel(index);
+            stageParts.Select(p => p.GetComponent<StagePart>())
+                .Where(p => p.isAnotherRoom).ToList()[index]
+                .GetComponentInChildren<CollectableJewel>(true).SetCollected();
+        }
     }
 
 
@@ -156,6 +177,10 @@ public class StageManager : SetsunaSlashScript
 
     public void CollectJewel(string partTitle)
     {
-        hub.player.CollectJewel(jewelRoomNames.FindIndex((title)=>title ==  partTitle));
+        CollectJewel(jewelRoomNames.FindIndex((title) => title == partTitle));
+    }
+    void CollectJewel(int index)
+    {
+        hub.player.CollectJewel(index);
     }
 }

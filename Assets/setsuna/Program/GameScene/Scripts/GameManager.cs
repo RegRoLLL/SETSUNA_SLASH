@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
 using RegUtil;
+using System.Linq;
 
 public class GameManager : SetsunaSlashScript
 {
@@ -63,15 +64,25 @@ public class GameManager : SetsunaSlashScript
     void SetContinueData()
     {
         hub.playingStage.savedPlayerPosition
-            = hub.playingStage.stageParts[config.loadedSaveData.maxPart-1]
+            = hub.playingStage.stageParts[config.loadedSaveData.currentPart-1]
                 .GetComponent<StagePart>()
                 .savePoints.GetSavePoints()[0]
                 .transform.position;
 
-        hub.playingStage.saveIndex = config.loadedSaveData.maxPart - 1;
-        hub.playingStage.currentIndex = config.loadedSaveData.maxPart - 1;
+        var index = config.loadedSaveData.currentPart - 1;
+
+        hub.player.transform.position
+            = hub.playingStage.stageParts.Select(p=>p.GetComponent<StagePart>())
+                .Where(p => !p.isAnotherRoom).ToList()[index]
+                .savePoints.GetSavePoints()[0] .transform.position;
+
+        //•óÎŠÖŒW‚ÍStageManager‚É‚Ä
+
+        hub.playingStage.saveIndex = index;
+        hub.playingStage.currentIndex = index;
 
         config.easyMode = false;
+        config.debugMode = false;
 
         config.isContinueStart = false;
     }

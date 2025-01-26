@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System;
 using RegUtility;
+using System.Linq;
 
 public class TitleManager : SetsunaSlashScript
 {
@@ -26,6 +27,7 @@ public class TitleManager : SetsunaSlashScript
     {
         continueWindow.SetActive(false);
         continueCheckWindow.SetActive(false);
+        Cursor.visible = true;
     }
 
     public void CheckSaveData()
@@ -51,8 +53,19 @@ public class TitleManager : SetsunaSlashScript
 
         continueCheckWindow.SetActive(true);
 
-        string easy = (data[6] == "0") ? "ノーマル" : "イージー";
-        saveDataText.text = $"パスワード：{data[0]}\r\nHP：{data[1]}　　 MP：{data[2]}\r\nセーブポイント：({data[3]}, {data[4]})\r\nエリア：{Convert.ToInt32(data[5])+1}　　{easy}";
+        var text = "";
+        text += $"{data[0]}\r\n";
+        text += $"宝石：{data[3]}/{data[2]}\r\n";
+        text += $"最新エリア：{data[1]}\r\n";
+        text += $"スコア：\r\n";
+
+        int part = 1;
+        for(int i = 5;i<data.Length;i+=2)
+        {
+            text += $"part{part++} {data[i+1]} / {data[1]}   ";
+        }
+
+        saveDataText.text = text;
 
         continueCheckPrimeSelect.Select();
     }
@@ -60,11 +73,12 @@ public class TitleManager : SetsunaSlashScript
     public void ContinueDecide()
     {
         config.loadedSaveData.pass = selectedSaveData[0];
-        config.loadedSaveData.maxPart = Convert.ToInt32(selectedSaveData[1]);
+        config.loadedSaveData.currentPart = Convert.ToInt32(selectedSaveData[1]);
         config.loadedSaveData.maxJewel = Convert.ToInt32(selectedSaveData[2]);
         config.loadedSaveData.collectedJewel = Convert.ToInt32(selectedSaveData[3]);
+        config.loadedSaveData.jewelsBit = Convert.ToInt32(selectedSaveData[4]);
         config.loadedSaveData.partScores.Clear();
-        for (int i = 4; i < config.loadedSaveData.partScores.Count; i+=2)
+        for (int i = 5; i < config.loadedSaveData.partScores.Count; i+=2)
         {
             config.loadedSaveData.partScores.Add(
                 (
