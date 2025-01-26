@@ -19,13 +19,13 @@ MonoBehaviour:
   slowWhenSlashCharge: 1
   easyMode: 0
   demoMode: 0
-  debugMode: 0
+  debugMode: 1
   loadedSaveData:
-    pass: testsave5
-    currentPart: 0
-    maxJewel: 5
-    collectedJewel: 2
-    jewelsBit: 111000
+    pass: nuSave2
+    currentPart: 2
+    maxJewel: 15
+    collectedJewel: 1
+    jewelsBit: 1000000000000001
   isContinueStart: 0
   saveDataCSV_name: savedata
   outPutSaveDataLog: 0

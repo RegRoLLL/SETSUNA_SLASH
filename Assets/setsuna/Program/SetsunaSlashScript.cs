@@ -18,6 +18,6 @@ public class SetsunaSlashScript : MonoBehaviour
 
     public const string
         titleScene = "TitleScene",
-        gameScene = "GameScene",
+        gameScene = "ReleaseGameScene",
         levelEditScene = "LevelEditScene";
 }

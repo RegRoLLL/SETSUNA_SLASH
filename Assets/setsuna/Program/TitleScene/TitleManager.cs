@@ -76,7 +76,7 @@ public class TitleManager : SetsunaSlashScript
         config.loadedSaveData.currentPart = Convert.ToInt32(selectedSaveData[1]);
         config.loadedSaveData.maxJewel = Convert.ToInt32(selectedSaveData[2]);
         config.loadedSaveData.collectedJewel = Convert.ToInt32(selectedSaveData[3]);
-        config.loadedSaveData.jewelsBit = Convert.ToInt32(selectedSaveData[4]);
+        config.loadedSaveData.jewelsBit = selectedSaveData[4];
         config.loadedSaveData.partScores.Clear();
         for (int i = 5; i < config.loadedSaveData.partScores.Count; i+=2)
         {
