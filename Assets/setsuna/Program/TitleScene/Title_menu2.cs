@@ -13,11 +13,6 @@ public class Title_menu2 : SetsunaSlashScript
     public Title_menu1 menu1;
     public Title_menu3 menu3;
 
-    void Start()
-    {
-
-    }
-
     public IEnumerator OpenClose(bool open)
     {
         if (open && (config.controllMode != ConfigDatas.ControllMode.touch))

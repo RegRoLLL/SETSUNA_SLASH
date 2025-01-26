@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class JewelCountUI : MonoBehaviour
@@ -74,6 +75,8 @@ public class JewelCountUI : MonoBehaviour
     }
     IEnumerator HideCoroutine(bool animate)
     {
+        if (rectTransform == null) Start();
+
         var startX = rectTransform.localEulerAngles.x;
         var targetX = 90f;
         var angle = rectTransform.localEulerAngles;
@@ -92,5 +95,22 @@ public class JewelCountUI : MonoBehaviour
 
         angle.x = targetX;
         rectTransform.localEulerAngles = angle;
+    }
+
+    /// <summary>
+    /// 宝石の獲得状況
+    /// </summary>
+    /// <returns>01のデータ列で返す。小さい位から読む。トップに1を足している</returns>
+    public int GetJewelsCollecting()
+    {
+        int result = 0;
+        int data = 1;
+        foreach (var jewel in jewels)
+        {
+            if (jewel.state.fore) result += data;
+            data *= 10;
+        }
+        result += data;
+        return result;
     }
 }

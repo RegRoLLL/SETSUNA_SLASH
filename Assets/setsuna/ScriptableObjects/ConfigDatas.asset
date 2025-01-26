@@ -19,14 +19,13 @@ MonoBehaviour:
   slowWhenSlashCharge: 1
   easyMode: 0
   demoMode: 0
-  debugMode: 1
+  debugMode: 0
   loadedSaveData:
-    pass: "\u3042\u3042\u3042"
-    hp: 100
-    mp: 100
-    pos: {x: 211.9776, y: 85.752}
-    area: 2
-    easyMode: 0
+    pass: testsave5
+    currentPart: 0
+    maxJewel: 5
+    collectedJewel: 2
+    jewelsBit: 111000
   isContinueStart: 0
   saveDataCSV_name: savedata
   outPutSaveDataLog: 0

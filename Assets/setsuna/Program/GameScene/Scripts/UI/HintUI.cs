@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using RegUtil;
 
 public class HintUI : MonoBehaviour
 {
@@ -28,6 +29,11 @@ public class HintUI : MonoBehaviour
     int displayingIndex;
     Hint displayingHint;
 
+    private void Update()
+    {
+        if (this.gameObject.activeInHierarchy) RegTimeKeeper.Pause();
+    }
+
     public void SetHints(List<Hint> hintsData)
     {
         hints.Clear();
@@ -45,11 +51,13 @@ public class HintUI : MonoBehaviour
     {
         if (player == null) player = pl;
         if (bg == null) bg = GetComponent<Image>();
+        pl.ToggleStopPlayerControll(true);
         gameObject.SetActive(true);
         StartCoroutine(OpenClose(true));
     }
     public void Close()
     {
+        player.ToggleStopPlayerControll(false);
         StartCoroutine(OpenClose(false));
     }
 
@@ -67,7 +75,7 @@ public class HintUI : MonoBehaviour
             closeButton.transform.localScale = Vector3.one * (open ? lerp : 1 - lerp);
             closeButton.transform.localEulerAngles = 360 * lerp * Vector3.forward;
 
-            dt += Time.deltaTime;
+            dt += Time.unscaledDeltaTime;
             yield return null;
         }
         hintContainer.transform.localScale = open ? Vector3.one : Vector3.zero;

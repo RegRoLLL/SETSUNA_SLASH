@@ -7,6 +7,9 @@ using TMPro;
 using System;
 using System.IO;
 using RegUtility;
+using Cysharp.Threading.Tasks.Triggers;
+using System.Linq;
+using RegUtil;
 
 public class Game_menuUI : SetsunaSlashScript
 {
@@ -56,6 +59,8 @@ public class Game_menuUI : SetsunaSlashScript
 
         if (obj == null) EventSystem.current.SetSelectedGameObject(onDeSelectPointer.gameObject);
 
+        if (this.gameObject.activeInHierarchy) RegTimeKeeper.Pause();
+
         if (!cursorSetable.Contains(obj)) return;
 
         var pos = cursor.position;
@@ -80,7 +85,7 @@ public class Game_menuUI : SetsunaSlashScript
         config.masterVolume = GetSliderValue01(sliders[0].slider);
         config.bgmVolume = GetSliderValue01(sliders[1].slider);
         config.seVolume = GetSliderValue01(sliders[2].slider);
-        //config.SetVolumes();
+        config.SetVolumes();
     }
 
     float GetSliderValue01(Slider slider)
@@ -114,7 +119,8 @@ public class Game_menuUI : SetsunaSlashScript
         toggles[0].isOn = (config.controllMode == ConfigDatas.ControllMode.keyboard_mouse);
         toggles[1].isOn = (config.controllMode == ConfigDatas.ControllMode.gamepad);
 
-        deviceToggles.SetActive(config.controllMode != ConfigDatas.ControllMode.touch);
+        //一時的にマウキーのみに変更
+        //deviceToggles.SetActive(config.controllMode != ConfigDatas.ControllMode.touch);
     }
 
     [Serializable]
@@ -128,17 +134,35 @@ public class Game_menuUI : SetsunaSlashScript
 
     public void SetCurrentPlayData()
     {
-        currentPlayData.hp = Hub.playingStage.savedPlayerHP;
+        var parts = Hub.playingStage.stageParts.Select((p)=>p.GetComponent<StagePart>()).ToList();
+        var currentPartSave = parts.FindIndex(p => (p == Hub.playingStage.latestSavePoint.GetPart()));
+        currentPlayData.currentPart
+            = (currentPartSave == -1) ? 1 : currentPartSave+1;
 
-        currentPlayData.mp = Hub.playingStage.savedPlayerMP;
+        var jewelBit = ssUI.SlashCountUI.jewelCounter.GetJewelsCollecting();
+        currentPlayData.maxJewel = jewelBit.ToString().Count() - 1;
+        currentPlayData.collectedJewel = jewelBit.ToString().Where(c => char.Equals(c,'1')).Count() - 1;
+        currentPlayData.jewelsBit = jewelBit;
 
-        currentPlayData.pos = Hub.playingStage.savedPlayerPosition;
+        var mainParts = parts.Where((p)=>!p.isAnotherRoom).ToList();
+        currentPlayData.partScores.Clear();
+        foreach (var stat in mainParts.Select((p) => p.clearStat))
+        {
+            currentPlayData.partScores.Add((stat.recommendMaxPoint, stat.currentPoint));
+        }
 
-        currentPlayData.area = Hub.playingStage.saveIndex;
+        var text = "";
+        text += $"宝石：{currentPlayData.collectedJewel}/{currentPlayData.maxJewel} | {currentPlayData.jewelsBit}\r\n";
+        text += $"最新エリア：{Convert.ToInt32(currentPlayData.currentPart) + 1}\r\n";
+        text += $"スコア：\r\n";
 
-        currentPlayData.easyMode = config.easyMode;
+        int part = 1;
+        foreach (var (maxScore, score) in currentPlayData.partScores)
+        {
+            text += $"part{part++} {score}/{maxScore}  ";
+        }
 
-        dataDisplay.text = $"HP：{currentPlayData.hp}　　 MP：{currentPlayData.mp}\r\nセーブポイント：({currentPlayData.pos.x}, {currentPlayData.pos.y})\r\nエリア：{Convert.ToInt32(currentPlayData.area) + 1}";
+        dataDisplay.text = text ;
     }
 
     public void CheckPassword(TMP_InputField field)

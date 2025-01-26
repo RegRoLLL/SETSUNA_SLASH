@@ -154,6 +154,8 @@ public class SavePoint : SetsunaSlashScript
         pl.ui.OpenHintUI(hints, pl);
     }
 
+    public StagePart GetPart() => part;
+
     public List<HintUI.Hint> GetHints() => hints;
     public void SetHints(List<HintUI.Hint> hintsData) => hints = hintsData;
 

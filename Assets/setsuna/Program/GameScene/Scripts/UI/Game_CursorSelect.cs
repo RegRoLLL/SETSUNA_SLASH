@@ -17,6 +17,7 @@ public class Game_CursorSelect : MonoBehaviour,IPointerEnterHandler,IPointerExit
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
     {
         if(onPointerExitDeselect)
-            EventSystem.current.SetSelectedGameObject(null);
+            if(EventSystem.current != null)
+                EventSystem.current.SetSelectedGameObject(null);
     }
 }

@@ -16,9 +16,9 @@ public class Title_menu3 : SetsunaSlashScript
     [SerializeField] AudioSource seAS;
     [SerializeField] AudioClip openSE;
     [SerializeField] TextMeshProUGUI text;
-    public GameObject primeSelect, menu2Prime;
+    public GameObject primeSelect, menu1Prime;
     public float fadeStartTime, fadeTime, whiteBackAlpha;
-    public string temp, easy, normal;
+    public string sentence;
 
     void OnEnable()
     {
@@ -31,7 +31,7 @@ public class Title_menu3 : SetsunaSlashScript
         buttons.alpha = 0;
         vp.targetTexture.Release();
 
-        text.text = string.Format(temp.Replace("@@","\n\r"), easyMode ? easy : normal);
+        text.text = sentence;
     }
 
     public IEnumerator Open(bool easyMode)
@@ -90,7 +90,7 @@ public class Title_menu3 : SetsunaSlashScript
         if (config.controllMode != ConfigDatas.ControllMode.touch)
         {
             EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(menu2Prime);
+            EventSystem.current.SetSelectedGameObject(menu1Prime);
             //Debug.Log("setSelection: " + EventSystem.current.currentSelectedGameObject.name);
         }
 
