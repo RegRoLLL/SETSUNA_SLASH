@@ -124,7 +124,8 @@ public class ConfigDatas : ScriptableObject
     {
         public string pass;
         public int currentPart;
-        public int maxJewel, collectedJewel,jewelsBit;
+        public int maxJewel, collectedJewel;
+        public string jewelsBit;
         public List<(int maxScore, int score)> partScores = new();
     }
 

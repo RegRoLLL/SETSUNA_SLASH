@@ -101,16 +101,15 @@ public class JewelCountUI : MonoBehaviour
     /// 宝石の獲得状況
     /// </summary>
     /// <returns>01のデータ列で返す。小さい位から読む。トップに1を足している</returns>
-    public int GetJewelsCollecting()
+    public string GetJewelsCollecting()
     {
-        int result = 0;
-        int data = 1;
+        string result = "";
         foreach (var jewel in jewels)
         {
-            if (jewel.state.fore) result += data;
-            data *= 10;
+            if (jewel.state.fore) result += "1";
+            else result += "0";
         }
-        result += data;
+        result += "1";
         return result;
     }
 }
