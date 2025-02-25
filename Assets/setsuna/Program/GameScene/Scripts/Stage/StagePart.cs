@@ -57,7 +57,7 @@ public class StagePart : MonoBehaviour
     {
         clearStat.currentPoint = currentPoint;
         clearStat.recommendMaxPoint = savePoints.GetSavePoints()
-                                      .Select((point)=>!point.isGoalSave).ToList().Count * 3;
+                                      .Where((point)=>!point.isGoalSave).ToList().Count * 3;
     }
 
     public void AddPoint(int point)

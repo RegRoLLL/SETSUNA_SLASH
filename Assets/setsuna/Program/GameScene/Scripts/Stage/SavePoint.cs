@@ -56,7 +56,7 @@ public class SavePoint : SetsunaSlashScript
 
         dTime += Time.deltaTime;
 
-        interactIcon.enabled = area.detected;
+        interactIcon.enabled = hints.Count>=1 && area.detected;
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -151,6 +151,7 @@ public class SavePoint : SetsunaSlashScript
 
     public void InteractSavePoint(Player pl)
     {
+        if (hints.Count <= 0) return;
         pl.ui.OpenHintUI(hints, pl);
     }
 

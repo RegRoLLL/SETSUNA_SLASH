@@ -152,7 +152,7 @@ public class Game_menuUI : SetsunaSlashScript
         }
 
         var text = "";
-        text += $"宝石：{currentPlayData.collectedJewel}/{currentPlayData.maxJewel} | {currentPlayData.jewelsBit}\r\n";
+        text += $"宝石：{currentPlayData.collectedJewel}/{currentPlayData.maxJewel}\r\n";
         text += $"最新エリア：{Convert.ToInt32(currentPlayData.currentPart) + 1}\r\n";
         text += $"スコア：\r\n";
 
