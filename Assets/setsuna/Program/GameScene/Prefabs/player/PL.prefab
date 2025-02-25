@@ -16738,9 +16738,10 @@ MonoBehaviour:
   cameraLerpTime: 0.8
   dragMultiplier: 0.04
   pointChargeSPD: 30
-  pointLengthMax: 0
   dragCamDirMultiplier: {x: 0.5, y: 0.5}
   pointerCamDirMultiplier: {x: 0.5, y: 0.8}
+  camMoveCrit_close: {x: 7, y: 4}
+  camMoveCrit_far: {x: 13, y: 7}
   chargeSlowTimeRatio: 0.3
   chargeAudioSmallRatio: 0.3
   chargeStartTime: 0.2
@@ -18666,8 +18667,6 @@ MonoBehaviour:
   directionToPL: {x: 0, y: 0}
   dTime: 0
   interval: 0.01
-  zero_dTime: 0
-  zero_waitTime: -1
   listMax: 100
   velocityList: []
 --- !u!1 &8587088515968547643
