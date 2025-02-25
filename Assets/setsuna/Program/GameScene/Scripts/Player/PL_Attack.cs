@@ -19,11 +19,13 @@ public class PL_Attack : SetsunaSlashScript
 
     [Space(10)]
     public float dragMultiplier;
-    public float pointChargeSPD, pointLengthMax;
+    public float pointChargeSPD;
+    float pointDirRatio;
 
     [Space(10)]
     public Vector2 dragCamDirMultiplier;
     public Vector2 pointerCamDirMultiplier;
+    [SerializeField] Vector2 camMoveCrit_close, camMoveCrit_far;
 
     [Space(10)]
     public float chargeSlowTimeRatio;
@@ -163,7 +165,7 @@ public class PL_Attack : SetsunaSlashScript
         if (attackAction.WasPressedThisFrame())
         {
             isCharging = true;
-            pointLengthMax = 0;
+            pointDirRatio = 0;
         }
 
         //長押し中
@@ -172,12 +174,12 @@ public class PL_Attack : SetsunaSlashScript
             charge_dTime += Time.unscaledDeltaTime;
             startPos = transform.position;
             endPos = pl.GetCursorPos(PlayerCursor.VectorSpace.world);
-            pointLengthMax = pointChargeSPD * charge_dTime;
+            pointDirRatio += pointChargeSPD * Time.unscaledDeltaTime;
             direction = (endPos - startPos);
 
-            if (direction.magnitude > pointLengthMax) 
+            if (direction.magnitude > pointDirRatio)
             {
-                direction = direction.normalized * pointLengthMax;
+                direction = direction.normalized * pointDirRatio;
             }
         }
 
@@ -203,28 +205,13 @@ public class PL_Attack : SetsunaSlashScript
     {
         if (charge_dTime >= chargeStartTime)
         {
-            pl.SetCameraDistanceSetMode(fromAverage: false);
-
-            Vector2 cameraDir;
-
-            static Vector2 Multiple(Vector2 vec1, Vector2 vec2) => new(vec1.x * vec2.x, vec1.y * vec2.y);
-
-            cameraDir = controllMode switch
-            {
-                SlashControllMode.pointer => Multiple((endPos - startPos) , pointerCamDirMultiplier),
-                SlashControllMode.drag => Multiple(direction, dragCamDirMultiplier),
-                _ => direction
-            };
-
-            var lerp = (charge_dTime - chargeStartTime) / cameraLerpTime;
-
-            //カメラがテレポートしないようにする処理
-            if (lerp <= 1f)
-            {
-                cameraDir = Vector2.Lerp(beforeChargeCameraDirection, cameraDir, lerp);
-            }
-
-            pl.SetCameraDirection(cameraDir);
+            SetCameraDirMethod(
+                controllMode switch { 
+                    SlashControllMode.pointer => GetCameraDirSetPhase(),
+                    SlashControllMode.drag => 2,
+                    _ => 2
+                }
+            );
 
             if ((pl.GetInputX() > 0) && (direction.x < 0)) direction.x = 0;
             else if((pl.GetInputX() < 0) && (direction.x > 0)) direction.x = 0;
@@ -237,6 +224,70 @@ public class PL_Attack : SetsunaSlashScript
         {
             beforeChargeCameraDirection = pl.GetCameraDirection();
         }
+    }
+    
+    /// <returns>0:close 1:mid 2:far</returns>
+    int GetCameraDirSetPhase()
+    {
+        var curPos = pl.GetCursorPos(PlayerCursor.VectorSpace.world);
+        var plPos = pl.transform.position;
+
+        if (IsCursorInRect(camMoveCrit_close, curPos)) return 0;
+        if (!IsCursorInRect(camMoveCrit_far, curPos)) return 2;
+        return 1;
+    }
+    bool IsCursorInRect(Vector2 crit, Vector2 curPos)
+    {
+        Vector2 center = pl.cam.transform.position;
+        var dir = curPos - center;
+
+        if (Mathf.Abs(dir.x) > crit.x) return false;
+        if (Mathf.Abs(dir.y) > crit.y) return false;
+        return true;
+    }
+    /// <param name="phase">0:close 1:mid 2:far</param>
+    void SetCameraDirMethod(int phase)
+    {
+        if (phase == 0)
+        {
+            //プレイヤーに寄っていく
+            pl.SetCameraDistanceSetMode(fromAverage: true);
+            pl.cam.AddList(Vector2.zero);
+            return;
+        }
+
+        pl.SetCameraDistanceSetMode(fromAverage: false);
+
+        //なにもしない
+        if (phase == 1)
+        {
+            charge_dTime = chargeStartTime;
+            beforeChargeCameraDirection = pl.GetCameraDirection();
+            return;
+        }
+
+        //ここからphase2(通常動作)
+
+        Vector2 cameraDir;
+
+        static Vector2 Multiple(Vector2 vec1, Vector2 vec2) => new(vec1.x * vec2.x, vec1.y * vec2.y);
+
+        cameraDir = controllMode switch
+        {
+            SlashControllMode.pointer => Multiple((endPos - startPos), pointerCamDirMultiplier),
+            SlashControllMode.drag => Multiple(direction, dragCamDirMultiplier),
+            _ => direction
+        };
+
+        var lerp = (charge_dTime - chargeStartTime) / cameraLerpTime;
+
+        //カメラがテレポートしないようにする処理
+        if (lerp <= 1f)
+        {
+            cameraDir = Vector2.Lerp(beforeChargeCameraDirection, cameraDir, lerp);
+        }
+
+        pl.SetCameraDirection(cameraDir);
     }
 
     void SetLine()
@@ -279,5 +330,25 @@ public class PL_Attack : SetsunaSlashScript
         pl.Animator.Slash();
 
         interval_dt = 0;
+    }
+
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLineStrip(Vec2ToRectAngle(camMoveCrit_far), true);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLineStrip(Vec2ToRectAngle(camMoveCrit_close), true);
+    }
+    Vector3[] Vec2ToRectAngle(Vector2 vec)
+    {
+        var center = Camera.main.transform.position;
+
+        return new Vector3[]{
+            center + Vector3.right * vec.x + Vector3.up * vec.y,
+            center + Vector3.right * vec.x + Vector3.down * vec.y,
+            center + Vector3.left * vec.x + Vector3.down * vec.y,
+            center + Vector3.left * vec.x + Vector3.up * vec.y
+        };
     }
 }

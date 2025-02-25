@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,7 +16,6 @@ public class SetsunaPlayerCamera : SetsunaSlashScript
 
     public Vector2 directionToPL;
     [SerializeField] float dTime, interval;
-    [SerializeField] float zero_dTime, zero_waitTime;
     [SerializeField] int listMax;
     public List<Vector2> velocityList = new List<Vector2>();
 
@@ -36,7 +36,7 @@ public class SetsunaPlayerCamera : SetsunaSlashScript
     {
         if (dTime >= interval || dTime<0)
         {
-            if(setDistanceFromAverage)AddList(plctrl.rb.velocity);
+            if(setDistanceFromAverage && (plctrl.rb.velocity.magnitude > minSPD)) AddList(plctrl.rb.velocity);
             SetDistance();
             dTime = 0;
         }
@@ -47,25 +47,9 @@ public class SetsunaPlayerCamera : SetsunaSlashScript
 
     public void AddList(Vector2 vel)
     {
-        if (vel.magnitude > minSPD)
-        {
-            vel.x *= distanceRatio.x;
-            vel.y *= distanceRatio.y;
-            velocityList.Add(vel);
-            zero_dTime = 0;
-        }
-        else if(zero_waitTime >= 0)
-        {
-            if (zero_dTime < zero_waitTime)
-            {
-                zero_dTime += interval;
-            }
-            else
-            {
-                velocityList.Add(vel);
-            }
-        }
-
+        vel.x *= distanceRatio.x;
+        vel.y *= distanceRatio.y;
+        velocityList.Add(vel);
 
         if (velocityList.Count > listMax)
         {
