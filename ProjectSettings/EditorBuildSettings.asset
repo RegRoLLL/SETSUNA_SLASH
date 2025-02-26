@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/setsuna/Program/SettingsScene/SettingsScene.unity
     guid: 99327f3dee12ee9449bceed47201ec91
   - enabled: 0
-    path: Assets/setsuna/Program/GameScene/GameScene.unity
+    path: Assets/setsuna/Program/GameScene/OldGameScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: bf666f8fe96c6c8449c042ef2047b361, type: 2}
