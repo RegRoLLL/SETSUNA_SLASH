@@ -18,15 +18,9 @@ public class JewelCountUI : MonoBehaviour
 
     public void GenerateJewelCells(int count)
     {
-        StartCoroutine(GenerateJewelCellsCoroutine(count));
-    }
-    IEnumerator GenerateJewelCellsCoroutine(int count)
-    {
-        while (this.transform.childCount > 0)
-        {
-            Destroy(this.transform.GetChild(0).gameObject);
-            yield return null;
-        }
+        jewels.ForEach(j => Destroy(j.gameObject));
+
+        jewels.Clear();
 
         for (int i = 0; i < count; i++)
         {

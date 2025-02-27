@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using static UnityEngine.ParticleSystem;
 
 public class StageManager : SetsunaSlashScript
 {
@@ -41,8 +42,6 @@ public class StageManager : SetsunaSlashScript
 
         InitializeStageManageLists();
 
-        hub.player.ui.SlashCountUI.jewelCounter.GenerateJewelCells(jewelRoomNames[0].list2.Count);
-
         SaveAll();
 
         if (config.isContinueStart)
@@ -80,17 +79,35 @@ public class StageManager : SetsunaSlashScript
     void SetJewelsContinueData()
     {
         var jewels = config.loadedSaveData.jewelsBit;
-        var jewelsList = jewels.ToString().ToList();
-        jewelsList.RemoveAt(0);
-        jewelsList.Reverse();
-        foreach (var (jewel,index) in jewelsList.Select((jewel,index)=>(jewel,index)))
+        var jewelsStatList = jewels.ToString().ToList();
+        jewelsStatList.RemoveAt(0);
+        jewelsStatList.Reverse();
+        foreach (var (stat,index) in jewelsStatList.Select((stat,index)=>(stat,index)))
         {
-            if (!jewel.Equals('1')) continue;
+            if (!stat.Equals('1')) continue;
 
-            CollectJewel(index);
             stageParts.Select(p => p.GetComponent<StagePart>())
                 .Where(p => p.isAnotherRoom).ToList()[index]
                 .GetComponentInChildren<CollectableJewel>(true).SetCollected();
+        }
+    }
+
+    public void SetJewelsCountUICollectStat(int roomIndex)
+    {
+        hub.player.ui.SlashCountUI.jewelCounter.GenerateJewelCells(jewelRoomNames[roomIndex].list2.Count);
+
+        var parts = stageParts.Select(p => p.GetComponent<StagePart>()).ToList();
+        
+        foreach (var (title, index) in jewelRoomNames[roomIndex].list2.Select((title, index) => (title, index)))
+        {
+            var part = parts.Find(part => part.GetTitle().Equals(title));
+
+            if (!part.isAnotherRoom) continue;
+
+            if (part.GetComponentInChildren<CollectableJewel>(true) is var jewel and not null)
+            {
+                if (jewel.IsCollected) CollectJewel(title);
+            }
         }
     }
 
@@ -137,7 +154,6 @@ public class StageManager : SetsunaSlashScript
     {
         saveIndex = index;
     }
-
 
 
     public void Load()
@@ -194,10 +210,30 @@ public class StageManager : SetsunaSlashScript
         stageParts[index] = newPart;
     }
 
+    public void SetCurrentPart(int partIndex)
+    {
+        currentIndex = partIndex;
+        var part = stageParts[partIndex].GetComponent<StagePart>();
+
+        if (part.isAnotherRoom)
+        {
+            var roomIndex = jewelRoomNames.FindIndex(element => element.list2.Contains(part.GetTitle()));
+            SetJewelsCountUICollectStat(roomIndex);
+        }
+    }
+
 
     public void CollectJewel(string partTitle)
-    {
-        //CollectJewel(jewelRoomNames.FindIndex((title) => title == partTitle));
+    {int a, b;
+        a = jewelRoomNames.FindIndex(element => element.list2.Contains(partTitle));
+
+        if (a < 0) return;
+
+        b = jewelRoomNames[a].list2.IndexOf(partTitle);
+
+        if (b < 0) return;
+
+        CollectJewel(b);
     }
     void CollectJewel(int index)
     {
