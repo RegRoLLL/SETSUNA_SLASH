@@ -16744,7 +16744,7 @@ MonoBehaviour:
   camMoveCrit_far: {x: 13, y: 7}
   chargeSlowTimeRatio: 0.3
   chargeAudioSmallRatio: 0.3
-  chargeStartTime: 0.2
+  chargeStartTime: 0.1
   charge_dTime: 0
   normalAttackCol: {fileID: 1805312195109402214}
   line: {fileID: 272519083450872668}
@@ -18583,7 +18583,7 @@ Camera:
   far clip plane: 300
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 8.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
