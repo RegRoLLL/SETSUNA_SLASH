@@ -70,4 +70,6 @@ public class StagePart : MonoBehaviour
     }
 
     public string GetTitle() => partTitle;
+
+    public AnotherRoomManager GetAnotherManager() => GetComponent<AnotherRoomManager>();
 }

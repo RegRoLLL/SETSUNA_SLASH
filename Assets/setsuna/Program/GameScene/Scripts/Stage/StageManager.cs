@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class StageManager : SetsunaSlashScript
 {
@@ -13,10 +14,18 @@ public class StageManager : SetsunaSlashScript
     [Header("Internal Data")]
     public List<GameObject> stageParts = new();
     public List<GameObject> stageClones = new();
-    public List<string> jewelRoomNames = new();
+    public List<SerializableList<string>> jewelRoomNames = new();
     public int currentIndex, saveIndex;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
     public SavePoint latestSavePoint, anotherPartSave;
+
+    [Serializable]
+    public class SerializableList<T> {
+        public List<T> list2 = new();
+        public SerializableList(List<T> source){
+            this.list2 = source;
+        }
+    }
 
 
     void Start()
@@ -30,19 +39,9 @@ public class StageManager : SetsunaSlashScript
             }
         }
 
-        stageParts.Clear();
-        foreach (Transform tra in transform)
-        {
-            if (tra.TryGetComponent<StagePart>(out var part))
-            {
-                part.SetClearStatus(0);
-                stageParts.Add(tra.gameObject);
+        InitializeStageManageLists();
 
-                if(part.isAnotherRoom) jewelRoomNames.Add(part.GetTitle());
-            }
-        }
-
-        hub.player.ui.SlashCountUI.jewelCounter.GenerateJewelCells(jewelRoomNames.Count);
+        hub.player.ui.SlashCountUI.jewelCounter.GenerateJewelCells(jewelRoomNames[0].list2.Count);
 
         SaveAll();
 
@@ -55,6 +54,27 @@ public class StageManager : SetsunaSlashScript
         if (!config.debugMode) hub.PL_Ctrler.transform.position = primaryPlayerPosition;
 
         savedPlayerPosition = hub.PL_Ctrler.transform.position;
+    }
+    void InitializeStageManageLists()
+    {
+        stageParts.Clear();
+        jewelRoomNames.Clear();
+        foreach (Transform tra in transform)
+        {
+            if (tra.TryGetComponent<StagePart>(out var part))
+            {
+                part.SetClearStatus(0);
+                stageParts.Add(tra.gameObject);
+
+                if (!part.isAnotherRoom)
+                {
+                    if (part.GetAnotherManager() is var ar_manager and not null)
+                    {
+                        jewelRoomNames.Add(new(ar_manager.GetNameList()));
+                    }
+                }
+            }
+        }
     }
 
     void SetJewelsContinueData()
@@ -177,7 +197,7 @@ public class StageManager : SetsunaSlashScript
 
     public void CollectJewel(string partTitle)
     {
-        CollectJewel(jewelRoomNames.FindIndex((title) => title == partTitle));
+        //CollectJewel(jewelRoomNames.FindIndex((title) => title == partTitle));
     }
     void CollectJewel(int index)
     {
