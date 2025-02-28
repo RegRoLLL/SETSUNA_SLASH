@@ -325,10 +325,8 @@ public class PlayerController_main : SetsunaSlashScript
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.GetComponent<StagePart>())
+        if (other.gameObject.TryGetComponent<StagePart>(out var stage))
         {
-            var stage = other.gameObject.GetComponent<StagePart>();
-
             if (hub.currentPart != stage) hub.SetPart(stage);
         }
     }

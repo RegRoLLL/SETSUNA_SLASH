@@ -18,15 +18,9 @@ public class JewelCountUI : MonoBehaviour
 
     public void GenerateJewelCells(int count)
     {
-        StartCoroutine(GenerateJewelCellsCoroutine(count));
-    }
-    IEnumerator GenerateJewelCellsCoroutine(int count)
-    {
-        while (this.transform.childCount > 0)
-        {
-            Destroy(this.transform.GetChild(0).gameObject);
-            yield return null;
-        }
+        jewels.ForEach(j => Destroy(j.gameObject));
+
+        jewels.Clear();
 
         for (int i = 0; i < count; i++)
         {
@@ -95,21 +89,5 @@ public class JewelCountUI : MonoBehaviour
 
         angle.x = targetX;
         rectTransform.localEulerAngles = angle;
-    }
-
-    /// <summary>
-    /// 宝石の獲得状況
-    /// </summary>
-    /// <returns>01のデータ列で返す。小さい位から読む。トップに1を足している</returns>
-    public string GetJewelsCollecting()
-    {
-        string result = "";
-        foreach (var jewel in jewels)
-        {
-            if (jewel.state.fore) result += "1";
-            else result += "0";
-        }
-        result += "1";
-        return result;
     }
 }
