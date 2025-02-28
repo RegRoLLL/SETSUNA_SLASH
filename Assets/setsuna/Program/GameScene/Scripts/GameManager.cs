@@ -63,18 +63,29 @@ public class GameManager : SetsunaSlashScript
 
     void SetContinueData()
     {
+        var index = config.loadedSaveData.latestPart - 1;
+
         hub.playingStage.savedPlayerPosition
-            = hub.playingStage.stageParts[config.loadedSaveData.currentPart-1]
+            = hub.playingStage.stageParts[index]
                 .GetComponent<StagePart>()
                 .savePoints.GetSavePoints()[0]
                 .transform.position;
 
-        var index = config.loadedSaveData.currentPart - 1;
+        var mainParts = hub.playingStage.stageParts
+                    .Select(p => p.GetComponent<StagePart>())
+                    .Where(p => !p.isAnotherRoom)
+                    .ToList();
 
         hub.player.transform.position
-            = hub.playingStage.stageParts.Select(p=>p.GetComponent<StagePart>())
-                .Where(p => !p.isAnotherRoom).ToList()[index]
-                .savePoints.GetSavePoints()[0] .transform.position;
+            = mainParts[index].savePoints.GetSavePoints()[0] .transform.position;
+
+        for (int i = 0; i < config.loadedSaveData.latestPart - 1; i++)
+        {
+            foreach (var save in mainParts[i].savePoints.GetSavePoints())
+            {
+                save.Activate(playSound: false);
+            }
+        }
 
         //•óÎŠÖŒW‚ÍStageManager‚É‚Ä
 
