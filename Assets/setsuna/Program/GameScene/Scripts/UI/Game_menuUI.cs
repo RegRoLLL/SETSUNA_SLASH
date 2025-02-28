@@ -136,8 +136,9 @@ public class Game_menuUI : SetsunaSlashScript
     {
         var parts = Hub.playingStage.stageParts.Select((p)=>p.GetComponent<StagePart>()).ToList();
         var currentPartSave = parts.FindIndex(p => (p == Hub.playingStage.latestSavePoint.GetPart()));
-        currentPlayData.currentPart
+        currentPlayData.latestPart
             = (currentPartSave == -1) ? 1 : currentPartSave+1;
+        currentPlayData.latestPartTitle = Hub.currentPart.GetTitle();
 
         var jewelBit = Hub.playingStage.GetJewelsCollectingBits();
         currentPlayData.maxJewel = jewelBit.Count();
@@ -153,7 +154,7 @@ public class Game_menuUI : SetsunaSlashScript
 
         var text = "";
         text += $"宝石：{currentPlayData.collectedJewel}/{currentPlayData.maxJewel}\r\n";
-        text += $"最新エリア：{Convert.ToInt32(currentPlayData.currentPart) + 1}\r\n";
+        text += $"最新エリア：{currentPlayData.latestPartTitle}(part{currentPlayData.latestPart})\r\n";
         text += $"スコア：\r\n";
 
         int part = 1;
