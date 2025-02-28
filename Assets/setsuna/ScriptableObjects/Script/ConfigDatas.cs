@@ -123,7 +123,8 @@ public class ConfigDatas : ScriptableObject
     public class SaveData
     {
         public string pass;
-        public int currentPart;
+        public int latestPart;
+        public string latestPartTitle;
         public int maxJewel, collectedJewel;
         public string jewelsBit;
         public List<(int maxScore, int score)> partScores = new();
@@ -156,7 +157,8 @@ public class ConfigDatas : ScriptableObject
     {
         string data = "";
         data += currentPlayData.pass + ",";
-        data += currentPlayData.currentPart + ",";
+        data += currentPlayData.latestPart + ",";
+        data += currentPlayData.latestPartTitle + ",";
         data += currentPlayData.maxJewel + ",";
         data += currentPlayData.collectedJewel + ",";
         data += currentPlayData.jewelsBit + ",";

@@ -21,8 +21,9 @@ MonoBehaviour:
   demoMode: 0
   debugMode: 1
   loadedSaveData:
-    pass: newJewelSystem1
-    currentPart: 3
+    pass: partTitleSave1
+    latestPart: 3
+    latestPartTitle: "\u5948\u843D\u306E\u676D\u6E21\u308A"
     maxJewel: 15
     collectedJewel: 4
     jewelsBit: 100100010010000

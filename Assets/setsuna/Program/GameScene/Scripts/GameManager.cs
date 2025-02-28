@@ -64,12 +64,12 @@ public class GameManager : SetsunaSlashScript
     void SetContinueData()
     {
         hub.playingStage.savedPlayerPosition
-            = hub.playingStage.stageParts[config.loadedSaveData.currentPart-1]
+            = hub.playingStage.stageParts[config.loadedSaveData.latestPart-1]
                 .GetComponent<StagePart>()
                 .savePoints.GetSavePoints()[0]
                 .transform.position;
 
-        var index = config.loadedSaveData.currentPart - 1;
+        var index = config.loadedSaveData.latestPart - 1;
 
         hub.player.transform.position
             = hub.playingStage.stageParts.Select(p=>p.GetComponent<StagePart>())
