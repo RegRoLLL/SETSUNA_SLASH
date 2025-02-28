@@ -94,7 +94,7 @@ public class SavePoint : SetsunaSlashScript
         AreaStart();
 
         Save();
-        Activate();
+        Activate(true);
     }
     void AreaStart()
     {
@@ -134,13 +134,19 @@ public class SavePoint : SetsunaSlashScript
         
         manager.hub.playingStage.SaveNotOverWrite(part.gameObject);
     }
-    void Activate()
+    public void Activate(bool playSound)
     {
+        if (!initialized) Initialize();
+
         status.isActivated = true;
         sprite.sprite = active;
-        seAS.PlayOneShot(audioBind.gimmick.savePoint);
-        saveEffect_front.Play();
-        saveEffect_back.Play();
+
+        if(playSound)
+        {
+            seAS.PlayOneShot(audioBind.gimmick.savePoint);
+            saveEffect_front.Play();
+            saveEffect_back.Play();
+        }
     }
 
     public void Inactive()
