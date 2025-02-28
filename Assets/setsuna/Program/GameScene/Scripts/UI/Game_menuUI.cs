@@ -139,9 +139,9 @@ public class Game_menuUI : SetsunaSlashScript
         currentPlayData.currentPart
             = (currentPartSave == -1) ? 1 : currentPartSave+1;
 
-        var jewelBit = ssUI.SlashCountUI.jewelCounter.GetJewelsCollecting();
-        currentPlayData.maxJewel = jewelBit.Count() - 1;
-        currentPlayData.collectedJewel = jewelBit.Where(c => char.Equals(c,'1')).Count() - 1;
+        var jewelBit = Hub.playingStage.GetJewelsCollectingBits();
+        currentPlayData.maxJewel = jewelBit.Count();
+        currentPlayData.collectedJewel = jewelBit.Where(c => char.Equals(c,'1')).Count();
         currentPlayData.jewelsBit = jewelBit;
 
         var mainParts = parts.Where((p)=>!p.isAnotherRoom).ToList();

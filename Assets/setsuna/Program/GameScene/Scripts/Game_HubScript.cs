@@ -36,7 +36,7 @@ public class Game_HubScript : SetsunaSlashScript
 
     public void SetPart(StagePart stage)
     {
-        playingStage.currentIndex = playingStage.stageParts.FindIndex((n) => (n == stage.gameObject));
+        playingStage.SetCurrentPart(playingStage.stageParts.FindIndex((n) => (n == stage.gameObject)));
 
         if (bgmAS.clip != stage.bgm)
         {
