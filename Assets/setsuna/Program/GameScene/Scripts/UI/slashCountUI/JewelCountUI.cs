@@ -90,20 +90,4 @@ public class JewelCountUI : MonoBehaviour
         angle.x = targetX;
         rectTransform.localEulerAngles = angle;
     }
-
-    /// <summary>
-    /// 宝石の獲得状況
-    /// </summary>
-    /// <returns>01のデータ列で返す。小さい位から読む。トップに1を足している</returns>
-    public string GetJewelsCollecting()
-    {
-        string result = "";
-        foreach (var jewel in jewels)
-        {
-            if (jewel.state.fore) result += "1";
-            else result += "0";
-        }
-        result += "1";
-        return result;
-    }
 }
