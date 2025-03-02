@@ -2,57 +2,150 @@ Shader "Unlit/notSlashableShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        //パスでの変数にここで代入する
+        _Color_Base ("Base Color", Color) = (0,0,0,1)
+        _Color_Line ("Line Color", Color) = (1,1,1,1)
+        _Color_Editor ("OnEditor Color", Color) = (0.8,0.8,0.8,1)
+        _LineDepth("Line Depth",float) = 0.1
+        _LineThickness("Line Thickness",float) = 0.1
     }
+
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
+        Tags{
+            "RenderType" = "Opaque"
+        }
 
+        
+        CGINCLUDE
+
+        // 関数宣言
+        #pragma vertex vert    // vert関数を頂点シェーダーとして使用する宣言
+        #pragma fragment frag  // frag関数をフラグメントシェーダーとして使用する宣言
+
+        // 変数宣言
+        // Propertiesからここで受け取る
+        fixed4 _Color_Base;
+        fixed4 _Color_Line;
+        fixed4 _Color_Editor;
+        float _LineDepth;
+        float _LineThickness;
+
+        StructuredBuffer<float2> _Verticles;
+        int _VertexCount;
+
+        float2 GetOutlineNormal(uint id){
+            int prevId = (id-1) % _VertexCount;
+            int nextId = (id+1) % _VertexCount;
+
+            //頂点
+            float2 p0 = _Verticles[prevId];
+            float2 p1 = _Verticles[id];
+            float2 p2 = _Verticles[nextId];
+
+            //辺方向
+            float2 edge1 = normalize(p1 - p0);
+            float2 edge2 = normalize(p2 - p1);
+
+            //(x, y) => (y, -x) で90度回転
+            float2 normal1 = float2(edge1.y, -edge1.x);
+            float2 normal2 = float2(edge2.y, -edge2.x);
+
+            //それぞれの辺から導出した法線の平均
+            return normalize(normal1 + normal2);
+        }
+
+        ENDCG
+        
+
+
+        //エディタ(頂点情報代入前)の表示
+        Pass
+        {
+            // プログラムを書き始めるという宣言
+            CGPROGRAM
+
+            // 頂点シェーダー
+            float4 vert (float4 pos : POSITION) : SV_POSITION
+            {
+                return UnityObjectToClipPos(pos);
+            }
+
+            // フラグメントシェーダー
+            fixed4 frag () : SV_Target
+            {
+                return _Color_Editor;
+            }
+
+            ENDCG
+            // プログラムを書き終わるという宣言
+        }
+
+        //一番外側
         Pass
         {
             CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
-            #include "UnityCG.cginc"
-
-            struct appdata
+            float4 vert (uint id : SV_VertexID) : SV_POSITION
             {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
-
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
-                float4 vertex : SV_POSITION;
-            };
-
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-
-            v2f vert (appdata v)
-            {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
-                return o;
+                return UnityObjectToClipPos(float4(_Verticles[id],0,1));
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag () : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                return _Color_Base;
             }
+
             ENDCG
         }
+        
+        //線の部分
+        Pass
+        {
+            CGPROGRAM
+
+            float4 vert (uint id : SV_VertexID) : SV_POSITION
+            {
+                float2 pos = _Verticles[id];
+                float2 normal = GetOutlineNormal(id);
+                pos += normal * _LineDepth;
+
+                return UnityObjectToClipPos(float4(pos,0,1));
+            }
+
+            // フラグメントシェーダー
+            fixed4 frag () : SV_Target
+            {
+                return _Color_Line;
+            }
+
+            ENDCG   // プログラムを書き終わるという宣言
+        }
+
+        
+
+        //内側の部分
+        Pass
+        {
+            CGPROGRAM
+
+            float4 vert (uint id : SV_VertexID) : SV_POSITION
+            {
+                float2 pos = _Verticles[id];
+                float2 normal = GetOutlineNormal(id);
+                pos += normal * (_LineDepth + _LineThickness);
+
+                return UnityObjectToClipPos(float4(pos,0,1));
+            }
+
+            // フラグメントシェーダー
+            fixed4 frag () : SV_Target
+            {
+                return _Color_Base;
+            }
+
+            ENDCG   // プログラムを書き終わるという宣言
+        }
+        
     }
 }
