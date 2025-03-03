@@ -164,6 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 0}
   audioBind: {fileID: 0}
+  isConst: 0
   damageSpeed: 5
   damageValue: 10
   appearTime: 0.5
