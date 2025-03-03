@@ -5,7 +5,7 @@ Shader "Unlit/notSlashableShader"
         //パスでの変数にここで代入する
         _Color_Base ("Base Color", Color) = (0,0,0,1)
         _Color_Line ("Line Color", Color) = (1,1,1,1)
-        _Color_Editor ("OnEditor Color", Color) = (0.8,0.8,0.8,1)
+        _Color_OldRender ("OldRender Color", Color) = (0.8,0.8,0.8,1)
         _LineDepth("Line Depth",float) = 0.1
         _LineThickness("Line Thickness",float) = 0.1
     }
@@ -27,7 +27,7 @@ Shader "Unlit/notSlashableShader"
         // Propertiesからここで受け取る
         fixed4 _Color_Base;
         fixed4 _Color_Line;
-        fixed4 _Color_Editor;
+        fixed4 _Color_OldRender;
         float _LineDepth;
         float _LineThickness;
 
@@ -74,7 +74,7 @@ Shader "Unlit/notSlashableShader"
             // フラグメントシェーダー
             fixed4 frag () : SV_Target
             {
-                return _Color_Editor;
+                return _Color_OldRender;
             }
 
             ENDCG
