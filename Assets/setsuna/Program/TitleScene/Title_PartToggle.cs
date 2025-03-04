@@ -31,11 +31,9 @@ public class Title_PartToggle : SetsunaSlashScript
     {
         if (toggle == null) toggle = GetComponentInChildren<Toggle>();
 
-        Debug.Log(toggle.isOn);
-
         if (!toggle.isOn) return;
 
-        config.loadedSaveData.latestPart = part;
+        config.loadedSaveData.startPart = part;
         tm.SetContinueCheckButtonsNav(toggle);
     }
 }

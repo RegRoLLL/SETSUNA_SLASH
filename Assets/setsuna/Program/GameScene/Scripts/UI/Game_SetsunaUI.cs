@@ -11,7 +11,7 @@ public class Game_SetsunaUI : MonoBehaviour
 {
     [HideInInspector] public GameManager gm;
 
-    [SerializeField] Game_menuUI menuUI;
+    public Game_menuUI menuUI;
     [SerializeField] SlashCountUI slashCountUI;
     public SlashCountUI SlashCountUI { get => slashCountUI; }
     [SerializeField] HintUI hintUI;

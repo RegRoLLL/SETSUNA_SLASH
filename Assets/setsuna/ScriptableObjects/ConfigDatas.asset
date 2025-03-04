@@ -22,6 +22,7 @@ MonoBehaviour:
   debugMode: 0
   loadedSaveData:
     pass: partTitleSave1
+    startPart: 2
     latestPart: 3
     latestPartTitle: "\u5948\u843D\u306E\u676D\u6E21\u308A"
     maxJewel: 15

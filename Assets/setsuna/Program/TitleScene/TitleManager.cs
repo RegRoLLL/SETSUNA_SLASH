@@ -122,6 +122,7 @@ public class TitleManager : SetsunaSlashScript
         config.loadedSaveData.pass = selectedSaveData[0];
         config.loadedSaveData.latestPart = Convert.ToInt32(selectedSaveData[1]);
         config.loadedSaveData.latestPartTitle = selectedSaveData[2];
+        config.loadedSaveData.startPart = config.loadedSaveData.latestPart;
         config.loadedSaveData.maxJewel = Convert.ToInt32(selectedSaveData[3]);
         config.loadedSaveData.collectedJewel = Convert.ToInt32(selectedSaveData[4]);
         config.loadedSaveData.jewelsBit = selectedSaveData[5];

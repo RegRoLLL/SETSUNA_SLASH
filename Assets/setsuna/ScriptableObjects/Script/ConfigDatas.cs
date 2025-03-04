@@ -123,6 +123,7 @@ public class ConfigDatas : ScriptableObject
     public class SaveData
     {
         public string pass;
+        public int startPart;
         public int latestPart;
         public string latestPartTitle;
         public int maxJewel, collectedJewel;

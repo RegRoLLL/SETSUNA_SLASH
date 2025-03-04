@@ -63,7 +63,7 @@ public class GameManager : SetsunaSlashScript
 
     void SetContinueData()
     {
-        var index = config.loadedSaveData.latestPart - 1;
+        var index = config.loadedSaveData.startPart - 1;
 
         hub.playingStage.savedPlayerPosition
             = hub.playingStage.stageParts[index]
@@ -79,7 +79,7 @@ public class GameManager : SetsunaSlashScript
         hub.player.transform.position
             = mainParts[index].savePoints.GetSavePoints()[0] .transform.position;
 
-        for (int i = 0; i < config.loadedSaveData.latestPart - 1; i++)
+        for (int i = 0; i < index; i++)
         {
             foreach (var save in mainParts[i].savePoints.GetSavePoints())
             {
@@ -95,7 +95,14 @@ public class GameManager : SetsunaSlashScript
         config.easyMode = false;
         config.debugMode = false;
 
-        config.isContinueStart = false;
+        //config.isContinueStart = false;
+
+        StartCoroutine(SetPlaydataInMenuUIAfterFrame());
+    }
+    IEnumerator SetPlaydataInMenuUIAfterFrame()
+    {
+        yield return null;
+        playerUI.menuUI.SetCurrentPlayData();
     }
 
     IEnumerator TitleCall()
