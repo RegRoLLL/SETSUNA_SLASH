@@ -21,6 +21,10 @@ public class TitleManager : SetsunaSlashScript
     [SerializeField] TextMeshProUGUI saveDataText;
     [SerializeField] Button continueCheckPrimeSelect;
 
+    [SerializeField] ToggleGroup partToggleGroup;
+    [SerializeField] GameObject partTogglePrefab;
+    [SerializeField] Button continueCheckDecide, continueCheckCancel;
+
     [SerializeField] string[] selectedSaveData;
 
     void Start()
@@ -50,27 +54,70 @@ public class TitleManager : SetsunaSlashScript
     public void ContinueCheck(string[] data)
     {
         selectedSaveData = data;
+        SetLoadedSaveData();
 
         continueCheckWindow.SetActive(true);
 
-        var text = "";
-        text += $"{data[0]}\r\n";
-        text += $"宝石：{data[4]}/{data[3]}\r\n";
-        text += $"最新エリア：{data[2]} (part{data[1]})\r\n";
-        text += $"スコア：\r\n";
+        var loaded = config.loadedSaveData;
 
-        int part = 1;
-        for(int i = 6;i<data.Length;i+=2)
-        {
-            text += $"part{part++} {data[i+1]} / {data[i]}   ";
-        }
+        var text = "";
+        text += $"{loaded.pass}\r\n";
+        text += $"宝石：{loaded.collectedJewel}/{loaded.maxJewel}\r\n";
+        text += $"最新エリア：{loaded.latestPartTitle} (part{loaded.latestPart})\r\n";
+        text += $"<align=\"center\"><size=64>ー開始位置を選んでくださいー</size>\r\n";
 
         saveDataText.text = text;
+
+        var parent = partToggleGroup.transform;
+        int part = 1;
+        foreach (Transform t in parent) Destroy(t.gameObject);
+        List<Toggle> toggles = new();
+        foreach(var (maxScore,score) in loaded.partScores)
+        {
+            var t = Instantiate(partTogglePrefab, parent);
+
+            var component = t.GetComponent<Title_PartToggle>();
+            component.SetDatas(part, score, maxScore, this);
+
+            var toggle = component.GetToggle();
+            toggle.group = partToggleGroup;
+            if (part > loaded.latestPart) toggle.interactable = false;
+
+            toggles.Add(toggle);
+
+            part++;
+        }
+        toggles[loaded.latestPart - 1].isOn = true;
+
+        if (toggles.Count >= 1)
+        {
+            foreach (var (toggle, index) in toggles.Select((toggle, index) => (toggle, index)))
+            {
+                Navigation nav = new()
+                {
+                    mode = Navigation.Mode.Explicit,
+                    selectOnRight = toggles[(index + 1 + toggles.Count) % toggles.Count],
+                    selectOnLeft = toggles[(index - 1 + toggles.Count) % toggles.Count],
+                    selectOnDown = continueCheckDecide
+                };
+            }
+        }
 
         continueCheckPrimeSelect.Select();
     }
 
-    public void ContinueDecide()
+    public void SetContinueCheckButtonsNav(Toggle toggle)
+    {
+        Navigation decideNav = continueCheckDecide.navigation;
+        decideNav.selectOnUp = toggle;
+        continueCheckDecide.navigation = decideNav;
+
+        Navigation cancelNav = continueCheckCancel.navigation;
+        decideNav.selectOnUp = toggle;
+        continueCheckCancel.navigation = cancelNav;
+    }
+
+    void SetLoadedSaveData()
     {
         config.loadedSaveData.pass = selectedSaveData[0];
         config.loadedSaveData.latestPart = Convert.ToInt32(selectedSaveData[1]);
@@ -79,15 +126,19 @@ public class TitleManager : SetsunaSlashScript
         config.loadedSaveData.collectedJewel = Convert.ToInt32(selectedSaveData[4]);
         config.loadedSaveData.jewelsBit = selectedSaveData[5];
         config.loadedSaveData.partScores.Clear();
-        for (int i = 6; i < config.loadedSaveData.partScores.Count; i+=2)
+        for (int i = 6; i < selectedSaveData.Length; i += 2)
         {
             config.loadedSaveData.partScores.Add(
                 (
                     maxScore: Convert.ToInt32(selectedSaveData[i]),
-                    score: Convert.ToInt32(selectedSaveData[i+1])
+                    score: Convert.ToInt32(selectedSaveData[i + 1])
                 )
             );
         }
+    }
+
+    public void ContinueDecide()
+    {
         config.isContinueStart = true;
 
         SceneManager.LoadScene(gameScene);

@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ff00bcb584e874682602ae36b427de, type: 3}
   m_Name: ConfigDatas
   m_EditorClassIdentifier: 
-  masterVolume: 0.45
+  masterVolume: 0.18
   bgmVolume: 0.28
   seVolume: 0.35
   controllMode_: 0
   slowWhenSlashCharge: 1
   easyMode: 0
   demoMode: 0
-  debugMode: 1
+  debugMode: 0
   loadedSaveData:
     pass: partTitleSave1
     latestPart: 3
