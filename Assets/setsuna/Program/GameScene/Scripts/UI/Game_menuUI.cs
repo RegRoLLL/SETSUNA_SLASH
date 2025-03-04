@@ -168,7 +168,7 @@ public class Game_menuUI : SetsunaSlashScript
             //コンティニュー時(比較して更新していれば上書き)
             foreach (var (stat,index) in mainParts.Select((p,i) => (p.clearStat,i)))
             {
-                if (copiedPlayData.Count - 1 >= index){
+                if (copiedPlayData.Count - 1 < index){
                     //アップデートなどでpart数が増えた場合の増分
                     Add(stat);
                     continue;
