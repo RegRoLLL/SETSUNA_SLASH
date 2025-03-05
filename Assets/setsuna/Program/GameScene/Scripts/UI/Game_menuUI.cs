@@ -10,6 +10,7 @@ using RegUtility;
 using Cysharp.Threading.Tasks.Triggers;
 using System.Linq;
 using RegUtil;
+using Unity.VisualScripting;
 
 public class Game_menuUI : SetsunaSlashScript
 {
@@ -134,11 +135,24 @@ public class Game_menuUI : SetsunaSlashScript
 
     public void SetCurrentPlayData()
     {
+        if(!ssUI) ssUI = GetComponentInParent<Game_SetsunaUI>();
+
         var parts = Hub.playingStage.stageParts.Select((p)=>p.GetComponent<StagePart>()).ToList();
-        var currentPartSave = parts.FindIndex(p => (p == Hub.playingStage.latestSavePoint.GetPart()));
-        currentPlayData.latestPart
-            = (currentPartSave == -1) ? 1 : currentPartSave+1;
-        currentPlayData.latestPartTitle = Hub.currentPart.GetTitle();
+        var latestSavePart = parts.FindIndex(p => (p == Hub.playingStage.latestSavePoint.GetPart())) + 1;
+
+        var load = config.loadedSaveData;
+        if (config.isContinueStart && latestSavePart < load.latestPart)
+        {
+            //コンティニュースタート時の初期代入
+            currentPlayData.latestPart = load.latestPart;
+            currentPlayData.latestPartTitle = load.latestPartTitle;
+        }
+        else if(currentPlayData.latestPart < latestSavePart)
+        {
+            //最高到達partの更新
+            currentPlayData.latestPart = latestSavePart;
+            currentPlayData.latestPartTitle = Hub.currentPart.GetTitle();
+        }
 
         var jewelBit = Hub.playingStage.GetJewelsCollectingBits();
         currentPlayData.maxJewel = jewelBit.Count();
@@ -146,10 +160,47 @@ public class Game_menuUI : SetsunaSlashScript
         currentPlayData.jewelsBit = jewelBit;
 
         var mainParts = parts.Where((p)=>!p.isAnotherRoom).ToList();
+        List<(int maxScore, int score)> copiedPlayData = new(config.isContinueStart ? config.loadedSaveData.partScores : currentPlayData.partScores);
         currentPlayData.partScores.Clear();
-        foreach (var stat in mainParts.Select((p) => p.clearStat))
+        Action<StagePart.PartClearStatus> Add = (stat) => currentPlayData.partScores.Add((stat.recommendMaxPoint, stat.currentPoint));
+        if (config.isContinueStart)
         {
-            currentPlayData.partScores.Add((stat.recommendMaxPoint, stat.currentPoint));
+            //コンティニュー時(比較して更新していれば上書き)
+            foreach (var (stat,index) in mainParts.Select((p,i) => (p.clearStat,i)))
+            {
+                if (copiedPlayData.Count - 1 < index){
+                    //アップデートなどでpart数が増えた場合の増分
+                    //Debug.Log($"part{index + 1}:上書き(増分)");
+                    Add(stat);
+                    continue;
+                }
+
+                //比較
+                var saved = copiedPlayData[index];
+                if (saved.maxScore != stat.recommendMaxPoint){
+                    //アップデートなどでpart内容が変わった場合、上書き
+                    //Debug.Log($"part{index + 1}:上書き(内容変更)");
+                    Add(stat);
+                }
+                else if(saved.score < stat.currentPoint){
+                    //通常のスコア更新
+                    //Debug.Log($"part{index + 1}:上書き(更新)");
+                    Add(stat);
+                }
+                else{
+                    //スコアが最高スコアを下回った場合、現状維持
+                    //Debug.Log($"part{index + 1}:現状維持");
+                    currentPlayData.partScores.Add((saved.maxScore, saved.score));
+                }
+            }
+        }
+        else
+        {
+            //非コンティニュー時(現状のデータそのまま代入)
+            foreach (var stat in mainParts.Select((p) => p.clearStat))
+            {
+                Add(stat);
+            }
         }
 
         var text = "";

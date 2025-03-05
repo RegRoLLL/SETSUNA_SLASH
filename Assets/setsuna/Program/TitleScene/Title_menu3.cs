@@ -81,6 +81,7 @@ public class Title_menu3 : SetsunaSlashScript
 
     public void GameStart()
     {
+        config.isContinueStart = false;
         SceneManager.LoadScene(gameScene);
     }
 

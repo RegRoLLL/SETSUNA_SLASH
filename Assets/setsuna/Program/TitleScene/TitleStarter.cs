@@ -12,7 +12,7 @@ public class TitleStarter : SetsunaSlashScript
     [SerializeField] VideoPlayer vp;
     [SerializeField] Image whiteMask;
     [SerializeField] GameObject menus;
-    [SerializeField] List<GameObject> menuList = new List<GameObject>();
+    [SerializeField] List<GameObject> menuList = new();
     public float fadeStartTime, fadeTime;
 
     public AudioSource bgmAS;

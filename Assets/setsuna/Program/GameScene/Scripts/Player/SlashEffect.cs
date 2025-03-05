@@ -69,6 +69,8 @@ public class SlashEffect : SetsunaSlashScript
         {
             if (col.gameObject.layer == not_slashableLayer)
             {
+                seAS.PlayOneShot(audioBind.player.notSlashAbleHit);
+                seAS.transform.parent = col.transform;
                 Vanish();
             }
 
