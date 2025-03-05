@@ -160,7 +160,7 @@ public class Game_menuUI : SetsunaSlashScript
         currentPlayData.jewelsBit = jewelBit;
 
         var mainParts = parts.Where((p)=>!p.isAnotherRoom).ToList();
-        List<(int maxScore, int score)> copiedPlayData = new(currentPlayData.partScores);
+        List<(int maxScore, int score)> copiedPlayData = new(config.isContinueStart ? config.loadedSaveData.partScores : currentPlayData.partScores);
         currentPlayData.partScores.Clear();
         Action<StagePart.PartClearStatus> Add = (stat) => currentPlayData.partScores.Add((stat.recommendMaxPoint, stat.currentPoint));
         if (config.isContinueStart)
@@ -170,6 +170,7 @@ public class Game_menuUI : SetsunaSlashScript
             {
                 if (copiedPlayData.Count - 1 < index){
                     //アップデートなどでpart数が増えた場合の増分
+                    //Debug.Log($"part{index + 1}:上書き(増分)");
                     Add(stat);
                     continue;
                 }
@@ -178,14 +179,17 @@ public class Game_menuUI : SetsunaSlashScript
                 var saved = copiedPlayData[index];
                 if (saved.maxScore != stat.recommendMaxPoint){
                     //アップデートなどでpart内容が変わった場合、上書き
+                    //Debug.Log($"part{index + 1}:上書き(内容変更)");
                     Add(stat);
                 }
                 else if(saved.score < stat.currentPoint){
                     //通常のスコア更新
+                    //Debug.Log($"part{index + 1}:上書き(更新)");
                     Add(stat);
                 }
                 else{
                     //スコアが最高スコアを下回った場合、現状維持
+                    //Debug.Log($"part{index + 1}:現状維持");
                     currentPlayData.partScores.Add((saved.maxScore, saved.score));
                 }
             }
