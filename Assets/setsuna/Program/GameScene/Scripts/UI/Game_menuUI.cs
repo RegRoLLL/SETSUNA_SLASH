@@ -162,7 +162,7 @@ public class Game_menuUI : SetsunaSlashScript
         var mainParts = parts.Where((p)=>!p.isAnotherRoom).ToList();
         List<(int maxScore, int score)> copiedPlayData = new(config.isContinueStart ? config.loadedSaveData.partScores : currentPlayData.partScores);
         currentPlayData.partScores.Clear();
-        Action<StagePart.PartClearStatus> Add = (stat) => currentPlayData.partScores.Add((stat.recommendMaxPoint, stat.currentPoint));
+        void Add(StagePart.PartClearStatus stat) => currentPlayData.partScores.Add((stat.recommendMaxPoint, stat.currentPoint));
         if (config.isContinueStart)
         {
             //コンティニュー時(比較して更新していれば上書き)
@@ -176,13 +176,13 @@ public class Game_menuUI : SetsunaSlashScript
                 }
 
                 //比較
-                var saved = copiedPlayData[index];
-                if (saved.maxScore != stat.recommendMaxPoint){
+                var (maxScore,score) = copiedPlayData[index];
+                if (maxScore != stat.recommendMaxPoint){
                     //アップデートなどでpart内容が変わった場合、上書き
                     //Debug.Log($"part{index + 1}:上書き(内容変更)");
                     Add(stat);
                 }
-                else if(saved.score < stat.currentPoint){
+                else if(score < stat.currentPoint){
                     //通常のスコア更新
                     //Debug.Log($"part{index + 1}:上書き(更新)");
                     Add(stat);
@@ -190,7 +190,7 @@ public class Game_menuUI : SetsunaSlashScript
                 else{
                     //スコアが最高スコアを下回った場合、現状維持
                     //Debug.Log($"part{index + 1}:現状維持");
-                    currentPlayData.partScores.Add((saved.maxScore, saved.score));
+                    currentPlayData.partScores.Add((maxScore, score));
                 }
             }
         }
@@ -211,6 +211,7 @@ public class Game_menuUI : SetsunaSlashScript
         int part = 1;
         foreach (var (maxScore, score) in currentPlayData.partScores)
         {
+            if (part > currentPlayData.latestPart) break;
             text += $"part{part++} {score}/{maxScore}  ";
         }
 
