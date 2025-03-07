@@ -211,6 +211,7 @@ public class Game_menuUI : SetsunaSlashScript
         int part = 1;
         foreach (var (maxScore, score) in currentPlayData.partScores)
         {
+            if (part > currentPlayData.latestPart) break;
             text += $"part{part++} {score}/{maxScore}  ";
         }
 
