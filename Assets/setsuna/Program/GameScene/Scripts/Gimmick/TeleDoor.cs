@@ -44,6 +44,13 @@ public class TeleDoor : TeleportGimmick
         if (teleportTo == TeleDoorToMode.teleDoor)
         {
             Teleport(pl.transform);
+            if (target.TryGetComponent<TeleDoor>(out var door))
+            {
+                if (door.part != null && door.part.isAnotherRoom)
+                {
+                    door.part.savePoints.GetSavePoints()[0].Excute(pl);
+                }
+            }
         }
         else
         {
