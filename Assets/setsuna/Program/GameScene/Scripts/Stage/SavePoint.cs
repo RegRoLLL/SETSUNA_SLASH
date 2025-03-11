@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable, RequireComponent(typeof(InteractGimmick))]
+[Serializable]
 public class SavePoint : SetsunaSlashScript
 {
     [SerializeField] SavePointStatus status = new();
@@ -22,6 +22,7 @@ public class SavePoint : SetsunaSlashScript
     StageManager manager;
     StagePart part;
     PlayerDetectArea area;
+    InteractGimmick _interactGimmick;
 
     Game_HubScript hub;
     Player player;
@@ -31,7 +32,10 @@ public class SavePoint : SetsunaSlashScript
     private void Start()
     {
         area = GetComponent<PlayerDetectArea>();
-        GetComponent<InteractGimmick>().onInteractEvent.AddListener(InteractSavePoint);
+        if (TryGetComponent<InteractGimmick>(out _interactGimmick))
+        {
+            _interactGimmick.onInteractEvent.AddListener(InteractSavePoint);
+        }
     }
 
     void Initialize()
@@ -56,7 +60,7 @@ public class SavePoint : SetsunaSlashScript
 
         dTime += Time.deltaTime;
 
-        interactIcon.enabled = hints.Count>=1 && area.detected;
+        interactIcon.enabled = _interactGimmick && hints.Count>=1 && area.detected;
     }
 
     void OnTriggerEnter2D(Collider2D col)
