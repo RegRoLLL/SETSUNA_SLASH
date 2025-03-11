@@ -21,10 +21,10 @@ MonoBehaviour:
   demoMode: 0
   debugMode: 1
   loadedSaveData:
-    pass: endsave
-    startPart: 8
-    latestPart: 8
-    latestPartTitle: "\u7D42\u70B9"
+    pass: nunununu
+    startPart: 10
+    latestPart: 10
+    latestPartTitle: "\u6642\u7A7A\u306E\u72ED\u9593"
     maxJewel: 15
     collectedJewel: 0
     jewelsBit: 000000000000000
