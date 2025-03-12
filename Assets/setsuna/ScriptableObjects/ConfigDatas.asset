@@ -19,15 +19,15 @@ MonoBehaviour:
   slowWhenSlashCharge: 1
   easyMode: 0
   demoMode: 0
-  debugMode: 1
+  debugMode: 0
   loadedSaveData:
-    pass: nunununu
-    startPart: 10
-    latestPart: 10
+    pass: master5
+    startPart: 9
+    latestPart: 9
     latestPartTitle: "\u6642\u7A7A\u306E\u72ED\u9593"
-    maxJewel: 15
-    collectedJewel: 0
-    jewelsBit: 000000000000000
-  isContinueStart: 0
+    maxJewel: 16
+    collectedJewel: 15
+    jewelsBit: 1111111111111101
+  isContinueStart: 1
   saveDataCSV_name: savedata
   outPutSaveDataLog: 0
