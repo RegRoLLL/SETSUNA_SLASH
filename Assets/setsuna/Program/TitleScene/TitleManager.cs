@@ -11,7 +11,9 @@ using System.Linq;
 
 public class TitleManager : SetsunaSlashScript
 {
-    [SerializeField] GameObject continueWindow;
+    [SerializeField] RDataEncrypter encrypter;
+
+    [SerializeField,Space] GameObject continueWindow;
     [SerializeField] TMP_InputField passwordField;
     [SerializeField] TextMeshProUGUI passNotFoundCaution;
     [SerializeField] string passNotFoundMessage;
@@ -120,7 +122,7 @@ public class TitleManager : SetsunaSlashScript
     void SetLoadedSaveData()
     {
         config.loadedSaveData.pass = selectedSaveData[0];
-        config.loadedSaveData.latestPart = Convert.ToInt32(selectedSaveData[1]);
+        config.loadedSaveData.latestPart = encrypter.DecryptInteger(Convert.ToInt32(selectedSaveData[1]));
         config.loadedSaveData.latestPartTitle = selectedSaveData[2];
         config.loadedSaveData.startPart = config.loadedSaveData.latestPart;
         config.loadedSaveData.maxJewel = Convert.ToInt32(selectedSaveData[3]);

@@ -3567,6 +3567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 8905ebe705303d44b952f13a4d579f10, type: 2}
   audioBind: {fileID: 0}
+  encrypter: {fileID: 11400000, guid: ec6b427a609ce984b88d025303de2dd2, type: 2}
   continueWindow: {fileID: 517337485}
   passwordField: {fileID: 42620143}
   passNotFoundCaution: {fileID: 1453901522}

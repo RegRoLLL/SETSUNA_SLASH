@@ -11,6 +11,8 @@ using System.Linq;
 [CreateAssetMenu(fileName = "ConfigData", menuName = "ScriptableObject/ConfigDatas")]
 public class ConfigDatas : ScriptableObject
 {
+    [SerializeField] RDataEncrypter encrypter;
+
     [Range(0f,1f)]public float masterVolume, bgmVolume, seVolume;
     [SerializeField] ControllMode controllMode_;
     public bool slowWhenSlashCharge;
@@ -158,7 +160,7 @@ public class ConfigDatas : ScriptableObject
     {
         string data = "";
         data += currentPlayData.pass + ",";
-        data += currentPlayData.latestPart + ",";
+        data += encrypter.EncryptInteger(currentPlayData.latestPart) + ",";
         data += currentPlayData.latestPartTitle + ",";
         data += currentPlayData.maxJewel + ",";
         data += currentPlayData.collectedJewel + ",";
