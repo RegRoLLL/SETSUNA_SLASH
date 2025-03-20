@@ -122,19 +122,19 @@ public class TitleManager : SetsunaSlashScript
     void SetLoadedSaveData()
     {
         config.loadedSaveData.pass = selectedSaveData[0];
-        config.loadedSaveData.latestPart = encrypter.DecryptInteger(Convert.ToInt32(selectedSaveData[1]));
+        config.loadedSaveData.latestPart = encrypter.DecryptInteger(Convert.ToInt64(selectedSaveData[1]));
         config.loadedSaveData.latestPartTitle = selectedSaveData[2];
         config.loadedSaveData.startPart = config.loadedSaveData.latestPart;
-        config.loadedSaveData.maxJewel = Convert.ToInt32(selectedSaveData[3]);
-        config.loadedSaveData.collectedJewel = Convert.ToInt32(selectedSaveData[4]);
+        config.loadedSaveData.maxJewel = encrypter.DecryptInteger(Convert.ToInt64(selectedSaveData[3]));
+        config.loadedSaveData.collectedJewel = encrypter.DecryptInteger(Convert.ToInt64(selectedSaveData[4]));
         config.loadedSaveData.jewelsBit = selectedSaveData[5];
         config.loadedSaveData.partScores.Clear();
         for (int i = 6; i < selectedSaveData.Length; i += 2)
         {
             config.loadedSaveData.partScores.Add(
                 (
-                    maxScore: Convert.ToInt32(selectedSaveData[i]),
-                    score: Convert.ToInt32(selectedSaveData[i + 1])
+                    maxScore: encrypter.DecryptInteger(Convert.ToInt64(selectedSaveData[i])),
+                    score: encrypter.DecryptInteger(Convert.ToInt64(selectedSaveData[i + 1]))
                 )
             );
         }

@@ -162,14 +162,14 @@ public class ConfigDatas : ScriptableObject
         data += currentPlayData.pass + ",";
         data += encrypter.EncryptInteger(currentPlayData.latestPart) + ",";
         data += currentPlayData.latestPartTitle + ",";
-        data += currentPlayData.maxJewel + ",";
-        data += currentPlayData.collectedJewel + ",";
+        data += encrypter.EncryptInteger(currentPlayData.maxJewel) + ",";
+        data += encrypter.EncryptInteger(currentPlayData.collectedJewel) + ",";
         data += currentPlayData.jewelsBit + ",";
         
         foreach (var (maxScore, score) in currentPlayData.partScores)
         {
-            data += maxScore + ",";
-            data += score + ",";
+            data += encrypter.EncryptInteger(maxScore) + ",";
+            data += encrypter.EncryptInteger(score) + ",";
         }
 
         var sr = new StreamWriter(saveDataFilePath, true);
