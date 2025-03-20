@@ -4378,7 +4378,7 @@ MonoBehaviour:
   titlePanel: {fileID: 8521875343227420548}
   titleTMP: {fileID: 8452456949664764092}
   titleOpenTime: 0.5
-  titleStayTime: 0.2
+  titleStayTime: 0.3
   titleCloseTime: 0.8
 --- !u!1 &3198552758857415813
 GameObject:
@@ -7475,7 +7475,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 120, y: 50, z: 120, w: 50}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7668,7 +7668,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30BB\u30FC\u30D6\u30DD\u30A4\u30F3\u30C8\u306B\u623B\u308B"
+  m_text: "\u30EA\u30B9\u30BF\u30FC\u30C8"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f409f454a6f65a7449504aba1f7787f6, type: 2}
   m_sharedMaterial: {fileID: -1371226106040556195, guid: f409f454a6f65a7449504aba1f7787f6, type: 2}
