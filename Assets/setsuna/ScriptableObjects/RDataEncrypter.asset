@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27acad9b1b5ac984984e51845bab2928, type: 3}
+  m_Name: RDataEncrypter
+  m_EditorClassIdentifier: 
+  _keys: e8b7bf4700000000a0500d32000000000c0e8e2500000000ed18ff23000000000c60a6010000000000530024000000007dfb3835000000006fa17f200000000053d44b4700000000b3d8542d00000000df23330c00000000
