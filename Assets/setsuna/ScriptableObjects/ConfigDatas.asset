@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3ff00bcb584e874682602ae36b427de, type: 3}
   m_Name: ConfigDatas
   m_EditorClassIdentifier: 
+  encrypter: {fileID: 11400000, guid: ec6b427a609ce984b88d025303de2dd2, type: 2}
   masterVolume: 0.18
   bgmVolume: 0.28
   seVolume: 0.35
