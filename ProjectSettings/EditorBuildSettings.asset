@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/setsuna/Program/TitleScene/TitleScene.unity
     guid: 06cc385db3f860749afbdd334ab4ea49
   - enabled: 1
-    path: Assets/setsuna/Program/GameScene/BackupReleaseGameScene.unity
-    guid: 15cb07c67f8fcd14c8cb7147514861df
-  - enabled: 1
     path: Assets/setsuna/Program/GameScene/ReleaseGameScene.unity
     guid: 1eb423b45c92d6d4c9466f82fbb28b98
   m_configObjects:
