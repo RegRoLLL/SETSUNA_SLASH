@@ -22,13 +22,13 @@ MonoBehaviour:
   demoMode: 0
   debugMode: 0
   loadedSaveData:
-    pass: partTitleSave1
-    startPart: 2
-    latestPart: 3
-    latestPartTitle: "\u5948\u843D\u306E\u676D\u6E21\u308A"
-    maxJewel: 15
-    collectedJewel: 4
-    jewelsBit: 100100010010000
+    pass: master5
+    startPart: 9
+    latestPart: 9
+    latestPartTitle: "\u6642\u7A7A\u306E\u72ED\u9593"
+    maxJewel: 16
+    collectedJewel: 15
+    jewelsBit: 1111111111111101
   isContinueStart: 0
   saveDataCSV_name: savedata
   outPutSaveDataLog: 0
