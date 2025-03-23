@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConfigDatas
   m_EditorClassIdentifier: 
   encrypter: {fileID: 11400000, guid: ec6b427a609ce984b88d025303de2dd2, type: 2}
-  masterVolume: 0.5
+  masterVolume: 0.13
   bgmVolume: 0.5
   seVolume: 0.5
   controllMode_: 0
