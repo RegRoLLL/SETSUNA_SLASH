@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ConfigDatas
   m_EditorClassIdentifier: 
   encrypter: {fileID: 11400000, guid: ec6b427a609ce984b88d025303de2dd2, type: 2}
-  masterVolume: 0.27
-  bgmVolume: 0.08
-  seVolume: 0.32
+  masterVolume: 0.5
+  bgmVolume: 0.5
+  seVolume: 0.5
   controllMode_: 0
   slowWhenSlashCharge: 1
   easyMode: 0
@@ -31,4 +31,4 @@ MonoBehaviour:
     jewelsBit: 1111100000000000
   isContinueStart: 0
   saveDataCSV_name: savedata
-  outPutSaveDataLog: 1
+  outPutSaveDataLog: 0

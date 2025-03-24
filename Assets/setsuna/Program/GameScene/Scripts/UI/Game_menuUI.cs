@@ -151,7 +151,7 @@ public class Game_menuUI : SetsunaSlashScript
         {
             //Å‚“’Bpart‚ÌXV
             currentPlayData.latestPart = latestSavePart;
-            currentPlayData.latestPartTitle = Hub.currentPart.GetTitle();
+            currentPlayData.latestPartTitle = parts[latestSavePart - 1].GetTitle();
         }
 
         var jewelBit = Hub.playingStage.GetJewelsCollectingBits();
