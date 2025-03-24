@@ -25,11 +25,12 @@ namespace RegUtility
         /// </summary>
         /// <param name="path">ÉpÉXÅB</param>
         /// <returns></returns>
-        static public List<string[]> ReadCSV(string path)
+        static public List<string[]> ReadCSV(string path) => ReadCSV(path, false);
+        static public List<string[]> ReadCSV(string path,bool skipFirstLine)
         {
             var list = new List<string[]>();
             var sr = new StreamReader(path);
-            int n = 0;
+            int n = skipFirstLine ? 0 : 1;
 
             while (sr.Peek() != -1)
             {
