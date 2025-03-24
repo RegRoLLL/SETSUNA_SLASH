@@ -11,6 +11,7 @@ public class SetsunaSlashScript : MonoBehaviour
         bladeLayer = 8,
         savePointLayer = 9,
         slashGimmickLayer = 10,
+        throughPlayerLayer = 11,
         deathFallAreaLayer = 13;
 
     [SerializeField] protected ConfigDatas config;

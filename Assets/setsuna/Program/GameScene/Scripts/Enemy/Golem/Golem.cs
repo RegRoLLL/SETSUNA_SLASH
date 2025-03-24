@@ -453,6 +453,7 @@ public class Golem : SetsunaSlashScript
             sr.transform.parent = stat;
             sr.GetComponent<SpriteSkin>().enabled = false;
             sr.gameObject.AddComponent<PolygonCollider2D>();
+            sr.gameObject.layer = throughPlayerLayer;
             sr.gameObject.AddComponent<Rigidbody2D>();
         }
 
