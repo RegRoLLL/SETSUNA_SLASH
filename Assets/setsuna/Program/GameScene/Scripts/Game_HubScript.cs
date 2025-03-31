@@ -36,6 +36,9 @@ public class Game_HubScript : SetsunaSlashScript
 
     public void SetPart(StagePart stage)
     {
+        currentPart = stage;
+        camera_.SetPos();
+
         playingStage.SetCurrentPart(playingStage.stageParts.FindIndex((n) => (n == stage.gameObject)));
 
         if (bgmAS.clip != stage.bgm)
@@ -46,8 +49,6 @@ public class Game_HubScript : SetsunaSlashScript
             else bgmAS.Stop();
         }
         Camera.main.backgroundColor = stage.backGroundColor;
-
-        currentPart = stage;
     }
 
     public Vector2 CameraPosClamp(Vector2 pos, Camera camera)

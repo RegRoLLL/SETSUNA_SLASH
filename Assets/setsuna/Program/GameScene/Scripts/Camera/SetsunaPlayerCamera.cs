@@ -89,7 +89,7 @@ public class SetsunaPlayerCamera : SetsunaSlashScript
         }
     }
 
-    void SetPos()
+    public void SetPos()
     {
         if (hub.currentPart == null) return;
 

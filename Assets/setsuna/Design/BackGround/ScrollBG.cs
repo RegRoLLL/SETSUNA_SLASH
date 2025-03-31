@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Image)), DefaultExecutionOrder(-1)]
 public class ScrollBG : MonoBehaviour,IDisposable
@@ -25,6 +26,7 @@ public class ScrollBG : MonoBehaviour,IDisposable
     Vector2 defaultObjScale, defaultTextureScale;
     [SerializeField]string texPropName = "_MainTex";
 
+    Game_HubScript hub;
 
     [SerializeField] enum BG_type { far,near }
 
@@ -44,15 +46,9 @@ public class ScrollBG : MonoBehaviour,IDisposable
         defaultTextureScale = mat.GetTextureScale(texPropName);
         defaultObjScale = transform.localScale;
 
+        hub = EventSystem.current.GetComponent<Game_HubScript>();
+
         Initialize();
-
-        lastFrameBG_Type = bg_type;
-        lastFramePosition = traceTarget.position;
-    }
-
-    void OnEnable()
-    {
-        if(Time.frameCount != 0)Initialize();
     }
 
     public void Initialize()
@@ -61,6 +57,25 @@ public class ScrollBG : MonoBehaviour,IDisposable
 
         if (bg_type == BG_type.far) far.Initialize(this);
         else if (bg_type == BG_type.near) near.Initialize(this);
+
+        ResetMat();
+
+        lastFrameBG_Type = bg_type;
+
+        if (bg_type != BG_type.far) return;
+
+        if (hub.currentPart)
+        {
+            lastFramePosition = hub.currentPart.savePoints.GetSavePoints()[0].transform.position;
+            Debug.DrawLine(lastFramePosition, traceTarget.position, Color.red, 5f);
+            Debug.Log($"set offset:{(lastFramePosition-(Vector2)traceTarget.position).magnitude}");
+        }
+        else
+        {
+            lastFramePosition = traceTarget.transform.position;
+        }
+
+        far.Scroll();
     }
 
 
@@ -161,7 +176,9 @@ public class ScrollBG : MonoBehaviour,IDisposable
         }
     }
 
-
+    /// <summary>
+    /// far‘¤‚Å‚Ì‚ÝŽg—p
+    /// </summary>
     public void ScrollMat(Vector2 scrollSPD, Vector2 offset)
     {
         Vector2 pos = traceTarget.position;
@@ -172,9 +189,6 @@ public class ScrollBG : MonoBehaviour,IDisposable
         var spd = scrollSPD * 1e-2f;
         direction.x *= spd.x;
         direction.y *= spd.y;
-        
-        //if (Mathf.Abs(direction.x) < minDirection.x) direction.x = 0;
-        //if (Mathf.Abs(direction.y) < minDirection.y) direction.y = 0;
 
         texturePos += direction;
         mat.SetTextureOffset(texPropName, texturePos + offset);
@@ -184,7 +198,6 @@ public class ScrollBG : MonoBehaviour,IDisposable
 
 
 
-    [ContextMenu("reset")]
     public void ResetMat()
     {
         texturePos = Vector2.zero;
