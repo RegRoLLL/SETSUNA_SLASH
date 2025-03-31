@@ -14,11 +14,10 @@ public class ScrollBG : MonoBehaviour,IDisposable
     [SerializeField] BG_type bg_type;
     BG_type lastFrameBG_Type;
 
-    [SerializeField] Transform traceTarget;
-
     [SerializeField] FarBackGround far;
     [SerializeField] NearBackGround near;
 
+    Transform traceTarget;
     Image image;
     Canvas canvas;
     Vector2 lastFramePosition, texturePos;
@@ -35,6 +34,8 @@ public class ScrollBG : MonoBehaviour,IDisposable
     {
         image = GetComponent<Image>();
         canvas = image.canvas;
+
+        traceTarget = Camera.main.transform;
 
         texturePos = Vector2.zero;
         mat = new Material(image.material);
@@ -168,7 +169,7 @@ public class ScrollBG : MonoBehaviour,IDisposable
         if (pos == lastFramePosition) return;
 
         var direction = pos - lastFramePosition;
-        var spd = scrollSPD * 1e+0f;
+        var spd = scrollSPD * 1e-2f;
         direction.x *= spd.x;
         direction.y *= spd.y;
         

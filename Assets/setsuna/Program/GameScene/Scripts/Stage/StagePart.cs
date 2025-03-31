@@ -9,6 +9,7 @@ public class StagePart : MonoBehaviour
     [SerializeField] string partTitle;
     public bool isAnotherRoom;
     public Color backGroundColor;
+    public BackGroundGroup backGroundGroup;
 
     public AudioClip bgm;
     public bool bgm_playOnEnter;
