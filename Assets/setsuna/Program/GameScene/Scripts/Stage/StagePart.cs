@@ -10,6 +10,8 @@ public class StagePart : MonoBehaviour
     public bool isAnotherRoom;
     public Color backGroundColor;
     public BackGroundGroup backGroundGroup;
+    public bool bgFarOffsetOverwrite;
+    public Vector2 overwriteFarOffset;
 
     public AudioClip bgm;
     public bool bgm_playOnEnter;

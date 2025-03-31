@@ -24,6 +24,7 @@ public class ScrollBG : MonoBehaviour,IDisposable
     Vector2 lastFramePosition, texturePos;
     Material mat;
     Vector2 defaultObjScale, defaultTextureScale;
+
     [SerializeField]string texPropName = "_MainTex";
 
     Game_HubScript hub;
@@ -64,11 +65,12 @@ public class ScrollBG : MonoBehaviour,IDisposable
 
         if (bg_type != BG_type.far) return;
 
-        if (hub.currentPart)
+        if (hub.currentPart is StagePart part and not null)
         {
-            lastFramePosition = hub.currentPart.savePoints.GetSavePoints()[0].transform.position;
-            Debug.DrawLine(lastFramePosition, traceTarget.position, Color.red, 5f);
-            Debug.Log($"set offset:{(lastFramePosition-(Vector2)traceTarget.position).magnitude}");
+            far.SetOffsetOverwrite(part.bgFarOffsetOverwrite, part.overwriteFarOffset);
+            lastFramePosition = part.savePoints.GetSavePoints()[0].transform.position;
+            //Debug.DrawLine(lastFramePosition, traceTarget.position, Color.red, 5f);
+            //Debug.Log($"set offset:{(lastFramePosition-(Vector2)traceTarget.position).magnitude}");
         }
         else
         {
@@ -98,6 +100,8 @@ public class ScrollBG : MonoBehaviour,IDisposable
         ScrollBG outer;
 
         [SerializeField] Vector2 offset, scrollSPD;
+        [SerializeField] bool offsetOverwrite;
+        [SerializeField] Vector2 overwritedOffset;
 
         public void Initialize(ScrollBG outer)
         {
@@ -109,8 +113,14 @@ public class ScrollBG : MonoBehaviour,IDisposable
             outer.transform.localScale = outer.defaultObjScale;
         }
 
+        public void SetOffsetOverwrite(bool overwrite, Vector2 _offset)
+        {
+            offsetOverwrite = overwrite;
+            overwritedOffset = _offset;
+        }
+
         public void Scroll(){
-            outer.ScrollMat(scrollSPD, offset);
+            outer.ScrollMat(scrollSPD, offsetOverwrite? overwritedOffset : offset);
         }
     }
 
