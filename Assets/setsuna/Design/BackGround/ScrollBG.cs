@@ -76,6 +76,7 @@ public class ScrollBG : MonoBehaviour,IDisposable
             lastFramePosition = traceTarget.transform.position;
         }
 
+        texturePos = Vector2.zero;
         far.Scroll();
     }
 
@@ -205,9 +206,9 @@ public class ScrollBG : MonoBehaviour,IDisposable
         lastFramePosition = pos;
     }
 
+    //===========================
 
-
-    public void ResetMat()
+    void ResetMat()
     {
         texturePos = Vector2.zero;
 
