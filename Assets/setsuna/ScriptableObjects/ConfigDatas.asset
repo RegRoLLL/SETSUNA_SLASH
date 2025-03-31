@@ -20,7 +20,7 @@ MonoBehaviour:
   slowWhenSlashCharge: 1
   easyMode: 0
   demoMode: 0
-  debugMode: 0
+  debugMode: 1
   loadedSaveData:
     pass: alpha_one_one
     startPart: 4
