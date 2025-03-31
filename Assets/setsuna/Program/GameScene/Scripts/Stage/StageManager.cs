@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
-using static UnityEngine.ParticleSystem;
 
 public class StageManager : SetsunaSlashScript
 {
     public Game_HubScript hub;
 
     public string stageName;
-    public Color stageColor;
+    
+    [Space()]
+    [SerializeField] Transform backGroundsContainer;
+    [SerializeField] CanvasGroup showGroup, invisibleGroup;
+
 
     [Header("Internal Data")]
     public List<GameObject> stageParts = new();
     public List<GameObject> stageClones = new();
     public List<SerializableList<string>> jewelRoomNames = new();
     public int currentIndex, saveIndex;
+    public BackGroundGroup currentBG;
     public Vector3 primaryPlayerPosition, savedPlayerPosition;
     public SavePoint latestSavePoint, anotherPartSave;
 
@@ -41,6 +45,7 @@ public class StageManager : SetsunaSlashScript
         }
 
         InitializeStageManageLists();
+        InitializeBackGrounds();
 
         SaveAll();
 
@@ -74,6 +79,18 @@ public class StageManager : SetsunaSlashScript
                 }
             }
         }
+    }
+    void InitializeBackGrounds()
+    {
+        var bgList = backGroundsContainer.GetComponentsInChildren<BackGroundGroup>().ToList();
+        foreach (var bgg in bgList)
+        {
+            bgg.SetParent(invisibleGroup.transform);
+            bgg.SetEnable(false);
+        }
+        Destroy(backGroundsContainer.gameObject);
+
+        currentBG = null;
     }
 
     void SetJewelsContinueData()
@@ -219,7 +236,32 @@ public class StageManager : SetsunaSlashScript
             var roomIndex = jewelRoomNames.FindIndex(element => element.list2.Contains(part.GetTitle()));
             SetJewelsCountUICollectStat(roomIndex);
         }
+
+        SetBackGround(next: part);
     }
+
+
+    public void SetBackGround(StagePart next)
+    {
+        if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
+
+        Camera.main.GetComponent<Camera>().backgroundColor = next.backGroundColor;
+
+        if (currentBG != null)
+        {
+            //Debug.Log($"disable:{currentBG}");
+            currentBG.SetParent(invisibleGroup.transform);
+            currentBG.SetEnable(false);
+        }
+        currentBG = next.backGroundGroup;
+
+        if (currentBG == null) return;
+
+        //Debug.Log($"enable:{next.backGroundGroup}");
+        currentBG.SetParent(showGroup.transform);
+        currentBG.SetEnable(true);
+    }
+
 
 
     public void CollectJewel(string partTitle)
