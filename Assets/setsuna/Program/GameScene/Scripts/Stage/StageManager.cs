@@ -243,7 +243,7 @@ public class StageManager : SetsunaSlashScript
 
     public void SetBackGround(StagePart next)
     {
-        if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
+        //if ((currentBG != null) && (currentBG == next.backGroundGroup)) return;
 
         Camera.main.GetComponent<Camera>().backgroundColor = next.backGroundColor;
 
