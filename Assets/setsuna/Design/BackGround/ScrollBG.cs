@@ -59,9 +59,8 @@ public class ScrollBG : MonoBehaviour,IDisposable
         if (bg_type == BG_type.far) far.Initialize(this);
         else if (bg_type == BG_type.near) near.Initialize(this);
 
-        ResetMat();
-
         lastFrameBG_Type = bg_type;
+
 
         if (bg_type != BG_type.far) return;
 
@@ -157,31 +156,31 @@ public class ScrollBG : MonoBehaviour,IDisposable
 
 
         public void Scroll(){
-            Vector2 camPos = Camera.main.transform.position;
+            Vector2 targetPos = outer.traceTarget.position;
             var dir = Vector3.zero;
 
-            if (camPos.x > startPos.x + rect.x){
+            if (targetPos.x > startPos.x + rect.x){
                 dir.x += rect.x;
                 startPos.x += rect.x;
             }
-            else if (camPos.x < startPos.x - rect.x)
+            else if (targetPos.x < startPos.x - rect.x)
             {
                 dir.x -= rect.x;
                 startPos.x -= rect.x;
             }
 
-            if (camPos.y > startPos.y + rect.y)
+            if (targetPos.y > startPos.y + rect.y)
             {
                 dir.y += rect.y;
                 startPos.y += rect.y;
             }
-            else if (camPos.y < startPos.y - rect.y)
+            else if (targetPos.y < startPos.y - rect.y)
             {
                 dir.y -= rect.y;
                 startPos.y -= rect.y;
             }
 
-
+            //Debug.Log($"nearScroll:{dir}");
             outer.transform.position += dir;
         }
     }
