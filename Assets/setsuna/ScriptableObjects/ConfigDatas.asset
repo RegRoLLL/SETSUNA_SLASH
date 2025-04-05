@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   encrypter: {fileID: 11400000, guid: ec6b427a609ce984b88d025303de2dd2, type: 2}
   masterVolume: 0.5
-  bgmVolume: 0.5
+  bgmVolume: 0.26
   seVolume: 0.5
   controllMode_: 0
   slowWhenSlashCharge: 1
   easyMode: 0
   demoMode: 0
-  debugMode: 0
+  debugMode: 1
   loadedSaveData:
-    pass: alpha_one_one
-    startPart: 4
-    latestPart: 4
-    latestPartTitle: "\u5CA9\u306E\u738B"
+    pass: nununu
+    startPart: 5
+    latestPart: 10
+    latestPartTitle: "\u6642\u7A7A\u306E\u72ED\u9593"
     maxJewel: 16
-    collectedJewel: 5
-    jewelsBit: 1111100000000000
+    collectedJewel: 16
+    jewelsBit: 1111111111111111
   isContinueStart: 0
   saveDataCSV_name: savedata
   outPutSaveDataLog: 0
