@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class PL_Status:SetsunaSlashScript
 {
+    [SerializeField] PartStat partStat;
     [SerializeField] int recommendCount, currentCount, currentScoreAdditional;
     [SerializeField] int hintUsed;
     [SerializeField] bool inPuzzle;
-    public bool inAnotherPart;
+    public bool InAnotherPart { get => partStat == PartStat.another; }
+    public bool IsGoaled { get => partStat == PartStat.goaled; }
 
     Player pl;
     SlashCountUI ui;
+
+    public enum PartStat { common, goaled, another }
 
     void Start()
     {
@@ -26,12 +30,15 @@ public class PL_Status:SetsunaSlashScript
         }
     }
 
+    public void Damage() => TryConsumeCount();
     /// <summary>
     /// aŒ‚‰ñ”‚ğÁ”ï‚·‚é
     /// </summary>
     /// <returns>Á”ï‚É¬Œ÷‚µ‚½‚©‚Ç‚¤‚©(0‚ğ‰º‰ñ‚ê‚È‚¢)</returns>
-    public bool ConsumeCount()
+    public bool TryConsumeCount()
     {
+        if(partStat != PartStat.common || config.easyMode) return true;
+
         if(currentCount + currentScoreAdditional <= 0) return false;
         else if (currentCount > 0)
         {
@@ -51,7 +58,7 @@ public class PL_Status:SetsunaSlashScript
     /// ƒqƒ“ƒg‚ğg‚¤
     /// </summary>
     /// <returns>•]‰¿“_‚ª‘«‚è‚È‚¢‚Æfalse‚ğ•Ô‚·</returns>
-    public bool UseHint()
+    public bool TryUseHint()
     {
         if (currentScoreAdditional <= 0) return false;
         else
@@ -65,14 +72,20 @@ public class PL_Status:SetsunaSlashScript
 
     public void SetAnotherPart()
     {
-        inAnotherPart = true;
-        ui.SetAnotherRoom();
+        partStat = PartStat.another;
+        ui.SetInfinity(true);
+    }
+
+    public void SetGoaled()
+    {
+        partStat = PartStat.goaled;
+        ui.SetInfinity(false);
     }
 
     public void SetRecommendCount(int max)
     {
         inPuzzle = (max >= 0);
-        inAnotherPart = false;
+        partStat = PartStat.common;
 
         this.recommendCount = max;
         currentCount = max;
@@ -82,7 +95,7 @@ public class PL_Status:SetsunaSlashScript
     }
     public void ResetCount()
     {
-        if (inAnotherPart) return;
+        if (partStat != PartStat.common) return;
 
         currentCount = recommendCount;
         currentScoreAdditional = 3 - hintUsed;

@@ -64,13 +64,15 @@ public class SlashCountUI : MonoBehaviour
             slashCells.Add(t.GetComponent<SlashCountCell>());
     }
 
-    public void SetAnotherRoom()
+    public void SetInfinity(bool showJewelCounter)
     {
         infinityGauge.enabled = true;
         isInfinity = true;
         scoreRemains = 3;
         slashRemains = 10;
-        jewelCounter.Show(true);
+
+        if(showJewelCounter)jewelCounter.Show(true);
+
         StartCoroutine(ResetUICoroutine(false));
     }
 

@@ -102,7 +102,11 @@ public class SavePoint : SetsunaSlashScript
     }
     void AreaStart()
     {
-        if (isAnotherPart)
+        if (isGoalSave)
+        {
+            player.Status.SetGoaled();
+        }
+        else if (isAnotherPart)
         {
             player.Status.SetAnotherPart();
         }
@@ -162,6 +166,7 @@ public class SavePoint : SetsunaSlashScript
     public void InteractSavePoint(Player pl)
     {
         if (hints.Count <= 0) return;
+        if (pl.Status.IsGoaled) hints.ForEach(h => h.unLocked = true);
         pl.ui.OpenHintUI(hints, pl);
     }
 
