@@ -39,7 +39,7 @@ public class Rock : SetsunaSlashScript
         float dt = 0, scale = transform.localScale.x;
         while (dt <= appearTime)
         {
-            transform.Rotate(Vector3.forward * appearRotationCount * 360 * Time.deltaTime);
+            transform.Rotate(360 * appearRotationCount * Time.deltaTime * Vector3.forward);
             transform.localScale = Vector2.one * (scale * (dt / appearTime));
 
             dt += Time.deltaTime;
@@ -63,7 +63,7 @@ public class Rock : SetsunaSlashScript
         {
             if (rb.velocity.magnitude < damageSpeed) return;
 
-            col.gameObject.GetComponentInParent<PL_Status>().ConsumeCount();
+            col.gameObject.GetComponentInParent<PL_Status>().Damage();
         }
         else if (col.collider.GetComponent<Rock>())
         {

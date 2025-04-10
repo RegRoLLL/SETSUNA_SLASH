@@ -112,7 +112,7 @@ public class HintUI : MonoBehaviour
 
     public void Unlock()
     {
-        if (player.Status.UseHint())
+        if (player.Status.TryUseHint())
         {
             displayingHint.unLocked = true;
             Display();

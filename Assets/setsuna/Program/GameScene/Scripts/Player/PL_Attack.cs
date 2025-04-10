@@ -315,12 +315,11 @@ public class PL_Attack : SetsunaSlashScript
 
     void ChargeSlash(Vector2 start, Vector2 end)
     {
-        if (!config.easyMode && !pl.Status.inAnotherPart){
-            var result = pl.Status.ConsumeCount();
-            if (!result){
-                Attack();
-                return;
-            }
+        var result = pl.Status.TryConsumeCount();
+        if (!result)
+        {
+            Attack();
+            return;
         }
 
         var effect = Instantiate(slashEffectPrefab);
