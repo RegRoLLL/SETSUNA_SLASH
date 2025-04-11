@@ -31,6 +31,8 @@ public class SlashCountUI : MonoBehaviour
     RectTransform pointPopupRectTransform;
     Vector3 pointPopupOriginPos;
 
+    Coroutine resetUICoroutine,showSlashCellsCoroutine;
+
     void Start()
     {
         pointPopupStay = new WaitForSeconds(settings.pointPopupStayT);
@@ -73,7 +75,7 @@ public class SlashCountUI : MonoBehaviour
 
         if(showJewelCounter)jewelCounter.Show(true);
 
-        StartCoroutine(ResetUICoroutine(false));
+        ResetUI(false);
     }
 
     public void SetCells(int recommend, int hintUsed, bool disableAnimation, bool inPuzzle)
@@ -87,7 +89,7 @@ public class SlashCountUI : MonoBehaviour
         if (!inPuzzle)
             StartCoroutine(VanishCellsCoroutine());
         else
-            StartCoroutine(ResetUICoroutine(disableAnimation));
+            ResetUI(disableAnimation);
     }
     public void ConsumeSlashCell()
     {
@@ -155,7 +157,16 @@ public class SlashCountUI : MonoBehaviour
         areaNameTMP.text = areaName;
     }
 
-    public IEnumerator ResetUICoroutine(bool disableAnimation)
+    void ResetUI(bool disableAnimation)
+    {
+        if (resetUICoroutine != null)
+        {
+            StopCoroutine(resetUICoroutine);
+            StopCoroutine(showSlashCellsCoroutine);
+        }
+        resetUICoroutine = StartCoroutine(ResetUICoroutine(disableAnimation));
+    }
+    IEnumerator ResetUICoroutine(bool disableAnimation)
     {
         var wait = new WaitForSeconds(settings.cellSetInterval);
 
@@ -171,15 +182,15 @@ public class SlashCountUI : MonoBehaviour
         yield return StartCoroutine(ShowCellsCoroutine(scoreCells,scoreRemains , wait));
 
         //ŽaŒ‚ƒZƒ‹‚ð•\Ž¦
-        yield return StartCoroutine(ShowCellsCoroutine(slashCells,slashRemains , wait));
+        yield return showSlashCellsCoroutine = StartCoroutine(ShowCellsCoroutine(slashCells,slashRemains , wait));
+
+        resetUICoroutine = null;
+        showSlashCellsCoroutine = null;
     }
     public IEnumerator VanishCellsCoroutine()
     {
         var wait = new WaitForSeconds(settings.cellSetInterval);
-        yield return StartCoroutine(VanishCellsCoroutine(wait));
-    }
-    public IEnumerator VanishCellsCoroutine(WaitForSeconds wait)
-    {
+
         foreach (var cell in Enumerable.Reverse(slashCells))
         {
             if (!cell.state.back) continue;
