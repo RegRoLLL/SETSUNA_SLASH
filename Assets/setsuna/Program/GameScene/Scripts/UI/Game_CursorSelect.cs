@@ -8,10 +8,16 @@ using UnityEngine.EventSystems;
 public class Game_CursorSelect : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 {
     [SerializeField] bool onPointerExitDeselect = true;
+    Selectable selectable;
+
+    void Start()
+    {
+        selectable = GetComponent<Selectable>();
+    }
 
     void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
     {
-        this.GetComponent<Selectable>().Select();
+        selectable.Select();
     }
 
     void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
